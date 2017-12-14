@@ -1,0 +1,12 @@
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\bin\Debug\FCModbcBusinessLibrary.dll
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\bin\Debug\FCModbcBusinessLibrary.pdb
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.dll
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\bin\Debug\MackkadoITFramework.dll
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\bin\Debug\MySql.Data.dll
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.pdb
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.xml
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\bin\Debug\MackkadoITFramework.pdb
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\obj\Debug\FCModbcBusinessLibrary.csprojResolveAssemblyReference.cache
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\obj\Debug\FCModbcBusinessLibrary.dll
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\obj\Debug\FCModbcBusinessLibrary.pdb
+C:\I_Daniel\Dropbox\FCMMySQLGit\FCModbcBusinessLibrary\obj\Debug\FCModbcBusinessLibrary.csprojResolveAssemblyReference.cache
