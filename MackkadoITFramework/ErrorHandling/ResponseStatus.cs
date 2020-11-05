@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
-using FCMMySQLBusinessLibrary;
+﻿using FCMMySQLBusinessLibrary;
 using MackkadoITFramework.Utils;
+using System.Windows.Forms;
 
 namespace MackkadoITFramework.ErrorHandling
 {
@@ -143,8 +143,8 @@ namespace MackkadoITFramework.ErrorHandling
         {
             LogFile.WriteToTodaysLogFile(this.UniqueCode + this.Message, headerInfo.UserID);
         }
-    
-            /// <summary>
+
+        /// <summary>
         /// List of error codes
         /// </summary>
         public struct MessageCode

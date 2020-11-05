@@ -1,6 +1,6 @@
-﻿using System.ServiceModel;
-using FCMMySQLBusinessLibrary.Model.ModelClientDocument;
+﻿using FCMMySQLBusinessLibrary.Model.ModelClientDocument;
 using FCMMySQLBusinessLibrary.Service.SVCClientDocument.ServiceContract;
+using System.ServiceModel;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Interface
 {

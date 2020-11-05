@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using MackkadoITFramework.ErrorHandling;
+﻿using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
 using ServiceStack.Redis;
 using ServiceStack.Redis.Generic;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MackkadoITFramework.ReferenceData
 {
@@ -111,9 +111,9 @@ namespace MackkadoITFramework.ReferenceData
         public ResponseStatus Update()
         {
 
-            var ret = new ResponseStatus {Message = "Item updated successfully"};
+            var ret = new ResponseStatus { Message = "Item updated successfully" };
 
-            if (string.IsNullOrEmpty( Code ))
+            if (string.IsNullOrEmpty(Code))
             {
                 ret.ReturnCode = -0010;
                 ret.ReasonCode = 0001;
@@ -121,7 +121,7 @@ namespace MackkadoITFramework.ReferenceData
                 return ret;
             }
 
-            if (string.IsNullOrEmpty( Description ))
+            if (string.IsNullOrEmpty(Description))
             {
                 ret.ReturnCode = -0010;
                 ret.ReasonCode = 0002;
@@ -172,7 +172,7 @@ namespace MackkadoITFramework.ReferenceData
                 var commandString = "DELETE FROM rdCodeType WHERE CodeType = @CodeType ";
 
 
-                using (var command = new MySqlCommand( commandString, connection) )
+                using (var command = new MySqlCommand(commandString, connection))
                 {
                     command.Parameters.Add("@CodeType", MySqlDbType.VarChar).Value = Code;
 
@@ -223,7 +223,7 @@ namespace MackkadoITFramework.ReferenceData
                     "Document.cs"
                     );
 
-                return new ResponseStatus(MessageType.Error) {Message = ex.ToString()};
+                return new ResponseStatus(MessageType.Error) { Message = ex.ToString() };
 
             }
             return new ResponseStatus();
@@ -243,7 +243,7 @@ namespace MackkadoITFramework.ReferenceData
         /// <summary>
         /// List Code Types
         /// </summary>
-        public ResponseStatus List( List<CodeType> ctList )
+        public ResponseStatus List(List<CodeType> ctList)
         {
 
             try
@@ -271,7 +271,7 @@ namespace MackkadoITFramework.ReferenceData
 
                                 // Instance Variable
                                 codeTypeList.Add(_codeType);
- 
+
                                 // Input variable
                                 ctList.Add(_codeType);
                             }
@@ -288,7 +288,7 @@ namespace MackkadoITFramework.ReferenceData
                     );
 
                 return new ResponseStatus(MessageType.Error)
-                           {ReturnCode = -0020, ReasonCode = 0001, Message = ex.ToString()};
+                { ReturnCode = -0020, ReasonCode = 0001, Message = ex.ToString() };
             }
 
             return new ResponseStatus();
@@ -304,7 +304,7 @@ namespace MackkadoITFramework.ReferenceData
 
 
             string host = "172.16.0.17";
-                
+
             using (RedisClient redisClient = new RedisClient(host))
             {
 
@@ -325,8 +325,8 @@ namespace MackkadoITFramework.ReferenceData
 
                         IRedisTypedClient<CodeValue> codevalues = redisClient.As<CodeValue>();
                         redisClient.ChangeDb(1);
-                        codevalues.SetEntryIfNotExists(codevalue.FKCodeType+codevalue.ID, codevalue);
-    
+                        codevalues.SetEntryIfNotExists(codevalue.FKCodeType + codevalue.ID, codevalue);
+
                     }
                 }
             }

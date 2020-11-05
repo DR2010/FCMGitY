@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Forms;
-using FCMMySQLBusinessLibrary.FCMUtils;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
 using FCMMySQLBusinessLibrary.Model.ModelClient;
 using FCMMySQLBusinessLibrary.Model.ModelClientDocument;
 using FCMMySQLBusinessLibrary.Model.ModelMetadata;
@@ -11,15 +6,20 @@ using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
 using FCMMySQLBusinessLibrary.Service.SVCClient.Contract;
 using FCMMySQLBusinessLibrary.Service.SVCClient.Service;
 using FCMMySQLBusinessLibrary.Service.SVCClient.ServiceContract;
+using MackkadoITFramework.APIDocument;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Interfaces;
-using MackkadoITFramework.APIDocument;
 using MackkadoITFramework.Utils;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using Word;
+using Application = Microsoft.Office.Interop.Word.Application;
 using Excel = Microsoft.Office.Interop.Excel;
 using WordNet = Microsoft.Office.Interop.Word;
-using Application = Microsoft.Office.Interop.Word.Application;
-using System.IO;
 
 namespace FCMMySQLBusinessLibrary
 {
@@ -130,7 +130,7 @@ namespace FCMMySQLBusinessLibrary
         ~WordReport()
         {
             oApplication.Quit();
-            vkWordApp.Quit( SaveChanges: ref vkFalse, OriginalFormat: ref vkFalse, RouteDocument: ref vkFalse );
+            vkWordApp.Quit(SaveChanges: ref vkFalse, OriginalFormat: ref vkFalse, RouteDocument: ref vkFalse);
             vkExcelApp.Quit();
         }
 
@@ -142,12 +142,12 @@ namespace FCMMySQLBusinessLibrary
         /// <param name="clientFolder"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public ResponseStatus RegisterOfSytemDocuments2( TreeView tv, string clientFolder, string fileName, string processName, string userID )
+        public ResponseStatus RegisterOfSytemDocuments2(TreeView tv, string clientFolder, string fileName, string processName, string userID)
         {
 
-            uioutput.AddOutputMessage( "Starting Register of Systems Documents generation...", processName, userID );
-            uioutput.AddOutputMessage( clientFolder, processName, userID );
-            uioutput.AddOutputMessage( fileName, processName, userID );
+            uioutput.AddOutputMessage("Starting Register of Systems Documents generation...", processName, userID);
+            uioutput.AddOutputMessage(clientFolder, processName, userID);
+            uioutput.AddOutputMessage(fileName, processName, userID);
 
             ResponseStatus ret = new ResponseStatus();
 
@@ -168,14 +168,14 @@ namespace FCMMySQLBusinessLibrary
             //string clientDestinationFileLocationName = Utils.getFilePathName(
             //    clientDestinationFileLocation, document.clientDocument.FileName.Trim() );
 
-            string clientDestinationFileLocationName = Utils.getFilePathName( clientDestinationFileLocation, fileName.Trim() );
+            string clientDestinationFileLocationName = Utils.getFilePathName(clientDestinationFileLocation, fileName.Trim());
 
             object destinationFileName = clientDestinationFileLocationName;
 
-            if ( !File.Exists( clientDestinationFileLocationName ) )
+            if (!File.Exists(clientDestinationFileLocationName))
             {
-                uioutput.AddOutputMessage( "File doesn't exist " + destinationFileName, processName: processName, userID: userID );
-                uioutput.AddErrorMessage( "File doesn't exist " + destinationFileName, processName:processName, userID:userID );
+                uioutput.AddOutputMessage("File doesn't exist " + destinationFileName, processName: processName, userID: userID);
+                uioutput.AddErrorMessage("File doesn't exist " + destinationFileName, processName: processName, userID: userID);
 
                 var responseerror = new ResponseStatus(MessageType.Error);
 
@@ -186,19 +186,19 @@ namespace FCMMySQLBusinessLibrary
             WordNet._Document oDoc;
             try
             {
-                uioutput.AddOutputMessage( "Opening document in Word... " + destinationFileName, processName:processName, userID:userID );
+                uioutput.AddOutputMessage("Opening document in Word... " + destinationFileName, processName: processName, userID: userID);
 
                 oDoc = oApplication.Documents.Open(
                     ref destinationFileName, ref vkMissing, ref vkFalse,
                     ref vkMissing, ref vkMissing, ref vkMissing,
                     ref vkMissing, ref vkMissing, ref vkMissing,
-                    ref vkMissing, ref vkMissing, ref vkVisiblefalse );
+                    ref vkMissing, ref vkMissing, ref vkVisiblefalse);
 
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
 
-                var responseerror = new ResponseStatus( MessageType.Error );
+                var responseerror = new ResponseStatus(MessageType.Error);
 
                 responseerror.ReturnCode = -1;
                 responseerror.ReasonCode = 1000;
@@ -208,13 +208,13 @@ namespace FCMMySQLBusinessLibrary
             }
 
 
-            if ( oDoc.ReadOnly )
+            if (oDoc.ReadOnly)
             {
-                if ( uioutput != null ) uioutput.AddOutputMessage( "(Word) File is Read-only contact support:  " + destinationFileName, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("(Word) File is Read-only contact support:  " + destinationFileName, processName, userID);
                 oDoc.Close();
-                System.Runtime.InteropServices.Marshal.ReleaseComObject( oDoc );
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(oDoc);
 
-                var responseerror = new ResponseStatus( MessageType.Error );
+                var responseerror = new ResponseStatus(MessageType.Error);
                 responseerror.Message = "(Word) File is Read-only contact support:  " + destinationFileName;
                 return responseerror;
 
@@ -222,92 +222,92 @@ namespace FCMMySQLBusinessLibrary
 
             try
             {
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Saving document in Word... " + destinationFileName, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("Saving document in Word... " + destinationFileName, processName, userID);
                 oDoc.Save();
             }
             catch (Exception ex)
             {
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Error saving file " + clientDestinationFileLocationName, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("Error saving file " + clientDestinationFileLocationName, processName, userID);
 
-                var responseerror = new ResponseStatus( MessageType.Error );
+                var responseerror = new ResponseStatus(MessageType.Error);
                 responseerror.Message = "Error saving file " + clientDestinationFileLocationName;
                 return responseerror;
             }
 
             string msg = ">>> Opening file... " + destinationFileName;
-            if ( uioutput != null ) uioutput.AddOutputMessage( msg, processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage(msg, processName, userID);
 
-            PrintToWord( oDoc, " ", 8, 1 );
+            PrintToWord(oDoc, " ", 8, 1);
 
             WordNet.Range wrdRng;
             WordNet.Table oTable;
 
-            wrdRng = oDoc.Bookmarks.get_Item( oEndOfDoc ).Range;
+            wrdRng = oDoc.Bookmarks.get_Item(oEndOfDoc).Range;
             int rowCount = 30;
 
 
             // Get number of rows for a client document, client document set
             //
             // var cds = new BUSClientDocumentSet( Utils.ClientID, Utils.ClientSetID XXXXXXXXXXXXXXX );
-            var cds = new BUSClientDocumentSet( clientID, clientDocSetID );
+            var cds = new BUSClientDocumentSet(clientID, clientDocSetID);
             rowCount = cds.DocumentCount;
 
-            if ( rowCount < 1 )
-                return new ResponseStatus( MessageType.Error );
+            if (rowCount < 1)
+                return new ResponseStatus(MessageType.Error);
 
-            oTable = oDoc.Tables.Add( wrdRng, rowCount, 8, ref vkFalse, ref vkFalse );
+            oTable = oDoc.Tables.Add(wrdRng, rowCount, 8, ref vkFalse, ref vkFalse);
             oTable.Borders.OutsideColor = WordNet.WdColor.wdColorBlack;
             oTable.Borders.InsideLineStyle = WordNet.WdLineStyle.wdLineStyleDouble;
             oTable.Borders.OutsideColor = WordNet.WdColor.wdColorBlueGray;
             oTable.Borders.OutsideLineStyle = WordNet.WdLineStyle.wdLineStyleEmboss3D;
 
-            oTable.Rows [1].HeadingFormat = -1;
+            oTable.Rows[1].HeadingFormat = -1;
 
-            WordNet.Row headingRow = oTable.Rows [1];
+            WordNet.Row headingRow = oTable.Rows[1];
 
-            ApplyHeadingStyle( headingRow.Cells [1], 200 );
-            headingRow.Cells [1].Range.Text = "Directory";
+            ApplyHeadingStyle(headingRow.Cells[1], 200);
+            headingRow.Cells[1].Range.Text = "Directory";
 
-            ApplyHeadingStyle( headingRow.Cells [2], 60 );
-            headingRow.Cells [2].Range.Text = "Sub Directory";
+            ApplyHeadingStyle(headingRow.Cells[2], 60);
+            headingRow.Cells[2].Range.Text = "Sub Directory";
 
-            ApplyHeadingStyle( headingRow.Cells [3], 80 );
-            headingRow.Cells [3].Range.Text = "Document Number";
+            ApplyHeadingStyle(headingRow.Cells[3], 80);
+            headingRow.Cells[3].Range.Text = "Document Number";
 
-            ApplyHeadingStyle( headingRow.Cells [4], 30 );
-            headingRow.Cells [4].Range.Text = "Sml";
-            ApplyHeadingStyle( headingRow.Cells [5], 40 );
-            headingRow.Cells [5].Range.Text = "Med";
-            ApplyHeadingStyle( headingRow.Cells [6], 30 );
-            headingRow.Cells [6].Range.Text = "Lrg";
+            ApplyHeadingStyle(headingRow.Cells[4], 30);
+            headingRow.Cells[4].Range.Text = "Sml";
+            ApplyHeadingStyle(headingRow.Cells[5], 40);
+            headingRow.Cells[5].Range.Text = "Med";
+            ApplyHeadingStyle(headingRow.Cells[6], 30);
+            headingRow.Cells[6].Range.Text = "Lrg";
 
-            ApplyHeadingStyle( headingRow.Cells [7], 50 );
-            headingRow.Cells [7].Range.Text = "Version";
+            ApplyHeadingStyle(headingRow.Cells[7], 50);
+            headingRow.Cells[7].Range.Text = "Version";
 
-            ApplyHeadingStyle( headingRow.Cells [8], 200 );
-            headingRow.Cells [8].Range.Text = "Document Name";
+            ApplyHeadingStyle(headingRow.Cells[8], 200);
+            headingRow.Cells[8].Range.Text = "Document Name";
 
             int line = 0;
-            foreach ( var treeNode in tv.Nodes )
+            foreach (var treeNode in tv.Nodes)
             {
                 line++;
-                WriteLineToRoSD( tv.Nodes [0], oDoc, oTable, prefix: "", parent: "", seqnum: line );
+                WriteLineToRoSD(tv.Nodes[0], oDoc, oTable, prefix: "", parent: "", seqnum: line);
             }
 
             msg = ">>> End ";
-            if ( uioutput != null ) uioutput.AddOutputMessage( msg, processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage(msg, processName, userID);
 
-            PrintToWord( oDoc, " ", 12, 1 );
+            PrintToWord(oDoc, " ", 12, 1);
 
             try
             {
                 oDoc.Save();
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Error saving file again... " + clientDestinationFileLocationName, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("Error saving file again... " + clientDestinationFileLocationName, processName, userID);
 
-                var responseerror = new ResponseStatus( MessageType.Error );
+                var responseerror = new ResponseStatus(MessageType.Error);
                 responseerror.Message = "Error saving file again... " + clientDestinationFileLocationName;
                 return responseerror;
             }
@@ -319,9 +319,9 @@ namespace FCMMySQLBusinessLibrary
             return goodresponse;
         }
 
-        private void WriteLineToRoSD(TreeNode tn, WordNet._Document oDoc, WordNet.Table oTable, string prefix="", string parent="", int seqnum=0)
+        private void WriteLineToRoSD(TreeNode tn, WordNet._Document oDoc, WordNet.Table oTable, string prefix = "", string parent = "", int seqnum = 0)
         {
-            if (tn.Tag == null || tn.Tag.GetType().Name != "scClientDocSetDocLink") 
+            if (tn.Tag == null || tn.Tag.GetType().Name != "scClientDocSetDocLink")
             {
                 // still need to check subnodes
             }
@@ -337,7 +337,7 @@ namespace FCMMySQLBusinessLibrary
                     scClientDocSetDocLink documentClient = (scClientDocSetDocLink)node.Tag;
 
                     string currentParent = "";
-                    if ( string.IsNullOrEmpty( parent ) )
+                    if (string.IsNullOrEmpty(parent))
                     {
                         currentParent = x.ToString();
                     }
@@ -348,52 +348,52 @@ namespace FCMMySQLBusinessLibrary
 
                     // First column
 
-                    oTable.Cell( row, 1 ).Width = 200;
+                    oTable.Cell(row, 1).Width = 200;
                     if (documentClient.document.RecordType == "FOLDER")
-                        oTable.Cell( row, 1 ).Range.Text = documentClient.document.Name;
+                        oTable.Cell(row, 1).Range.Text = documentClient.document.Name;
                     else
-                        oTable.Cell( row, 1 ).Range.Text = "";
+                        oTable.Cell(row, 1).Range.Text = "";
 
-                    oTable.Cell( row, 2 ).Width = 60;
-                    oTable.Cell( row, 2 ).Range.Text = ""; // Sub Directory
+                    oTable.Cell(row, 2).Width = 60;
+                    oTable.Cell(row, 2).Range.Text = ""; // Sub Directory
 
-                    oTable.Cell( row, 3 ).Width = 80;
-                    if ( documentClient.document.RecordType == "DOCUMENT" )
-                        oTable.Cell( row, 3 ).Range.Text = prefix + documentClient.document.CUID;
+                    oTable.Cell(row, 3).Width = 80;
+                    if (documentClient.document.RecordType == "DOCUMENT")
+                        oTable.Cell(row, 3).Range.Text = prefix + documentClient.document.CUID;
                     else
-                        oTable.Cell( row, 3 ).Range.Text = "";
+                        oTable.Cell(row, 3).Range.Text = "";
 
-                    oTable.Cell( row, 4 ).Width = 30;
-                    oTable.Cell( row, 4 ).Range.Text = ""; // Sml
-                    oTable.Cell( row, 5 ).Width = 40;
-                    oTable.Cell( row, 5 ).Range.Text = ""; // Med
-                    oTable.Cell( row, 6 ).Width = 30;
-                    oTable.Cell( row, 6 ).Range.Text = ""; // Lrg
+                    oTable.Cell(row, 4).Width = 30;
+                    oTable.Cell(row, 4).Range.Text = ""; // Sml
+                    oTable.Cell(row, 5).Width = 40;
+                    oTable.Cell(row, 5).Range.Text = ""; // Med
+                    oTable.Cell(row, 6).Width = 30;
+                    oTable.Cell(row, 6).Range.Text = ""; // Lrg
 
                     oTable.Cell(row, 7).Width = 50;
-                    if ( documentClient.document.RecordType == "DOCUMENT" )
-                        oTable.Cell( row, 7 ).Range.Text = prefix + documentClient.document.IssueNumber.ToString( "000" );
+                    if (documentClient.document.RecordType == "DOCUMENT")
+                        oTable.Cell(row, 7).Range.Text = prefix + documentClient.document.IssueNumber.ToString("000");
                     else
-                        oTable.Cell( row, 7 ).Range.Text = "";
+                        oTable.Cell(row, 7).Range.Text = "";
 
-                    oTable.Cell( row, 8 ).Width = 200;
-                    if ( documentClient.document.RecordType == "DOCUMENT" )
+                    oTable.Cell(row, 8).Width = 200;
+                    if (documentClient.document.RecordType == "DOCUMENT")
                         oTable.Cell(row, 8).Range.Text = prefix + documentClient.document.SimpleFileName;
                     else
-                        oTable.Cell( row, 8 ).Range.Text = "";
+                        oTable.Cell(row, 8).Range.Text = "";
 
-                    if ( uioutput != null ) uioutput.AddOutputMessage( documentClient.document.Name, "", "");
+                    if (uioutput != null) uioutput.AddOutputMessage(documentClient.document.Name, "", "");
 
-                    if ( node.Nodes.Count > 0 )
-                        WriteLineToRoSD( node, oDoc, oTable, prefix: "", parent: currentParent, seqnum: x );
+                    if (node.Nodes.Count > 0)
+                        WriteLineToRoSD(node, oDoc, oTable, prefix: "", parent: currentParent, seqnum: x);
                 }
             }
         }
 
 
-        private void WriteLineToRoSDOld( TreeNode tn, WordNet._Document oDoc, WordNet.Table oTable, string prefix = "", string parent = "", int seqnum = 0 )
+        private void WriteLineToRoSDOld(TreeNode tn, WordNet._Document oDoc, WordNet.Table oTable, string prefix = "", string parent = "", int seqnum = 0)
         {
-            if ( tn.Tag == null || tn.Tag.GetType().Name != "scClientDocSetDocLink" )
+            if (tn.Tag == null || tn.Tag.GetType().Name != "scClientDocSetDocLink")
             {
                 // still need to check subnodes
             }
@@ -401,17 +401,17 @@ namespace FCMMySQLBusinessLibrary
             {
 
                 int x = 0;
-                foreach ( TreeNode node in tn.Nodes )
+                foreach (TreeNode node in tn.Nodes)
                 {
                     x++;
                     row++;
 
-                    scClientDocSetDocLink documentClient = (scClientDocSetDocLink) node.Tag;
+                    scClientDocSetDocLink documentClient = (scClientDocSetDocLink)node.Tag;
 
                     // First column
 
                     string currentParent = "";
-                    if ( string.IsNullOrEmpty( parent ) )
+                    if (string.IsNullOrEmpty(parent))
                     {
                         currentParent = x.ToString();
                     }
@@ -420,14 +420,14 @@ namespace FCMMySQLBusinessLibrary
                         currentParent = parent + "." + x.ToString();
                     }
 
-                    oTable.Cell( row, 1 ).Width = 30;
-                    oTable.Cell( row, 1 ).Range.Text = currentParent;
+                    oTable.Cell(row, 1).Width = 30;
+                    oTable.Cell(row, 1).Range.Text = currentParent;
 
-                    oTable.Cell( row, 2 ).Width = 30;
+                    oTable.Cell(row, 2).Width = 30;
 
                     System.Drawing.Bitmap bitmap1 = Properties.Resources.FolderIcon;
 
-                    if ( documentClient.document.RecordType.Trim() == FCMConstant.RecordType.FOLDER )
+                    if (documentClient.document.RecordType.Trim() == FCMConstant.RecordType.FOLDER)
                     {
                         bitmap1 = Properties.Resources.FolderIcon;
                     }
@@ -435,34 +435,34 @@ namespace FCMMySQLBusinessLibrary
                     {
                         bitmap1 = Properties.Resources.WordIcon;
 
-                        if ( documentClient.document.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.EXCEL )
+                        if (documentClient.document.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.EXCEL)
                             bitmap1 = Properties.Resources.ExcelIcon;
 
-                        if ( documentClient.document.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.PDF )
+                        if (documentClient.document.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.PDF)
                             bitmap1 = Properties.Resources.PDFIcon;
 
                     }
 
-                    Clipboard.SetImage( bitmap1 );
-                    oTable.Cell( row, 2 ).Range.Paste();
+                    Clipboard.SetImage(bitmap1);
+                    oTable.Cell(row, 2).Range.Paste();
 
 
-                    oTable.Cell( row, 3 ).Width = 60;
-                    oTable.Cell( row, 3 ).Range.Text = prefix + documentClient.document.CUID;
+                    oTable.Cell(row, 3).Width = 60;
+                    oTable.Cell(row, 3).Range.Text = prefix + documentClient.document.CUID;
 
-                    oTable.Cell( row, 4 ).Width = 50;
-                    oTable.Cell( row, 4 ).Range.Text = prefix + documentClient.document.IssueNumber.ToString( "000" );
+                    oTable.Cell(row, 4).Width = 50;
+                    oTable.Cell(row, 4).Range.Text = prefix + documentClient.document.IssueNumber.ToString("000");
 
-                    oTable.Cell( row, 5 ).Width = 300;
-                    oTable.Cell( row, 5 ).Range.Text = prefix + documentClient.document.Name;
+                    oTable.Cell(row, 5).Width = 300;
+                    oTable.Cell(row, 5).Range.Text = prefix + documentClient.document.Name;
 
-                    oTable.Cell( row, 6 ).Width = 100;
-                    oTable.Cell( row, 6 ).Range.Text = "???";
+                    oTable.Cell(row, 6).Width = 100;
+                    oTable.Cell(row, 6).Range.Text = "???";
 
-                    if ( uioutput != null ) uioutput.AddOutputMessage( documentClient.document.Name, "", "");
+                    if (uioutput != null) uioutput.AddOutputMessage(documentClient.document.Name, "", "");
 
-                    if ( node.Nodes.Count > 0 )
-                        WriteLineToRoSD( node, oDoc, oTable, prefix: "", parent: currentParent, seqnum: x );
+                    if (node.Nodes.Count > 0)
+                        WriteLineToRoSD(node, oDoc, oTable, prefix: "", parent: currentParent, seqnum: x);
 
                 }
             }
@@ -472,7 +472,7 @@ namespace FCMMySQLBusinessLibrary
         private static void ApplyHeadingStyle(WordNet.Cell cell, int width = 300)
         {
             cell.Width = width;
-            
+
             cell.Range.Font.Name = "Arial";
             cell.Range.Font.Size = 10;
             cell.Range.Font.Bold = 1;
@@ -522,15 +522,15 @@ namespace FCMMySQLBusinessLibrary
         /// Generate word document with register of system documents
         /// </summary>
         /// <param name="tv"></param>
-        public string RegisterOfSytemDocumentsXXX( TreeView tv, string clientFolder, string clientName, string processName , string userID)
+        public string RegisterOfSytemDocumentsXXX(TreeView tv, string clientFolder, string clientName, string processName, string userID)
         {
             object oMissing = System.Reflection.Missing.Value;
             var pastPlannedActivities = string.Empty;
 
             //Start Word and create a new document.
             WordNet._Application oWord = new Application { Visible = false };
-            WordNet._Document oDoc = oWord.Documents.Add( ref oMissing, ref oMissing,
-                                                 ref oMissing, ref oMissing );
+            WordNet._Document oDoc = oWord.Documents.Add(ref oMissing, ref oMissing,
+                                                 ref oMissing, ref oMissing);
 
             oDoc.PageSetup.Orientation = WordNet.WdOrientation.wdOrientLandscape;
 
@@ -539,56 +539,56 @@ namespace FCMMySQLBusinessLibrary
 
             // Locate client folder
             //
-            string clientFileLocationName = Utils.getFilePathName( @"%TEMPLATEFOLDER%\ClientSource\", "ROS-001 Register Of System Documents.doc");
+            string clientFileLocationName = Utils.getFilePathName(@"%TEMPLATEFOLDER%\ClientSource\", "ROS-001 Register Of System Documents.doc");
             FullFileNamePath = clientFileLocationName;
             FileName = "RegisterOfSystemDocuments.doc";
 
-            if ( File.Exists( clientFileLocationName ) )
+            if (File.Exists(clientFileLocationName))
             {
                 // Delete file
                 try
                 {
-                    File.Delete( clientFileLocationName );
-                    uioutput.AddOutputMessage( "File replaced: " + clientFileLocationName, processName: processName, userID: userID );
+                    File.Delete(clientFileLocationName);
+                    uioutput.AddOutputMessage("File replaced: " + clientFileLocationName, processName: processName, userID: userID);
                 }
-                catch ( Exception )
+                catch (Exception)
                 {
-                    uioutput.AddOutputMessage( "Error deleting file " + clientFileLocationName, processName: processName, userID: userID );
-                    uioutput.AddErrorMessage( "Error deleting file " + clientFileLocationName, processName: processName, userID: userID );
+                    uioutput.AddOutputMessage("Error deleting file " + clientFileLocationName, processName: processName, userID: userID);
+                    uioutput.AddErrorMessage("Error deleting file " + clientFileLocationName, processName: processName, userID: userID);
                     return clientFileLocationName;
                 }
             }
 
 
             // string filename = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetTempFileName(), "doc"));
-            oDoc.SaveAs( clientFileLocationName );
+            oDoc.SaveAs(clientFileLocationName);
 
             string msg = ">>> Generating file... ";
-            if ( uioutput != null ) uioutput.AddOutputMessage( msg, processName: processName, userID: userID );
+            if (uioutput != null) uioutput.AddOutputMessage(msg, processName: processName, userID: userID);
 
-            PrintToWord( oDoc, " ", 8, 1 );
+            PrintToWord(oDoc, " ", 8, 1);
 
             WordNet.Range wrdRng;
             WordNet.Table oTable;
 
-            wrdRng = oDoc.Bookmarks.get_Item( oEndOfDoc ).Range;
+            wrdRng = oDoc.Bookmarks.get_Item(oEndOfDoc).Range;
             int rowCount = 30;
 
-            foreach ( Section wordSection in oDoc.Sections )
+            foreach (Section wordSection in oDoc.Sections)
             {
-                HeaderFooter footer = wordSection.Footers.Item( Word.WdHeaderFooterIndex.wdHeaderFooterPrimary );
+                HeaderFooter footer = wordSection.Footers.Item(Word.WdHeaderFooterIndex.wdHeaderFooterPrimary);
                 footer.Range.Select();
                 footer.Range.Text = FullFileNamePath;
                 footer.PageNumbers.Add();
 
-                HeaderFooter header = wordSection.Headers.Item( Word.WdHeaderFooterIndex.wdHeaderFooterPrimary );
+                HeaderFooter header = wordSection.Headers.Item(Word.WdHeaderFooterIndex.wdHeaderFooterPrimary);
                 header.Range.Select();
                 //header.Range.Text = client.Name + "      Register of System Documents  " ;
                 header.Range.Font.Size = 20;
-                header.Range.Cells.Add( client.Name );
-                header.Range.Cells.Add( "Register of System Documents" );
+                header.Range.Cells.Add(client.Name);
+                header.Range.Cells.Add("Register of System Documents");
 
-                oWord.Selection.Paragraphs [1].Alignment = WordNet.WdParagraphAlignment.wdAlignParagraphLeft;
+                oWord.Selection.Paragraphs[1].Alignment = WordNet.WdParagraphAlignment.wdAlignParagraphLeft;
 
             }
 
@@ -596,13 +596,13 @@ namespace FCMMySQLBusinessLibrary
 
             // Get number of rows for a client document, client document set
             //
-            var cds = new BUSClientDocumentSet( Utils.ClientID, Utils.ClientSetID );
+            var cds = new BUSClientDocumentSet(Utils.ClientID, Utils.ClientSetID);
             rowCount = cds.DocumentCount;
 
-            if ( rowCount < 1 )
+            if (rowCount < 1)
                 return clientFileLocationName;
 
-            oTable = oDoc.Tables.Add( wrdRng, rowCount, 8, ref vkFalse, ref vkFalse );
+            oTable = oDoc.Tables.Add(wrdRng, rowCount, 8, ref vkFalse, ref vkFalse);
             oTable.Borders.OutsideColor = WordNet.WdColor.wdColorBlack;
             oTable.Borders.InsideLineStyle = WordNet.WdLineStyle.wdLineStyleDouble;
             oTable.Borders.OutsideColor = WordNet.WdColor.wdColorBlueGray;
@@ -614,50 +614,50 @@ namespace FCMMySQLBusinessLibrary
             //oTable.Borders.InsideColor = WordNet.WdColor.wdColorAutomatic;
             //oTable.Borders.OutsideColor = WordNet.WdColor.wdColorAutomatic;
 
-            oTable.Rows [1].HeadingFormat = -1;
+            oTable.Rows[1].HeadingFormat = -1;
 
-            WordNet.Row headingRow = oTable.Rows [1];
+            WordNet.Row headingRow = oTable.Rows[1];
 
-            ApplyHeadingStyle( headingRow.Cells [1], 200 );
-            headingRow.Cells [1].Range.Text = "Directory";
+            ApplyHeadingStyle(headingRow.Cells[1], 200);
+            headingRow.Cells[1].Range.Text = "Directory";
 
-            ApplyHeadingStyle( headingRow.Cells [2], 60 );
-            headingRow.Cells [2].Range.Text = "Sub Directory";
+            ApplyHeadingStyle(headingRow.Cells[2], 60);
+            headingRow.Cells[2].Range.Text = "Sub Directory";
 
-            ApplyHeadingStyle( headingRow.Cells [3], 80 );
-            headingRow.Cells [3].Range.Text = "Document Number";
+            ApplyHeadingStyle(headingRow.Cells[3], 80);
+            headingRow.Cells[3].Range.Text = "Document Number";
 
-            ApplyHeadingStyle( headingRow.Cells [4], 30 );
-            headingRow.Cells [4].Range.Text = "Sml";
-            ApplyHeadingStyle( headingRow.Cells [5], 40 );
-            headingRow.Cells [5].Range.Text = "Med";
-            ApplyHeadingStyle( headingRow.Cells [6], 30 );
-            headingRow.Cells [6].Range.Text = "Lrg";
+            ApplyHeadingStyle(headingRow.Cells[4], 30);
+            headingRow.Cells[4].Range.Text = "Sml";
+            ApplyHeadingStyle(headingRow.Cells[5], 40);
+            headingRow.Cells[5].Range.Text = "Med";
+            ApplyHeadingStyle(headingRow.Cells[6], 30);
+            headingRow.Cells[6].Range.Text = "Lrg";
 
-            ApplyHeadingStyle( headingRow.Cells [7], 50 );
-            headingRow.Cells [7].Range.Text = "Version";
+            ApplyHeadingStyle(headingRow.Cells[7], 50);
+            headingRow.Cells[7].Range.Text = "Version";
 
-            ApplyHeadingStyle( headingRow.Cells [8], 200 );
-            headingRow.Cells [8].Range.Text = "Document Name";
+            ApplyHeadingStyle(headingRow.Cells[8], 200);
+            headingRow.Cells[8].Range.Text = "Document Name";
 
             int line = 0;
-            foreach ( var treeNode in tv.Nodes )
+            foreach (var treeNode in tv.Nodes)
             {
                 line++;
-                WriteLineToRoSD( tv.Nodes [0], oDoc, oTable, prefix: "", parent: "", seqnum: line );
+                WriteLineToRoSD(tv.Nodes[0], oDoc, oTable, prefix: "", parent: "", seqnum: line);
             }
 
 
             msg = ">>> End ";
-            if ( uioutput != null ) uioutput.AddOutputMessage( msg, processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage(msg, processName, userID);
 
-            PrintToWord( oDoc, " ", 12, 1 );
+            PrintToWord(oDoc, " ", 12, 1);
 
             oDoc.Save();
             oDoc.Close();
 
             oWord.Visible = true;
-            oWord.Documents.Open( FileName: clientFileLocationName );
+            oWord.Documents.Open(FileName: clientFileLocationName);
             oWord.Activate();
 
             return clientFileLocationName;

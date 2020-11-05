@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using MackkadoITFramework.Helper;
+﻿using MackkadoITFramework.Helper;
 using MackkadoITFramework.ReferenceData;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
 {
@@ -54,7 +54,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
         // -----------------------------------------------------
         public ReportMetadata()
         {
-        
+
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
 
             if (this.InformationType == Utils.InformationType.VARIABLE)
             {
-                select = DateTime.Today.ToString().Substring(0,10);
+                select = DateTime.Today.ToString().Substring(0, 10);
                 return select;
             }
 
@@ -97,7 +97,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
             //    // select += Utils.ClientID.ToString();
             //    select += this.ClientUID.ToString();
             //}
-            
+
             // 
             // EA SQL database
             // 
@@ -129,14 +129,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
             if (this.InformationType == Utils.InformationType.IMAGE)
             {
                 // string logoPathName = Utils.GetPathName( ret );
-                string logoPathName = Utils.getFilePathName( ret );
+                string logoPathName = Utils.getFilePathName(ret);
                 ret = logoPathName;
             }
             return ret;
         }
 
 
-        
+
         /// <summary>
         /// Retrieve last Report Metadata UID
         /// </summary>
@@ -181,8 +181,8 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
         /// </summary>
         /// <returns></returns>
         public static int GetLastUIDSubTransaction(
-                    MySqlConnection connection, 
-                    MySqlTransaction MySqlTransaction, 
+                    MySqlConnection connection,
+                    MySqlTransaction MySqlTransaction,
                     HeaderInfo headerInfo)
         {
             int LastUID = 0;
@@ -243,8 +243,8 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
         /// <summary>
         /// Add or update record. Sub Transactional
         /// </summary>
-        public void SaveSubTransaction( MySqlConnection connection, 
-                                        MySqlTransaction MySqlTransaction, 
+        public void SaveSubTransaction(MySqlConnection connection,
+                                        MySqlTransaction MySqlTransaction,
                                         HeaderInfo headerInfo)
         {
             // Check if code value exists.
@@ -294,7 +294,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
            " ,Description " +
            " ,FieldCode " +
            " ,ClientType " +
-           " ,ClientUID " + 
+           " ,ClientUID " +
            " ,InformationType " +
            " ,ConditionX " +
            " ,CompareWith " +
@@ -308,13 +308,13 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
            " ,@Description " +
            " ,@FieldCode " +
            " ,@ClientType " +
-           " ,@ClientUID " + 
+           " ,@ClientUID " +
            " ,@InformationType " +
            " ,@Condition " +
            " ,@CompareWith " +
            " ,@Enabled " +
            " ,@UseAsLabel" +
-           " )"            
+           " )"
            );
 
                 using (var command = new MySqlCommand(
@@ -343,7 +343,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
         /// Add new report metadata
         /// </summary>
         private void AddSubTransaction(
-                MySqlConnection connection, 
+                MySqlConnection connection,
                 MySqlTransaction MySqlTransaction,
                 HeaderInfo headerInfo)
         {
@@ -351,7 +351,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
             string ret = "Item updated successfully";
             int _uid = 0;
 
-            _uid = GetLastUIDSubTransaction( connection, MySqlTransaction, headerInfo ) + 1;
+            _uid = GetLastUIDSubTransaction(connection, MySqlTransaction, headerInfo) + 1;
 
             DateTime _now = DateTime.Today;
 
@@ -417,7 +417,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
         {
 
             string ret = "Item updated successfully";
-            
+
             using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
@@ -442,15 +442,15 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
                 using (var command = new MySqlCommand(
                                             commandString, connection))
                 {
-                    command.Parameters.Add("@FieldCode", MySqlDbType.VarChar ).Value = FieldCode;
-                    command.Parameters.Add("@RecordType", MySqlDbType.VarChar ).Value = RecordType;
-                    command.Parameters.Add("@Description", MySqlDbType.VarChar ).Value = Description;
-                    command.Parameters.Add("@ClientType", MySqlDbType.VarChar ).Value = ClientType;
-                    command.Parameters.Add("@InformationType", MySqlDbType.VarChar ).Value = InformationType;
-                    command.Parameters.Add("@ClientUID", MySqlDbType.VarChar ).Value = ClientUID;
-                    command.Parameters.Add("@UID", MySqlDbType.VarChar ).Value = UID;
-                    command.Parameters.Add("@Condition", MySqlDbType.VarChar ).Value = Condition;
-                    command.Parameters.Add("@CompareWith", MySqlDbType.VarChar ).Value = CompareWith;
+                    command.Parameters.Add("@FieldCode", MySqlDbType.VarChar).Value = FieldCode;
+                    command.Parameters.Add("@RecordType", MySqlDbType.VarChar).Value = RecordType;
+                    command.Parameters.Add("@Description", MySqlDbType.VarChar).Value = Description;
+                    command.Parameters.Add("@ClientType", MySqlDbType.VarChar).Value = ClientType;
+                    command.Parameters.Add("@InformationType", MySqlDbType.VarChar).Value = InformationType;
+                    command.Parameters.Add("@ClientUID", MySqlDbType.VarChar).Value = ClientUID;
+                    command.Parameters.Add("@UID", MySqlDbType.VarChar).Value = UID;
+                    command.Parameters.Add("@Condition", MySqlDbType.VarChar).Value = Condition;
+                    command.Parameters.Add("@CompareWith", MySqlDbType.VarChar).Value = CompareWith;
                     command.Parameters.Add("@Enabled", MySqlDbType.VarChar).Value = Enabled;
                     command.Parameters.Add("@UseAsLabel", MySqlDbType.VarChar).Value = UseAsLabel;
 
@@ -466,7 +466,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
         /// Update metadata table
         /// </summary>
         private void UpdateSubTransaction(
-                    MySqlConnection connection, 
+                    MySqlConnection connection,
                     MySqlTransaction MySqlTransaction,
                     HeaderInfo headerInfo)
         {
@@ -511,7 +511,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
             }
 
 
-            
+
             return;
         }
 
@@ -530,7 +530,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
 
             using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
-                var commandString = 
+                var commandString =
                 " SELECT UID " +
                 "      ,RecordType " +
                 "      ,FieldCode " +
@@ -560,12 +560,12 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
                         {
                             if (!CheckOnly)
                             {
-                                this.UID = Convert.ToInt32( reader["UID"].ToString() );
+                                this.UID = Convert.ToInt32(reader["UID"].ToString());
                                 this.RecordType = reader["RecordType"].ToString();
                                 this.FieldCode = reader["FieldCode"].ToString();
                                 this.Description = reader["Description"].ToString();
                                 this.ClientType = reader["ClientType"].ToString();
-                                this.ClientUID = Convert.ToInt32( reader["ClientUID"]);
+                                this.ClientUID = Convert.ToInt32(reader["ClientUID"]);
                                 this.InformationType = reader["InformationType"].ToString();
                                 this.Condition = reader["Condition"].ToString();
                                 this.CompareWith = reader["CompareWith"].ToString();
@@ -604,7 +604,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
 
             using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
-                var commandString = 
+                var commandString =
                 " SELECT UID " +
                 "      ,RecordType " +
                 "      ,FieldCode " +
@@ -749,7 +749,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
                 "      ,ClientUID " +
                 "      ,InformationType " +
                 "  FROM ReportMetadata " +
-                " WHERE " + 
+                " WHERE " +
                 "       ClientUID =  {0} " +
                 "   AND FieldCode = '{1}' ",
                 clientUID,

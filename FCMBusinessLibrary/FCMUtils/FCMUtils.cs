@@ -1,19 +1,19 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.Model.ModelClient;
+using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
+using MackkadoITFramework.APIDocument;
+using MackkadoITFramework.APIDocument;
+using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Interfaces;
+using MackkadoITFramework.ReferenceData;
+using MackkadoITFramework.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
-using MackkadoITFramework.APIDocument;
-using MackkadoITFramework.ReferenceData;
-using MakUtils = MackkadoITFramework.Utils;
-using MackkadoITFramework.ErrorHandling;
-using MackkadoITFramework.Interfaces;
-using MakHelperUtils = MackkadoITFramework.Helper.Utils;
-using MackkadoITFramework.Utils;
-using MackkadoITFramework.ErrorHandling;
-using MackkadoITFramework.APIDocument;
 using FCMUtils = FCMMySQLBusinessLibrary.FCMUtils.Utils;
-using FCMMySQLBusinessLibrary.Model.ModelClient;
+using MakHelperUtils = MackkadoITFramework.Helper.Utils;
+using MakUtils = MackkadoITFramework.Utils;
 
 
 namespace FCMMySQLBusinessLibrary.FCMUtils
@@ -21,7 +21,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
     public static class Utils
     {
         public static ImageList imageList;
-        
+
         private static string userID;
         private static int clientID;
         private static int clientSetID;
@@ -50,8 +50,8 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
         /// </summary>
         public static string UserID
         {
-            set 
-            { 
+            set
+            {
                 userID = value;
 
                 // Save last user id to database
@@ -63,7 +63,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
 
                 cv.Save();
             }
-    
+
             get { return userID; }
         }
 
@@ -75,7 +75,8 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
 
         public static int ClientID
         {
-            set { 
+            set
+            {
                 clientID = value;
 
                 // Save last user id to database
@@ -89,7 +90,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
                 if (clientList == null)
                     return;
 
-                int c=0;
+                int c = 0;
                 foreach (var client in clientList)
                 {
                     if (client.UID == clientID)
@@ -135,43 +136,43 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
 
         // Print document for Location and Name
         //
-        public static void PrintDocument( string Location, string Name, string Type )
+        public static void PrintDocument(string Location, string Name, string Type)
         {
             if (Type == MackkadoITFramework.Helper.Utils.DocumentType.WORD)
             {
                 string filePathName =
-                    Utils.getFilePathName( Location, Name );
+                    Utils.getFilePathName(Location, Name);
 
-                WordDocumentTasks.PrintDocument( filePathName );
+                WordDocumentTasks.PrintDocument(filePathName);
             }
 
             if (Type == MackkadoITFramework.Helper.Utils.DocumentType.EXCEL)
             {
                 string filePathName =
-                    Utils.getFilePathName( Location, Name );
+                    Utils.getFilePathName(Location, Name);
 
-                var Response = ExcelSpreadsheetTasks.PrintDocument( filePathName );
+                var Response = ExcelSpreadsheetTasks.PrintDocument(filePathName);
                 if (Response.ReturnCode < 1)
                 {
-                    MessageBox.Show( Response.Message );
+                    MessageBox.Show(Response.Message);
                 }
             }
             if (Type == MackkadoITFramework.Helper.Utils.DocumentType.PDF)
             {
                 string filePathName =
-                    Utils.getFilePathName( Location, Name );
+                    Utils.getFilePathName(Location, Name);
                 System.Diagnostics.Process proc = new System.Diagnostics.Process();
-                var adobe = CodeValue.GetCodeValueExtended( iCodeType: FCMConstant.CodeTypeString.SYSTSET, iCodeValueID: "PDFEXEPATH" );
+                var adobe = CodeValue.GetCodeValueExtended(iCodeType: FCMConstant.CodeTypeString.SYSTSET, iCodeValueID: "PDFEXEPATH");
 
-                if (!File.Exists( adobe ))
+                if (!File.Exists(adobe))
                 {
-                    MessageBox.Show( "I can't find Adobe Reader. Please configure SYSTSET.PDFEXTPATH." );
+                    MessageBox.Show("I can't find Adobe Reader. Please configure SYSTSET.PDFEXTPATH.");
                     return;
                 }
 
-                proc.StartInfo.FileName = adobe ;
+                proc.StartInfo.FileName = adobe;
                 // Print PDF
-                proc.StartInfo.Arguments = " /h /p "+ filePathName;
+                proc.StartInfo.Arguments = " /h /p " + filePathName;
                 proc.Start();
 
 
@@ -188,8 +189,8 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
         /// <param name="Type"></param>
         /// <param name="DestinationFile"></param>
         public static void CompareDocuments(
-            string Source, 
-            string Destination, 
+            string Source,
+            string Destination,
             string Type)
         {
             if (Type == MackkadoITFramework.Helper.Utils.DocumentType.WORD)
@@ -203,7 +204,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
 
         // It transforms the reference path into a physical path and add name to it
         //
-        public static string getFilePathName( string path, string name )
+        public static string getFilePathName(string path, string name)
         {
             string filePathName = path + "\\" + name;
             string fullPathFileName = "";
@@ -225,11 +226,11 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
 
             // Get logo folder 
             var logoFolder =
-                CodeValue.GetCodeValueExtended( FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.LOGOFOLDER);
+                CodeValue.GetCodeValueExtended(FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.LOGOFOLDER);
 
             // Get log file folder 
             var logFileFolder =
-                CodeValue.GetCodeValueExtended( FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.LOGFILEFOLDER);
+                CodeValue.GetCodeValueExtended(FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.LOGFILEFOLDER);
 
 
 
@@ -247,7 +248,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
                 // Get WEB template folder 
                 // ----------------------
                 templateFolder =
-                CodeValue.GetCodeValueExtended( FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.WEBTEMPLATEFOLDER );
+                CodeValue.GetCodeValueExtended(FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.WEBTEMPLATEFOLDER);
 
                 templateFolder = templateFolder.Replace(MackkadoITFramework.Helper.Utils.SYSTSET.WEBPORT, fcmPort);
                 templateFolder = templateFolder.Replace(MackkadoITFramework.Helper.Utils.SYSTSET.HOSTIPADDRESS, fcmHost);
@@ -256,7 +257,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
                 // Get WEB client folder 
                 // ----------------------
                 clientFolder =
-                CodeValue.GetCodeValueExtended( FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.WEBCLIENTFOLDER );
+                CodeValue.GetCodeValueExtended(FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.WEBCLIENTFOLDER);
 
                 clientFolder = clientFolder.Replace(MackkadoITFramework.Helper.Utils.SYSTSET.WEBPORT, fcmPort);
                 clientFolder = clientFolder.Replace(MackkadoITFramework.Helper.Utils.SYSTSET.HOSTIPADDRESS, fcmHost);
@@ -265,16 +266,16 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
                 // Get WEB version folder 
                 // ----------------------
                 versionFolder =
-                CodeValue.GetCodeValueExtended( FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.WEBVERSIONFOLDER );
+                CodeValue.GetCodeValueExtended(FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.WEBVERSIONFOLDER);
 
-                versionFolder = versionFolder.Replace( MackkadoITFramework.Helper.Utils.SYSTSET.WEBPORT, fcmPort );
+                versionFolder = versionFolder.Replace(MackkadoITFramework.Helper.Utils.SYSTSET.WEBPORT, fcmPort);
                 versionFolder = versionFolder.Replace(MackkadoITFramework.Helper.Utils.SYSTSET.HOSTIPADDRESS, fcmHost);
 
                 // ----------------------
                 // Get WEB logo folder 
                 // ----------------------
                 logoFolder =
-                CodeValue.GetCodeValueExtended( FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.WEBLOGOFOLDER );
+                CodeValue.GetCodeValueExtended(FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.WEBLOGOFOLDER);
 
                 logoFolder = logoFolder.Replace(MackkadoITFramework.Helper.Utils.SYSTSET.WEBPORT, fcmPort);
                 logoFolder = logoFolder.Replace(MackkadoITFramework.Helper.Utils.SYSTSET.HOSTIPADDRESS, fcmHost);
@@ -293,7 +294,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
             if (filePathName.Contains(FCMConstant.SYSFOLDER.TEMPLATEFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( FCMConstant.SYSFOLDER.TEMPLATEFOLDER, templateFolder );
+                    filePathName.Replace(FCMConstant.SYSFOLDER.TEMPLATEFOLDER, templateFolder);
             }
 
             if (filePathName.Contains(FCMConstant.SYSFOLDER.CLIENTFOLDER))
@@ -310,10 +311,10 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
 
             }
 
-            if (filePathName.Contains( FCMConstant.SYSFOLDER.LOGOFOLDER))
+            if (filePathName.Contains(FCMConstant.SYSFOLDER.LOGOFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( FCMConstant.SYSFOLDER.LOGOFOLDER, logoFolder);
+                    filePathName.Replace(FCMConstant.SYSFOLDER.LOGOFOLDER, logoFolder);
 
             }
 
@@ -347,7 +348,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
                 CodeValue.GetCodeValueExtended(FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.CLIENTFOLDER);
 
             // Get version folder 
-            var versionFolder  =
+            var versionFolder =
                 CodeValue.GetCodeValueExtended(FCMConstant.CodeTypeString.SYSTSET, FCMConstant.SYSFOLDER.VERSIONFOLDER);
 
             // Get logo folder 
@@ -434,7 +435,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
             if (filePathName.Contains(FCMConstant.SYSFOLDER.TEMPLATEFOLDER))
             {
                 opposite =
-                    filePathName.Replace(FCMConstant.SYSFOLDER.TEMPLATEFOLDER, 
+                    filePathName.Replace(FCMConstant.SYSFOLDER.TEMPLATEFOLDER,
                     FCMConstant.SYSFOLDER.CLIENTFOLDER);
 
             }
@@ -546,9 +547,9 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
             {
                 string filePathName =
                     Utils.getFilePathName(document.Location,
-                                          document.Name );
+                                          document.Name);
 
-                WordDocumentTasks.OpenDocument( filePathName, vkReadOnly, isFromWeb );
+                WordDocumentTasks.OpenDocument(filePathName, vkReadOnly, isFromWeb);
             }
 
         }
@@ -563,7 +564,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
                     Utils.getFilePathName(Location,
                                           Name);
 
-                WordDocumentTasks.OpenDocument( filePathName, vkReadOnly, isFromWeb );
+                WordDocumentTasks.OpenDocument(filePathName, vkReadOnly, isFromWeb);
             }
 
             if (Type == MackkadoITFramework.Helper.Utils.DocumentType.EXCEL)
@@ -581,21 +582,21 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
             if (Type == MackkadoITFramework.Helper.Utils.DocumentType.PDF)
             {
                 string filePathName =
-                    Utils.getFilePathName( Location,
-                                          Name );
+                    Utils.getFilePathName(Location,
+                                          Name);
                 System.Diagnostics.Process proc = new System.Diagnostics.Process();
-                var adobe = CodeValue.GetCodeValueExtended( iCodeType: FCMConstant.CodeTypeString.SYSTSET, iCodeValueID: "PDFEXEPATH" );
+                var adobe = CodeValue.GetCodeValueExtended(iCodeType: FCMConstant.CodeTypeString.SYSTSET, iCodeValueID: "PDFEXEPATH");
 
-                if (!File.Exists( adobe ))
+                if (!File.Exists(adobe))
                 {
-                    MessageBox.Show( "I can't find Adobe Reader. Please configure SYSTSET.PDFEXTPATH." );
+                    MessageBox.Show("I can't find Adobe Reader. Please configure SYSTSET.PDFEXTPATH.");
                     return;
                 }
 
                 proc.StartInfo.FileName = adobe;
                 proc.StartInfo.Arguments = filePathName;
                 proc.Start();
-                    
+
 
             }
 
@@ -635,7 +636,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
         /// </summary>
         /// <param name="clientUID"></param>
         /// <returns></returns>
-        public static string GetImageUrl( string DocumentType, string curEnvironment = MackkadoITFramework.Helper.Utils.EnvironmentList.LOCAL )
+        public static string GetImageUrl(string DocumentType, string curEnvironment = MackkadoITFramework.Helper.Utils.EnvironmentList.LOCAL)
         {
 
             string image = "";
@@ -674,9 +675,9 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
             // Set no icon image if necessary
             //
             logoPath = FCMConstant.SYSFOLDER.LOGOFOLDER;
-            logoName = logoName.Replace( FCMConstant.SYSFOLDER.LOGOFOLDER, string.Empty );
-            
-            logoPathName = Utils.getFilePathName( logoPath, logoName );
+            logoName = logoName.Replace(FCMConstant.SYSFOLDER.LOGOFOLDER, string.Empty);
+
+            logoPathName = Utils.getFilePathName(logoPath, logoName);
 
             return logoPathName;
         }
@@ -709,7 +710,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <returns></returns>
-        public static int GetFileImage(char source, char destination, string documentType )
+        public static int GetFileImage(char source, char destination, string documentType)
         {
             int image = FCMConstant.Image.WordFileSourceNoDestinationNo;
 
@@ -823,7 +824,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
         /// Retrieves cached value for user settings
         /// </summary>
         /// <returns></returns>
-        public static string UserSettingGetCacheValue( UserSettings userSettings)
+        public static string UserSettingGetCacheValue(UserSettings userSettings)
         {
             string valueReturned = "";
 
@@ -1042,7 +1043,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
 
                 RepDocument.Save(headerInfo, document, MakHelperUtils.SaveType.NEWONLY);
 
-                uioutput.AddOutputMessage( document.Name, "", userID );
+                uioutput.AddOutputMessage(document.Name, "", userID);
 
                 sequenceNumber++;
                 #endregion File Processing
@@ -1059,7 +1060,7 @@ namespace FCMMySQLBusinessLibrary.FCMUtils
 
             return response;
         }
-    
-    
+
+
     }
 }

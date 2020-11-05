@@ -51,6 +51,7 @@
             this.rbtCert1 = new System.Windows.Forms.RadioButton();
             this.rbtCert2 = new System.Windows.Forms.RadioButton();
             this.btnEmailCertificates = new System.Windows.Forms.Button();
+            this.txtAttachmentLocation2 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -83,7 +84,7 @@
             // 
             // txtDestination
             // 
-            this.txtDestination.Location = new System.Drawing.Point(545, 44);
+            this.txtDestination.Location = new System.Drawing.Point(545, 14);
             this.txtDestination.Name = "txtDestination";
             this.txtDestination.Size = new System.Drawing.Size(274, 20);
             this.txtDestination.TabIndex = 4;
@@ -91,7 +92,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(519, 44);
+            this.label1.Location = new System.Drawing.Point(519, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(20, 13);
             this.label1.TabIndex = 6;
@@ -100,7 +101,7 @@
             // 
             // txtAttachmentLocation
             // 
-            this.txtAttachmentLocation.Location = new System.Drawing.Point(545, 70);
+            this.txtAttachmentLocation.Location = new System.Drawing.Point(545, 40);
             this.txtAttachmentLocation.Name = "txtAttachmentLocation";
             this.txtAttachmentLocation.Size = new System.Drawing.Size(274, 20);
             this.txtAttachmentLocation.TabIndex = 4;
@@ -118,7 +119,7 @@
             // 
             // txtinlineAttachment
             // 
-            this.txtinlineAttachment.Location = new System.Drawing.Point(545, 96);
+            this.txtinlineAttachment.Location = new System.Drawing.Point(545, 94);
             this.txtinlineAttachment.Name = "txtinlineAttachment";
             this.txtinlineAttachment.Size = new System.Drawing.Size(274, 20);
             this.txtinlineAttachment.TabIndex = 4;
@@ -126,7 +127,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(501, 96);
+            this.label3.Location = new System.Drawing.Point(501, 94);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(31, 13);
             this.label3.TabIndex = 6;
@@ -240,7 +241,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(825, 40);
+            this.button1.Location = new System.Drawing.Point(825, 68);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 35);
             this.button1.TabIndex = 5;
@@ -295,11 +296,19 @@
             this.btnEmailCertificates.UseVisualStyleBackColor = true;
             this.btnEmailCertificates.Click += new System.EventHandler(this.btnEmailCertificates_Click);
             // 
+            // txtAttachmentLocation2
+            // 
+            this.txtAttachmentLocation2.Location = new System.Drawing.Point(545, 66);
+            this.txtAttachmentLocation2.Name = "txtAttachmentLocation2";
+            this.txtAttachmentLocation2.Size = new System.Drawing.Size(274, 20);
+            this.txtAttachmentLocation2.TabIndex = 17;
+            // 
             // UISendEmail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(912, 636);
+            this.Controls.Add(this.txtAttachmentLocation2);
             this.Controls.Add(this.btnEmailCertificates);
             this.Controls.Add(this.rbtCert2);
             this.Controls.Add(this.rbtCert1);
@@ -356,5 +365,6 @@
         private System.Windows.Forms.RadioButton rbtCert1;
         private System.Windows.Forms.RadioButton rbtCert2;
         private System.Windows.Forms.Button btnEmailCertificates;
+        private System.Windows.Forms.TextBox txtAttachmentLocation2;
     }
 }

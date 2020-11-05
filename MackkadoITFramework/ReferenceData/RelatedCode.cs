@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace MackkadoITFramework.ReferenceData
 {
@@ -93,7 +93,7 @@ namespace MackkadoITFramework.ReferenceData
             catch (Exception ex)
             {
                 LogFile.WriteToTodaysLogFile(
-                    "Related Code List Error:  " +   ex.ToString(),
+                    "Related Code List Error:  " + ex.ToString(),
                     Helper.Utils.UserID,
                     "RelatedCode.cs");
             }

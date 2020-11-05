@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Utils;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-using MackkadoITFramework.Utils;
-using MackkadoITFramework.ErrorHandling;
-using MySql.Data.MySqlClient;
-using System.Data;
 
 namespace FCMMySQLBusinessLibrary
 {
@@ -25,15 +25,15 @@ namespace FCMMySQLBusinessLibrary
 
         public enum FieldName
         {
-            UID, 
-            Date, 
+            UID,
+            Date,
             FKCompanyUID,
             FKEmployeeUID,
             FKTaskUID,
             Hours,
             FKClientWorkIsFor,
             FKInvoiceUID,
-            FKInvoiceItemID 
+            FKInvoiceItemID
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace FCMMySQLBusinessLibrary
                 (
                    "INSERT INTO " + tableName +
                    "( " +
-                       ListOfFields(separator:",",prefixLine1:"") +
+                       ListOfFields(separator: ",", prefixLine1: "") +
                    ")" +
                         " VALUES " +
                    "( " +
@@ -157,7 +157,7 @@ namespace FCMMySQLBusinessLibrary
 
                 var commandString = string.Format(
                 " SELECT " +
-                ListOfFields(",","") +
+                ListOfFields(",", "") +
                 "   FROM " + tableName +
                 "   WHERE  FKCompanyUID = {0}",
                 clientID);
@@ -240,7 +240,7 @@ namespace FCMMySQLBusinessLibrary
                    separator + FieldName.FKInvoiceItemID.ToString() +
                    separator + FieldName.FKInvoiceUID.ToString() +
                    separator + FieldName.FKTaskUID.ToString() +
-                   separator + FieldName.Hours.ToString() 
+                   separator + FieldName.Hours.ToString()
                 );
         }
 
@@ -264,7 +264,7 @@ namespace FCMMySQLBusinessLibrary
         }
 
 
-                /// <summary>
+        /// <summary>
         /// This method loads the information from the sqlreader into the Employee object
         /// </summary>
         /// <param name="reader"></param>
@@ -281,6 +281,6 @@ namespace FCMMySQLBusinessLibrary
             clientWorkAllocation.FKTaskUID = Convert.ToInt32(reader[FieldName.FKTaskUID.ToString()]);
             clientWorkAllocation.Hours = Convert.ToInt32(reader[FieldName.Hours.ToString()]);
         }
-        
+
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary;
+using System;
 using System.IO;
 using System.Threading;
-using FCMMySQLBusinessLibrary;
 
 namespace MackkadoITFramework.Utils
 {
@@ -16,7 +16,7 @@ namespace MackkadoITFramework.Utils
         /// <param name="fileName"></param>
         /// <param name="userID"> </param>
         public static string WriteToTodaysLogFile(
-                string what, 
+                string what,
                 string userID = "User Not Supplied",
                 string messageCode = "",
                 string programName = "",
@@ -36,15 +36,15 @@ namespace MackkadoITFramework.Utils
             //
             // get path
             //string filePathName = Utils.getFilePathName(_Location, fileName);
-            string filePathName = XmlConfig.Read(MakConstant.ConfigXml.AuditLogPath) + "\\" + fileName; 
+            string filePathName = XmlConfig.Read(MakConstant.ConfigXml.AuditLogPath) + "\\" + fileName;
 
 
-            if (! File.Exists(filePathName))
+            if (!File.Exists(filePathName))
             {
                 try
                 {
                     log = new StreamWriter(filePathName);
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -54,21 +54,21 @@ namespace MackkadoITFramework.Utils
             }
             else
             {
-                
+
                 try
                 {
-                    log = File.AppendText( filePathName );
+                    log = File.AppendText(filePathName);
                 }
-                catch ( Exception ex1 )
+                catch (Exception ex1)
                 {
                     // Sleep a bit just to minimise conflict
-                    Thread.Sleep( 1000 );
+                    Thread.Sleep(1000);
 
                     try
                     {
-                        log = File.AppendText( filePathName );
+                        log = File.AppendText(filePathName);
                     }
-                    catch ( Exception ex )
+                    catch (Exception ex)
                     {
                         return "Error: " + ex.ToString();
                     }
@@ -78,12 +78,12 @@ namespace MackkadoITFramework.Utils
 
             // Write to the file:
             log.WriteLine(
-                    processname  + ": " +
-                    DateTime.Now + ": " + 
-                    userID + ": " + 
+                    processname + ": " +
+                    DateTime.Now + ": " +
+                    userID + ": " +
                     messageCode + ": " +
                     programName + ": " +
-                    what 
+                    what
                     );
 
             // Close the stream:

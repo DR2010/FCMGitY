@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using MackkadoITFramework.ErrorHandling;
+﻿using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace MackkadoITFramework.ProcessRequest
 {
@@ -21,7 +21,7 @@ namespace MackkadoITFramework.ProcessRequest
         public struct FieldName
         {
             public const string FKRequestUID = "FKRequestUID";
-            public const string FKClientUID = "FKClientUID"; 
+            public const string FKClientUID = "FKClientUID";
             public const string SequenceNumber = "SequenceNumber";
             public const string Type = "Type";
             public const string Results = "Results";
@@ -136,7 +136,7 @@ namespace MackkadoITFramework.ProcessRequest
                     command.ExecuteNonQuery();
                 }
             }
-            return responseSuccessful; 
+            return responseSuccessful;
         }
 
         /// <summary>

@@ -80,8 +80,19 @@ namespace fcm.Windows
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvClientList = new System.Windows.Forms.DataGridView();
+            this.dgvUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvDocSetUIDDisplay = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvFKUserID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvABN = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvPhone = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvFax = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvEmailAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvMainContactPersonName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvDisplayLogo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvIsVoid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bsClient = new System.Windows.Forms.BindingSource(this.components);
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,19 +114,6 @@ namespace fcm.Windows
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dgvClientContract = new System.Windows.Forms.DataGridView();
             this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnContractEdit = new System.Windows.Forms.Button();
-            this.dgvUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvABN = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvPhone = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvFax = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvEmailAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvMainContactPersonName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvDisplayLogo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvIsVoid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bsClient = new System.Windows.Forms.BindingSource(this.components);
             this.startDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.endDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fKCompanyUIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -126,28 +124,31 @@ namespace fcm.Windows
             this.creationDateTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.updateDateTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clientContractBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnContractEdit = new System.Windows.Forms.Button();
             this.bindingSourceClient = new System.Windows.Forms.BindingSource(this.components);
+            this.getFromCloudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsClient)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientContract)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clientContractBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bsClient)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.clientContractBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceClient)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.dateTimePicker2);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
             this.groupBox1.Controls.Add(this.label19);
@@ -609,6 +610,14 @@ namespace fcm.Windows
             this.dgvClientList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvClientList_CellMouseDown);
             this.dgvClientList.SelectionChanged += new System.EventHandler(this.dgvClientList_SelectionChanged);
             // 
+            // dgvUID
+            // 
+            this.dgvUID.DataPropertyName = "UID";
+            this.dgvUID.HeaderText = "UID";
+            this.dgvUID.Name = "dgvUID";
+            this.dgvUID.ReadOnly = true;
+            this.dgvUID.Width = 51;
+            // 
             // dgvDocSetUIDDisplay
             // 
             this.dgvDocSetUIDDisplay.DataPropertyName = "DocSetUIDDisplay";
@@ -623,6 +632,82 @@ namespace fcm.Windows
             this.dgvFKUserID.Name = "dgvFKUserID";
             this.dgvFKUserID.ReadOnly = true;
             this.dgvFKUserID.Width = 89;
+            // 
+            // dgvABN
+            // 
+            this.dgvABN.DataPropertyName = "ABN";
+            this.dgvABN.HeaderText = "ABN";
+            this.dgvABN.Name = "dgvABN";
+            this.dgvABN.ReadOnly = true;
+            this.dgvABN.Width = 54;
+            // 
+            // dgvName
+            // 
+            this.dgvName.DataPropertyName = "Name";
+            this.dgvName.HeaderText = "Name";
+            this.dgvName.Name = "dgvName";
+            this.dgvName.ReadOnly = true;
+            this.dgvName.Width = 60;
+            // 
+            // dgvAddress
+            // 
+            this.dgvAddress.DataPropertyName = "Address";
+            this.dgvAddress.HeaderText = "Address";
+            this.dgvAddress.Name = "dgvAddress";
+            this.dgvAddress.ReadOnly = true;
+            this.dgvAddress.Width = 70;
+            // 
+            // dgvPhone
+            // 
+            this.dgvPhone.DataPropertyName = "Phone";
+            this.dgvPhone.HeaderText = "Phone";
+            this.dgvPhone.Name = "dgvPhone";
+            this.dgvPhone.ReadOnly = true;
+            this.dgvPhone.Width = 63;
+            // 
+            // dgvFax
+            // 
+            this.dgvFax.DataPropertyName = "Fax";
+            this.dgvFax.HeaderText = "Fax";
+            this.dgvFax.Name = "dgvFax";
+            this.dgvFax.ReadOnly = true;
+            this.dgvFax.Width = 49;
+            // 
+            // dgvEmailAddress
+            // 
+            this.dgvEmailAddress.DataPropertyName = "EmailAddress";
+            this.dgvEmailAddress.HeaderText = "Email Address";
+            this.dgvEmailAddress.Name = "dgvEmailAddress";
+            this.dgvEmailAddress.ReadOnly = true;
+            this.dgvEmailAddress.Width = 98;
+            // 
+            // dgvMainContactPersonName
+            // 
+            this.dgvMainContactPersonName.DataPropertyName = "MainContactPersonName";
+            this.dgvMainContactPersonName.HeaderText = "Main Contact";
+            this.dgvMainContactPersonName.Name = "dgvMainContactPersonName";
+            this.dgvMainContactPersonName.ReadOnly = true;
+            this.dgvMainContactPersonName.Width = 95;
+            // 
+            // dgvDisplayLogo
+            // 
+            this.dgvDisplayLogo.DataPropertyName = "DisplayLogo";
+            this.dgvDisplayLogo.HeaderText = "Display Logo";
+            this.dgvDisplayLogo.Name = "dgvDisplayLogo";
+            this.dgvDisplayLogo.ReadOnly = true;
+            this.dgvDisplayLogo.Width = 93;
+            // 
+            // dgvIsVoid
+            // 
+            this.dgvIsVoid.DataPropertyName = "IsVoid";
+            this.dgvIsVoid.HeaderText = "Is Void";
+            this.dgvIsVoid.Name = "dgvIsVoid";
+            this.dgvIsVoid.ReadOnly = true;
+            this.dgvIsVoid.Width = 64;
+            // 
+            // bsClient
+            // 
+            this.bsClient.DataSource = typeof(FCMMySQLBusinessLibrary.Model.ModelClient.Client);
             // 
             // menuToolStripMenuItem
             // 
@@ -681,7 +766,8 @@ namespace fcm.Windows
             // employeeToolStripMenuItem
             // 
             this.employeeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.listToolStripMenuItem});
+            this.listToolStripMenuItem,
+            this.getFromCloudToolStripMenuItem});
             this.employeeToolStripMenuItem.Name = "employeeToolStripMenuItem";
             this.employeeToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
             this.employeeToolStripMenuItem.Text = "Employee";
@@ -689,7 +775,7 @@ namespace fcm.Windows
             // listToolStripMenuItem
             // 
             this.listToolStripMenuItem.Name = "listToolStripMenuItem";
-            this.listToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.listToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.listToolStripMenuItem.Text = "List";
             this.listToolStripMenuItem.Click += new System.EventHandler(this.GoToEmployeeList);
             // 
@@ -824,121 +910,6 @@ namespace fcm.Windows
             this.Status.HeaderText = "Status";
             this.Status.Name = "Status";
             // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(12, 355);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.btnContractEdit);
-            this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer1.Size = new System.Drawing.Size(1037, 205);
-            this.splitContainer1.SplitterDistance = 746;
-            this.splitContainer1.TabIndex = 6;
-            // 
-            // btnContractEdit
-            // 
-            this.btnContractEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnContractEdit.Location = new System.Drawing.Point(13, 172);
-            this.btnContractEdit.Name = "btnContractEdit";
-            this.btnContractEdit.Size = new System.Drawing.Size(75, 23);
-            this.btnContractEdit.TabIndex = 1;
-            this.btnContractEdit.Text = "Edit";
-            this.btnContractEdit.UseVisualStyleBackColor = true;
-            this.btnContractEdit.Click += new System.EventHandler(this.btnContractEdit_Click);
-            // 
-            // dgvUID
-            // 
-            this.dgvUID.DataPropertyName = "UID";
-            this.dgvUID.HeaderText = "UID";
-            this.dgvUID.Name = "dgvUID";
-            this.dgvUID.ReadOnly = true;
-            this.dgvUID.Width = 51;
-            // 
-            // dgvABN
-            // 
-            this.dgvABN.DataPropertyName = "ABN";
-            this.dgvABN.HeaderText = "ABN";
-            this.dgvABN.Name = "dgvABN";
-            this.dgvABN.ReadOnly = true;
-            this.dgvABN.Width = 54;
-            // 
-            // dgvName
-            // 
-            this.dgvName.DataPropertyName = "Name";
-            this.dgvName.HeaderText = "Name";
-            this.dgvName.Name = "dgvName";
-            this.dgvName.ReadOnly = true;
-            this.dgvName.Width = 60;
-            // 
-            // dgvAddress
-            // 
-            this.dgvAddress.DataPropertyName = "Address";
-            this.dgvAddress.HeaderText = "Address";
-            this.dgvAddress.Name = "dgvAddress";
-            this.dgvAddress.ReadOnly = true;
-            this.dgvAddress.Width = 70;
-            // 
-            // dgvPhone
-            // 
-            this.dgvPhone.DataPropertyName = "Phone";
-            this.dgvPhone.HeaderText = "Phone";
-            this.dgvPhone.Name = "dgvPhone";
-            this.dgvPhone.ReadOnly = true;
-            this.dgvPhone.Width = 63;
-            // 
-            // dgvFax
-            // 
-            this.dgvFax.DataPropertyName = "Fax";
-            this.dgvFax.HeaderText = "Fax";
-            this.dgvFax.Name = "dgvFax";
-            this.dgvFax.ReadOnly = true;
-            this.dgvFax.Width = 49;
-            // 
-            // dgvEmailAddress
-            // 
-            this.dgvEmailAddress.DataPropertyName = "EmailAddress";
-            this.dgvEmailAddress.HeaderText = "Email Address";
-            this.dgvEmailAddress.Name = "dgvEmailAddress";
-            this.dgvEmailAddress.ReadOnly = true;
-            this.dgvEmailAddress.Width = 98;
-            // 
-            // dgvMainContactPersonName
-            // 
-            this.dgvMainContactPersonName.DataPropertyName = "MainContactPersonName";
-            this.dgvMainContactPersonName.HeaderText = "Main Contact";
-            this.dgvMainContactPersonName.Name = "dgvMainContactPersonName";
-            this.dgvMainContactPersonName.ReadOnly = true;
-            this.dgvMainContactPersonName.Width = 95;
-            // 
-            // dgvDisplayLogo
-            // 
-            this.dgvDisplayLogo.DataPropertyName = "DisplayLogo";
-            this.dgvDisplayLogo.HeaderText = "Display Logo";
-            this.dgvDisplayLogo.Name = "dgvDisplayLogo";
-            this.dgvDisplayLogo.ReadOnly = true;
-            this.dgvDisplayLogo.Width = 93;
-            // 
-            // dgvIsVoid
-            // 
-            this.dgvIsVoid.DataPropertyName = "IsVoid";
-            this.dgvIsVoid.HeaderText = "Is Void";
-            this.dgvIsVoid.Name = "dgvIsVoid";
-            this.dgvIsVoid.ReadOnly = true;
-            this.dgvIsVoid.Width = 64;
-            // 
-            // bsClient
-            // 
-            this.bsClient.DataSource = typeof(Client);
-            // 
             // startDateDataGridViewTextBoxColumn
             // 
             this.startDateDataGridViewTextBoxColumn.DataPropertyName = "StartDate";
@@ -995,11 +966,49 @@ namespace fcm.Windows
             // 
             // clientContractBindingSource
             // 
-            this.clientContractBindingSource.DataSource = typeof(ClientContract);
+            this.clientContractBindingSource.DataSource = typeof(FCMMySQLBusinessLibrary.Model.ModelClient.ClientContract);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(12, 355);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnContractEdit);
+            this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
+            this.splitContainer1.Size = new System.Drawing.Size(1037, 205);
+            this.splitContainer1.SplitterDistance = 746;
+            this.splitContainer1.TabIndex = 6;
+            // 
+            // btnContractEdit
+            // 
+            this.btnContractEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnContractEdit.Location = new System.Drawing.Point(13, 172);
+            this.btnContractEdit.Name = "btnContractEdit";
+            this.btnContractEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnContractEdit.TabIndex = 1;
+            this.btnContractEdit.Text = "Edit";
+            this.btnContractEdit.UseVisualStyleBackColor = true;
+            this.btnContractEdit.Click += new System.EventHandler(this.btnContractEdit_Click);
             // 
             // bindingSourceClient
             // 
-            this.bindingSourceClient.DataSource = typeof(Client);
+            this.bindingSourceClient.DataSource = typeof(FCMMySQLBusinessLibrary.Model.ModelClient.Client);
+            // 
+            // getFromCloudToolStripMenuItem
+            // 
+            this.getFromCloudToolStripMenuItem.Name = "getFromCloudToolStripMenuItem";
+            this.getFromCloudToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.getFromCloudToolStripMenuItem.Text = "Get From Cloud";
+            this.getFromCloudToolStripMenuItem.Click += new System.EventHandler(this.getFromCloudToolStripMenuItem_Click);
             // 
             // UIClientDetails
             // 
@@ -1019,18 +1028,18 @@ namespace fcm.Windows
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).EndInit();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsClient)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientContract)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clientContractBindingSource)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bsClient)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.clientContractBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceClient)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1129,5 +1138,6 @@ namespace fcm.Windows
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvMainContactPersonName;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvDisplayLogo;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvIsVoid;
+        private System.Windows.Forms.ToolStripMenuItem getFromCloudToolStripMenuItem;
     }
 }

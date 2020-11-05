@@ -1,14 +1,13 @@
-﻿﻿using System;
+﻿using MackkadoITFramework.ErrorHandling;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Windows.Forms;
-using System.Net.Mail;
-using System.IO;
-﻿using MackkadoITFramework.ErrorHandling;
 
 
 namespace FCMMySQLBusinessLibrary
@@ -23,10 +22,10 @@ namespace FCMMySQLBusinessLibrary
         /// <param name="iSubject"></param>
         /// <param name="iBody"></param>
         public static ResponseStatus SendEmail(
-                    string iFrom, 
+                    string iFrom,
                     string iPassword,
-                    string iRecipient, 
-                    string iSubject, 
+                    string iRecipient,
+                    string iSubject,
                     string iBody,
                     string iAttachmentLocation)
         {
@@ -64,7 +63,7 @@ namespace FCMMySQLBusinessLibrary
 
                 SmtpServer.Send(mail);
                 // MessageBox.Show("Email has been sent");
-            
+
             }
             catch (Exception e1)
             {
@@ -108,16 +107,16 @@ namespace FCMMySQLBusinessLibrary
             try
             {
                 MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient( "smtp.gmail.com" );
-                mail.From = new MailAddress( iFrom );
-                mail.To.Add( iRecipient );
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                mail.From = new MailAddress(iFrom);
+                mail.To.Add(iRecipient);
                 mail.Subject = iSubject;
                 mail.Body = iBody;
                 mail.IsBodyHtml = true;
 
 
                 // Only if attachment is passed
-                if (! string.IsNullOrEmpty(iAttachmentLocation))
+                if (!string.IsNullOrEmpty(iAttachmentLocation))
                 {
                     if (!File.Exists(iAttachmentLocation))
                     {
@@ -165,13 +164,13 @@ namespace FCMMySQLBusinessLibrary
                 }
 
                 SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential( iFrom, iPassword );
+                SmtpServer.Credentials = new System.Net.NetworkCredential(iFrom, iPassword);
                 SmtpServer.EnableSsl = true;
 
-                SmtpServer.Send( mail );
+                SmtpServer.Send(mail);
 
             }
-            catch ( Exception e1 )
+            catch (Exception e1)
             {
 
                 resp.Message = "Exception in FCMEmail.cs >>>  ";

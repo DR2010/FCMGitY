@@ -102,9 +102,10 @@ namespace fcm.Windows
             txtEmployeeUID.Text = "";
             txtAddress.Text = "";
             txtEmail.Text = "";
-            txtEmployeeName.Text = "";
+            //txtEmployeeName.Text = "";
             txtFax.Text = "";
             txtPhone.Text = "";
+            cbxEmployeeRoleType.Text = "";
 
             this.txtEmployeeName.Focus();
 

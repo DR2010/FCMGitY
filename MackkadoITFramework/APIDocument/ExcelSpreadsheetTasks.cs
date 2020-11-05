@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using MackkadoITFramework.APIDocument;
+﻿using MackkadoITFramework.APIDocument;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Interfaces;
-using Excel=Microsoft.Office.Interop.Excel;
-using System.Reflection;
 using MackkadoITFramework.Utils;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace FCMMySQLBusinessLibrary
 {
@@ -96,18 +96,18 @@ namespace FCMMySQLBusinessLibrary
             {
                 ret.ReturnCode = -10;
                 ret.ReasonCode = 1;
-                ret.Message ="File not found. " + FileName;
+                ret.Message = "File not found. " + FileName;
                 return ret;
             }
             Excel.Application xlApp;
             Excel.Workbook xlWorkBook;
             object missing = System.Reflection.Missing.Value;
-            
+
 
             xlApp = new Excel.Application();
 
             xlApp.Visible = true;
-            
+
 
             xlWorkBook = xlApp.Workbooks.Open(FileName, missing, false, missing, missing,
                 missing, true, missing, "\t", missing,
@@ -116,14 +116,14 @@ namespace FCMMySQLBusinessLibrary
             return ret;
         }
 
-        public static ResponseStatus PrintDocument( string FileName )
+        public static ResponseStatus PrintDocument(string FileName)
         {
             ResponseStatus ret = new ResponseStatus();
             ret.ReasonCode = 1;
             ret.ReturnCode = 1;
             ret.Message = "Successful Execution";
 
-            if (!File.Exists( FileName ))
+            if (!File.Exists(FileName))
             {
                 ret.ReturnCode = -10;
                 ret.ReasonCode = 1;
@@ -141,9 +141,9 @@ namespace FCMMySQLBusinessLibrary
             xlApp.Visible = true;
 
 
-            xlWorkBook = xlApp.Workbooks.Open( FileName, missing, false, missing, missing,
+            xlWorkBook = xlApp.Workbooks.Open(FileName, missing, false, missing, missing,
                 missing, true, missing, "\t", missing,
-                missing, missing, missing, missing, missing );
+                missing, missing, missing, missing, missing);
 
             xlWorkBook.PrintOutEx();
 
@@ -216,7 +216,7 @@ namespace FCMMySQLBusinessLibrary
                 }
             }
 
-            
+
             // vkExcelApp.WorksheetFunction.Substitute( Excel.HeaderFooter, vkFind.ToString(), vkReplace.ToString() ); 
 
             // Excel.HeaderFooter x;
@@ -235,8 +235,8 @@ namespace FCMMySQLBusinessLibrary
                                            string fromFileName,
                                            string destinationFileName,
                                            List<WordDocumentTasks.TagStructure> tag,
-                                           IOutputMessage uioutput, 
-                                            string processName, 
+                                           IOutputMessage uioutput,
+                                            string processName,
                                             string userID
                                   )
         {
@@ -261,7 +261,7 @@ namespace FCMMySQLBusinessLibrary
             // vkExcelApp.Activate();
 
             // Let's copy the document
-            File.Copy( fromFileName, destinationFileName, true );
+            File.Copy(fromFileName, destinationFileName, true);
 
             // Let's open the DESTINATION document
             //Word.Document vkMyDoc = vkExcelApp.Documents.Open(
@@ -271,10 +271,10 @@ namespace FCMMySQLBusinessLibrary
             //    ref vkMissing, ref vkMissing, ref vkVisible );
 
             Excel.Workbook vkMyDoc = vkExcelApp.Workbooks.Open(
-                destinationFileName, 
+                destinationFileName,
                 vkMissing, false, vkMissing, vkMissing,
                 vkMissing, true, vkMissing, "\t", vkMissing,
-                vkMissing, vkMissing, vkMissing, vkMissing, vkMissing );
+                vkMissing, vkMissing, vkMissing, vkMissing, vkMissing);
 
             foreach (var t in tag)
             {
@@ -287,7 +287,7 @@ namespace FCMMySQLBusinessLibrary
                 if (t.TagType == "IMAGE")
                     continue;
 
-                FindAndReplace( t.Tag, t.TagValue, 1, vkExcelApp, vkMyDoc );
+                FindAndReplace(t.Tag, t.TagValue, 1, vkExcelApp, vkMyDoc);
             }
 
             try
@@ -296,14 +296,14 @@ namespace FCMMySQLBusinessLibrary
             }
             catch (Exception ex)
             {
-                uioutput.AddOutputMessage( "(Excel) ERROR in file:  " + fromFileName + " --- Message: " + ex.ToString(), processName, userID );
-                uioutput.AddErrorMessage( "(Excel) ERROR in file:  " + fromFileName + " --- Message: " + ex.ToString(), processName, userID );
+                uioutput.AddOutputMessage("(Excel) ERROR in file:  " + fromFileName + " --- Message: " + ex.ToString(), processName, userID);
+                uioutput.AddErrorMessage("(Excel) ERROR in file:  " + fromFileName + " --- Message: " + ex.ToString(), processName, userID);
 
             }
 
             // close the new document
             vkMyDoc.Close();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject( vkMyDoc );
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(vkMyDoc);
 
             // close excel application
             vkExcelApp.Quit();

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
+﻿using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using MackkadoITFramework.Helper;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument

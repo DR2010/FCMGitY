@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
+﻿using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 {
@@ -50,8 +50,8 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                             // Get document
                             //
                             docItem.document = new Model.ModelDocument.Document();
-                            docItem.document.UID = Convert.ToInt32( reader["FKDocumentUID"] );
-                            
+                            docItem.document.UID = Convert.ToInt32(reader["FKDocumentUID"]);
+
                             // 11.01.2013
                             //
                             // docItem.document.Read();

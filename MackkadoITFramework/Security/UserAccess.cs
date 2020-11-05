@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Utils;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Security.Cryptography;
-using MackkadoITFramework.ErrorHandling;
-using MackkadoITFramework.Utils;
-using MySql.Data.MySqlClient;
 
 namespace MackkadoITFramework.Security
 {
@@ -13,15 +13,15 @@ namespace MackkadoITFramework.Security
     {
 
         #region Properties
-        [Required( ErrorMessage = "User ID is mandatory. You can use your email address." )]
-        [Display( Name = "Enter User ID" )]
+        [Required(ErrorMessage = "User ID is mandatory. You can use your email address.")]
+        [Display(Name = "Enter User ID")]
         public string UserID
         {
             get { return _UserID; }
             set { _UserID = value; }
         }
 
-        [Display( Name = "Enter Name" )]
+        [Display(Name = "Enter Name")]
         public string UserName
         {
             get { return _UserName; }
@@ -34,8 +34,8 @@ namespace MackkadoITFramework.Security
             set { _LogonAttempts = value; }
         }
 
-        [Required( ErrorMessage = "Password is required." )]
-        [Display( Name = "Enter Password" )]
+        [Required(ErrorMessage = "Password is required.")]
+        [Display(Name = "Enter Password")]
         public string Password
         {
             set { _Password = value; }
@@ -48,7 +48,7 @@ namespace MackkadoITFramework.Security
             get { return _ClientUID; }
         }
 
-        [Display( Name = "Re-enter Password" )]
+        [Display(Name = "Re-enter Password")]
         public string PasswordRetype { get; set; }
         public string ConfirmPassword { get; set; }
 
@@ -60,7 +60,7 @@ namespace MackkadoITFramework.Security
 
 
         public List<UserAccess> ListOfUsers;
-        
+
         #endregion Properties
 
         #region Attributes
@@ -88,7 +88,7 @@ namespace MackkadoITFramework.Security
         {
         }
 
-      
+
         /// <summary>
         /// List user users
         /// </summary>
@@ -102,7 +102,7 @@ namespace MackkadoITFramework.Security
                 {
                     return null;
                 }
-                
+
                 xConnectionStringUsed = ConnString.ConnectionStringFramework;
             }
 
@@ -197,7 +197,7 @@ namespace MackkadoITFramework.Security
             // 
             // EA SQL database
             // 
-            using (var connection = new MySqlConnection( ConnString.ConnectionStringFramework ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
             {
                 // TODO
                 // SqlParameter useId = new 
@@ -214,7 +214,7 @@ namespace MackkadoITFramework.Security
                 );
 
                 using (var command = new MySqlCommand(
-                                            commandString, connection ))
+                                            commandString, connection))
                 {
 
                     try
@@ -249,7 +249,7 @@ namespace MackkadoITFramework.Security
                             programName: "ProcessRequestCodeValues.cs"
                             );
 
-                        return new ResponseStatus(MessageType.Error) {Message = ex.ToString()};
+                        return new ResponseStatus(MessageType.Error) { Message = ex.ToString() };
                     }
                 }
             }
@@ -273,9 +273,9 @@ namespace MackkadoITFramework.Security
             }
             if (readuser.ReturnCode == 0001 && readuser.ReasonCode == 0002)
             {
-                return new ResponseStatus(MessageType.Error) {Message = "Credentials are not correct."};
+                return new ResponseStatus(MessageType.Error) { Message = "Credentials are not correct." };
             }
-            if (readuser.ReturnCode <= 0000 )
+            if (readuser.ReturnCode <= 0000)
             {
                 return readuser;
             }
@@ -286,23 +286,23 @@ namespace MackkadoITFramework.Security
                 return new ResponseStatus(MessageType.Error) { Message = "User locked due to logon attempts. Please contact system support." };
             }
 
-            if (string.IsNullOrWhiteSpace( inputPassword ))
+            if (string.IsNullOrWhiteSpace(inputPassword))
             {
                 return new ResponseStatus(MessageType.Error) { Message = "Credentials are not correct. Spaces or Nulls." };
             }
 
-            string passValue = EncryptX( UserDB.Salt, inputPassword );
+            string passValue = EncryptX(UserDB.Salt, inputPassword);
 
             if (UserDB.Password == passValue)
-            {   
+            {
                 //
                 // Logon successfull
                 //
-                UpdateLogonAttempts( "reset" );
+                UpdateLogonAttempts("reset");
                 return new ResponseStatus();
             }
 
-            UpdateLogonAttempts( "add" );
+            UpdateLogonAttempts("add");
 
             return new ResponseStatus(MessageType.Error) { Message = "Credentials are not correct. Spaces or Nulls." };
         }
@@ -315,44 +315,44 @@ namespace MackkadoITFramework.Security
 
         }
 
-        public string EncryptX( string salt, string password )
+        public string EncryptX(string salt, string password)
         {
             int result = 0;
             // int salt = System.DateTime.Now.Hour;
-            List <int> passwordChar = new List<int>();
+            List<int> passwordChar = new List<int>();
             int desc = password.Length;
             double finalResult = 0.00;
 
             foreach (char c in password)
             {
-                int value = Convert.ToInt32( c );
-                passwordChar.Add( value );
+                int value = Convert.ToInt32(c);
+                passwordChar.Add(value);
 
-                finalResult += Math.Sqrt( Convert.ToDouble( value * desc ) );
+                finalResult += Math.Sqrt(Convert.ToDouble(value * desc));
                 desc--;
             }
 
-            return Convert.ToInt32( finalResult ).ToString();
+            return Convert.ToInt32(finalResult).ToString();
         }
 
-        public string DecryptX( string salt, string password )
+        public string DecryptX(string salt, string password)
         {
             string ret = "";
             int result = 0;
             // int salt = System.DateTime.Now.Hour;
-            List <int> passwordChar = new List<int>();
+            List<int> passwordChar = new List<int>();
             int desc = password.Length;
             double finalResult = 0.00;
 
-            foreach( char c in password)
+            foreach (char c in password)
             {
-                int value = Convert.ToInt32( c ) ;
-                passwordChar.Add( value );
+                int value = Convert.ToInt32(c);
+                passwordChar.Add(value);
 
-                finalResult += Math.Sqrt( Convert.ToDouble( value * finalResult ) );
+                finalResult += Math.Sqrt(Convert.ToDouble(value * finalResult));
             }
 
-            result = Convert.ToInt32( finalResult );
+            result = Convert.ToInt32(finalResult);
 
             ret = Password;
 
@@ -393,7 +393,7 @@ namespace MackkadoITFramework.Security
             _EncryptedPassword = EncryptX(_Salt, Password);
 
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionStringFramework ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
             {
 
                 var commandString =
@@ -413,10 +413,10 @@ namespace MackkadoITFramework.Security
                    );
 
                 using (var command = new MySqlCommand(
-                                            commandString, connection ))
+                                            commandString, connection))
                 {
-                    command.Parameters.Add("@UserID", MySqlDbType.VarChar ).Value = _UserID;
-                    command.Parameters.Add("@UserName", MySqlDbType.VarChar ).Value = _UserName;
+                    command.Parameters.Add("@UserID", MySqlDbType.VarChar).Value = _UserID;
+                    command.Parameters.Add("@UserName", MySqlDbType.VarChar).Value = _UserName;
                     command.Parameters.Add("@LogonAttempts", MySqlDbType.Int32).Value = 0;
                     command.Parameters.Add("@Password", MySqlDbType.VarChar).Value = _EncryptedPassword;
                     command.Parameters.Add("@Salt", MySqlDbType.Int32).Value = Salt;
@@ -533,20 +533,20 @@ namespace MackkadoITFramework.Security
                 return new ResponseStatus(MessageType.Error);
 
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionStringFramework ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
             {
 
                 var commandString =
                 (
                    "UPDATE SecurityUser SET LogonAttempts = @LogonAttempts " +
-                   "WHERE UserID = @UserID" 
+                   "WHERE UserID = @UserID"
                 );
 
                 using (var command = new MySqlCommand(
-                                            commandString, connection ))
+                                            commandString, connection))
                 {
-                    command.Parameters.Add( "@UserID", MySqlDbType.VarChar ).Value = _UserID;
-                    command.Parameters.Add( "@LogonAttempts", MySqlDbType.Int32 ).Value = _LogonAttempts;
+                    command.Parameters.Add("@UserID", MySqlDbType.VarChar).Value = _UserID;
+                    command.Parameters.Add("@LogonAttempts", MySqlDbType.Int32).Value = _LogonAttempts;
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -557,7 +557,7 @@ namespace MackkadoITFramework.Security
 
         // Encrypt a byte array into a byte array using a key and an IV 
 
-        public static byte[] Encrypt( byte[] clearData, byte[] Key, byte[] IV )
+        public static byte[] Encrypt(byte[] clearData, byte[] Key, byte[] IV)
         {
             // Create a MemoryStream to accept the encrypted bytes 
 
@@ -568,10 +568,10 @@ namespace MackkadoITFramework.Security
             alg.Key = Key;
             alg.IV = IV;
 
-            CryptoStream cs = new CryptoStream( ms,
-                alg.CreateEncryptor(), CryptoStreamMode.Write );
+            CryptoStream cs = new CryptoStream(ms,
+                alg.CreateEncryptor(), CryptoStreamMode.Write);
 
-            cs.Write( clearData, 0, clearData.Length );
+            cs.Write(clearData, 0, clearData.Length);
             cs.Close();
             byte[] encryptedData = ms.ToArray();
             return encryptedData;
@@ -582,23 +582,23 @@ namespace MackkadoITFramework.Security
         //    Uses Encrypt(byte[], byte[], byte[]) 
 
 
-        public static string Encrypt( string clearText, string Password )
+        public static string Encrypt(string clearText, string Password)
         {
             // First we need to turn the input string into a byte array. 
 
-            byte[] clearBytes = 
-        System.Text.Encoding.Unicode.GetBytes( clearText );
+            byte[] clearBytes =
+        System.Text.Encoding.Unicode.GetBytes(clearText);
 
-            PasswordDeriveBytes pdb = new PasswordDeriveBytes( Password,
-                new byte[] {0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 
-        0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76} );
-
-
-            byte[] encryptedData = Encrypt( clearBytes,
-                        pdb.GetBytes( 32 ), pdb.GetBytes( 16 ) );
+            PasswordDeriveBytes pdb = new PasswordDeriveBytes(Password,
+                new byte[] {0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d,
+        0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76});
 
 
-            return Convert.ToBase64String( encryptedData );
+            byte[] encryptedData = Encrypt(clearBytes,
+                        pdb.GetBytes(32), pdb.GetBytes(16));
+
+
+            return Convert.ToBase64String(encryptedData);
 
         }
 
@@ -607,22 +607,22 @@ namespace MackkadoITFramework.Security
         //    Uses Encrypt(byte[], byte[], byte[]) 
 
 
-        public static byte[] Encrypt( byte[] clearData, string Password )
+        public static byte[] Encrypt(byte[] clearData, string Password)
         {
 
-            PasswordDeriveBytes pdb = new PasswordDeriveBytes( Password,
-                new byte[] {0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 
-        0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76} );
+            PasswordDeriveBytes pdb = new PasswordDeriveBytes(Password,
+                new byte[] {0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d,
+        0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76});
 
 
-            return Encrypt( clearData, pdb.GetBytes( 32 ), pdb.GetBytes( 16 ) );
+            return Encrypt(clearData, pdb.GetBytes(32), pdb.GetBytes(16));
 
         }
 
         // Decrypt a byte array into a byte array using a key and an IV 
 
-        public static byte[] Decrypt( byte[] cipherData,
-                                    byte[] Key, byte[] IV )
+        public static byte[] Decrypt(byte[] cipherData,
+                                    byte[] Key, byte[] IV)
         {
 
 
@@ -633,12 +633,12 @@ namespace MackkadoITFramework.Security
             alg.Key = Key;
             alg.IV = IV;
 
-            CryptoStream cs = new CryptoStream( ms,
-                alg.CreateDecryptor(), CryptoStreamMode.Write );
+            CryptoStream cs = new CryptoStream(ms,
+                alg.CreateDecryptor(), CryptoStreamMode.Write);
 
             // Write the data and make it do the decryption 
 
-            cs.Write( cipherData, 0, cipherData.Length );
+            cs.Write(cipherData, 0, cipherData.Length);
 
             cs.Close();
 

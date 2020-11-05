@@ -1,9 +1,9 @@
 ﻿using ServiceStack.Redis;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StackExchange.Redis;
 
 namespace MackkadoITFramework.RedisDan
 {
@@ -13,7 +13,7 @@ namespace MackkadoITFramework.RedisDan
         IDatabase db;
         int databaseid;
         StackExchange.Redis.IServer redisserver;
-        public RedisDan(int dbid, string cachetarget = "local") 
+        public RedisDan(int dbid, string cachetarget = "local")
         {
             string cachetouse = "danielw10-s37p2ob0.cloudapp.net,allowAdmin=true";
             string cachedbserver = "danielw10-s37p2ob0.cloudapp.net:6379";
@@ -36,7 +36,7 @@ namespace MackkadoITFramework.RedisDan
 
             databaseid = dbid;
             redis = ConnectionMultiplexer.Connect(cachetouse);
-            db = redis.GetDatabase( dbid );
+            db = redis.GetDatabase(dbid);
             redisserver = redis.GetServer(cachedbserver);
 
         }

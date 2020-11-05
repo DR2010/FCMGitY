@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using FCMMySQLBusinessLibrary.FCMUtils;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
 using FCMMySQLBusinessLibrary.Model.ModelClient;
+using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.ReferenceData;
 using MackkadoITFramework.Utils;
-using MackkadoITFramework.ErrorHandling;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
 {
@@ -53,15 +53,15 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                     EmployeeFieldsString()
                     + "  FROM Employee"
                     + " WHERE FKCompanyUID = @FKCompanyUID "
-                    + "   AND RoleType = @RoleType "; 
+                    + "   AND RoleType = @RoleType ";
 
 
                 using (var command = new MySqlCommand(
                                             commandString, connection))
                 {
 
-                    command.Parameters.Add( "@FKCompanyUID", MySqlDbType.Int32 ).Value = clientUID;
-                    command.Parameters.Add( "@RoleType", MySqlDbType.String ).Value = roleType;
+                    command.Parameters.Add("@FKCompanyUID", MySqlDbType.Int32).Value = clientUID;
+                    command.Parameters.Add("@RoleType", MySqlDbType.String).Value = roleType;
 
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
@@ -87,19 +87,19 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         public static ClientEmployee ReadEmployees(int clientUID)
         {
             ClientEmployee clientEmployee = new ClientEmployee();
-            clientEmployee.AdministrationPerson = Read( clientUID, FCMConstant.RoleTypeCode.AdministrationPerson );
-            clientEmployee.ManagingDirector = Read( clientUID, FCMConstant.RoleTypeCode.ManagingDirector );
-            clientEmployee.HealthAndSafetyRep = Read( clientUID, FCMConstant.RoleTypeCode.HealthAndSafetyRep );
-            clientEmployee.LeadingHand1 = Read( clientUID, FCMConstant.RoleTypeCode.LeadingHand1 );
-            clientEmployee.LeadingHand2 = Read( clientUID, FCMConstant.RoleTypeCode.LeadingHand2 );
-            clientEmployee.LeadingHand2 = Read( clientUID, FCMConstant.RoleTypeCode.LeadingHand2 );
-            clientEmployee.OHSEAuditor = Read( clientUID, FCMConstant.RoleTypeCode.OHSEAuditor );
-            clientEmployee.ProjectManager = Read( clientUID, FCMConstant.RoleTypeCode.ProjectManager );
-            clientEmployee.ProjectOHSRepresentative = Read( clientUID, FCMConstant.RoleTypeCode.ProjectOHSRepresentative );
-            clientEmployee.SiteManager = Read( clientUID, FCMConstant.RoleTypeCode.SiteManager );
-            clientEmployee.Supervisor = Read( clientUID, FCMConstant.RoleTypeCode.Supervisor );
-            clientEmployee.SystemsManager = Read( clientUID, FCMConstant.RoleTypeCode.SystemsManager );
-            clientEmployee.WorkersCompensationCoordinator = Read( clientUID, FCMConstant.RoleTypeCode.WorkersCompensationCoordinator );
+            clientEmployee.AdministrationPerson = Read(clientUID, FCMConstant.RoleTypeCode.AdministrationPerson);
+            clientEmployee.ManagingDirector = Read(clientUID, FCMConstant.RoleTypeCode.ManagingDirector);
+            clientEmployee.HealthAndSafetyRep = Read(clientUID, FCMConstant.RoleTypeCode.HealthAndSafetyRep);
+            clientEmployee.LeadingHand1 = Read(clientUID, FCMConstant.RoleTypeCode.LeadingHand1);
+            clientEmployee.LeadingHand2 = Read(clientUID, FCMConstant.RoleTypeCode.LeadingHand2);
+            clientEmployee.LeadingHand2 = Read(clientUID, FCMConstant.RoleTypeCode.LeadingHand2);
+            clientEmployee.OHSEAuditor = Read(clientUID, FCMConstant.RoleTypeCode.OHSEAuditor);
+            clientEmployee.ProjectManager = Read(clientUID, FCMConstant.RoleTypeCode.ProjectManager);
+            clientEmployee.ProjectOHSRepresentative = Read(clientUID, FCMConstant.RoleTypeCode.ProjectOHSRepresentative);
+            clientEmployee.SiteManager = Read(clientUID, FCMConstant.RoleTypeCode.SiteManager);
+            clientEmployee.Supervisor = Read(clientUID, FCMConstant.RoleTypeCode.Supervisor);
+            clientEmployee.SystemsManager = Read(clientUID, FCMConstant.RoleTypeCode.SystemsManager);
+            clientEmployee.WorkersCompensationCoordinator = Read(clientUID, FCMConstant.RoleTypeCode.WorkersCompensationCoordinator);
 
             return clientEmployee;
 
@@ -173,7 +173,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 var commandString =
                 (
                    "INSERT INTO Employee " +
-                   "( " + 
+                   "( " +
                     EmployeeFieldsString() +
                    ")" +
                         " VALUES " +
@@ -212,7 +212,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// <returns></returns>
         public ResponseStatus Update()
         {
-            ResponseStatus ret = new ResponseStatus();      
+            ResponseStatus ret = new ResponseStatus();
             ret.Message = "Item updated successfully";
 
             if (Name == null)
@@ -263,7 +263,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             if (Name == null)
                 Name = "";
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionString ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString =
@@ -275,9 +275,9 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
 
 
                 using (var command = new MySqlCommand(
-                                            commandString, connection ))
+                                            commandString, connection))
                 {
-                    command.Parameters.Add( "@UID", MySqlDbType.Int32 ).Value = UID;
+                    command.Parameters.Add("@UID", MySqlDbType.Int32).Value = UID;
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -290,11 +290,11 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// List employees
         /// </summary>
         /// <param name="clientID"></param>
-        public static List<Employee> List( int clientID )
+        public static List<Employee> List(int clientID)
         {
             List<Employee> employeeList = new List<Employee>();
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionString ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString = string.Format(
@@ -302,10 +302,10 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 EmployeeFieldsString() +
                 "   FROM Employee " +
                 "   WHERE  FKCompanyUID = {0}",
-                clientID );
+                clientID);
 
                 using (var command = new MySqlCommand(
-                                      commandString, connection ))
+                                      commandString, connection))
                 {
                     connection.Open();
                     using (MySqlDataReader reader = command.ExecuteReader())
@@ -315,7 +315,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                             Employee _employee = new Employee();
                             LoadEmployeeObject(reader, _employee);
 
-                            employeeList.Add( _employee );
+                            employeeList.Add(_employee);
                         }
                     }
                 }
@@ -369,7 +369,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             }
 
         }
-        
+
         /// <summary>
         /// This method loads the information from the sqlreader into the Employee object
         /// </summary>
@@ -388,7 +388,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             employee.UserIdUpdatedBy = reader[FieldName.UserIdCreatedBy].ToString();
             employee.RoleDescription = CodeValue.GetCodeValueDescription(MakConstant.CodeTypeString.RoleType, employee.RoleType);
 
-            try  { employee.IsAContact = Convert.ToChar(reader[FieldName.IsAContact].ToString()); }
+            try { employee.IsAContact = Convert.ToChar(reader[FieldName.IsAContact].ToString()); }
             catch { employee.IsAContact = 'N'; }
             try { employee.EmailAddress = reader[FieldName.EmailAddress].ToString(); }
             catch { employee.EmailAddress = ""; }

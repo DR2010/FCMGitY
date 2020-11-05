@@ -1,6 +1,6 @@
 ﻿using FCMMySQLBusinessLibrary.Model.ModelClient;
-using MackkadoITFramework.Utils;
 using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Utils;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.Contract
 {
@@ -17,7 +17,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Contract
         public ResponseStatus responseStatus;
     }
 
-    
+
     public class ClientContractUpdateRequest
     {
         public HeaderInfo headerInfo;

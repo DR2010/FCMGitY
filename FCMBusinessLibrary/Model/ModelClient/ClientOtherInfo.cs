@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MackkadoITFramework.Utils;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using MackkadoITFramework.Utils;
-using MySql.Data.MySqlClient;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClient
 {
@@ -123,7 +123,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
                    "   SET FKClientUID = @FKClientUID " +
                    "  ,SET RCFieldCode = @RCFieldCode " +
                    "  ,SET FieldValueText = @FieldValueText " +
-                   "  WHERE UID = @UID " 
+                   "  WHERE UID = @UID "
                 );
 
                 using (var command = new MySqlCommand(

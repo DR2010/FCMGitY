@@ -55,3 +55,28 @@ C:\I_Daniel\Dropbox\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramewor
 C:\I_Daniel\Dropbox\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.dll
 C:\I_Daniel\Dropbox\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.pdb
 C:\I_Daniel\Dropbox\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csprojResolveAssemblyReference.cache
+D:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.App.config
+D:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.ResolveComReference.cache
+D:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.CoreCompileInputs.cache
+D:\Program Files\FCM\MackkadoITFramework.dll.config
+D:\Program Files\FCM\MackkadoITFramework.dll
+D:\Program Files\FCM\MackkadoITFramework.pdb
+D:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.dll
+D:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.pdb
+C:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.App.config
+C:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csprojResolveAssemblyReference.cache
+C:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.ResolveComReference.cache
+C:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.CoreCompileInputs.cache
+C:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.dll
+C:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.pdb
+D:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csprojResolveAssemblyReference.cache
+Z:\Program Files\FCM\MackkadoITFramework.dll.config
+Z:\Program Files\FCM\MackkadoITFramework.dll
+Z:\Program Files\FCM\MackkadoITFramework.pdb
+Z:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.App.config
+Z:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.ResolveComReference.cache
+Z:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.CopyComplete
+Z:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.dll
+Z:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.pdb
+Z:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csprojAssemblyReference.cache
+Z:\I_Daniel\OneDrive\FCMMySQLGit\MackkadoITFramework\obj\Debug\MackkadoITFramework.csproj.CoreCompileInputs.cache

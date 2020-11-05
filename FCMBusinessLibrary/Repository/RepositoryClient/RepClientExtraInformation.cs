@@ -1,14 +1,14 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using MackkadoITFramework.Utils;
+﻿using FCMMySQLBusinessLibrary.Model.ModelClient;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
+using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using ConnString = MackkadoITFramework.Utils.ConnString;
 using HeaderInfo = MackkadoITFramework.Utils.HeaderInfo;
 using Utils = MackkadoITFramework.Helper.Utils;
-using FCMMySQLBusinessLibrary.Model.ModelClient;
 
 namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
 {
@@ -25,7 +25,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// <summary>
         /// Get Client Extra Information
         /// </summary>
-        public static ResponseStatus Read( ClientExtraInformation clientExtraInfo)
+        public static ResponseStatus Read(ClientExtraInformation clientExtraInfo)
         {
             // 
             // EA SQL database
@@ -61,8 +61,8 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                     }
                     else
                     {
-                        
-                        return new ResponseStatus(){ReturnCode = 1, ReasonCode = 2, Message = "Not found",XMessageType = MessageType.Warning};                 
+
+                        return new ResponseStatus() { ReturnCode = 1, ReasonCode = 2, Message = "Not found", XMessageType = MessageType.Warning };
                     }
                 }
             }
@@ -74,7 +74,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         //    Add new Client
         // -----------------------------------------------------
         public static ResponseStatus Insert(
-            HeaderInfo headerInfo, 
+            HeaderInfo headerInfo,
             ClientExtraInformation clientExtraInfo,
             MySqlConnection connection)
         {
@@ -152,7 +152,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             MySqlConnection connection)
         {
 
-            var response = new ResponseStatus {ReturnCode = 1, ReasonCode = 1, Message = "Client Updated Successfully."};
+            var response = new ResponseStatus { ReturnCode = 1, ReasonCode = 1, Message = "Client Updated Successfully." };
 
             // using (var connection = new MySqlConnection(ConnString.ConnectionString))
 
@@ -189,12 +189,12 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 {
 
                     AddSQLParameters(command, MakConstant.SQLAction.UPDATE, clientExtraInfo);
-                    
+
                     try
                     {
                         if (connection.State != ConnectionState.Open)
                             connection.Open();
-                        
+
                         command.ExecuteNonQuery();
                     }
                     catch (Exception ex)

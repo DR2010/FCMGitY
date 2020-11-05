@@ -1,6 +1,6 @@
-﻿using System;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 {

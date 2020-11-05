@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.Model.ModelDocument;
+using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MackkadoITFramework.Utils;
-using FCMMySQLBusinessLibrary.Model.ModelDocument;
-using MackkadoITFramework.ErrorHandling;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCDocument.ServiceContract
 {

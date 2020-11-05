@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FCMMySQLBusinessLibrary.Model.ModelDocument;
+﻿using FCMMySQLBusinessLibrary.Model.ModelDocument;
 using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using FCMMySQLBusinessLibrary.Service.SVCDocument.ServiceContract;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Helper;
 using MackkadoITFramework.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
 {
@@ -22,7 +22,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
             var documentListResponse = new DocumentListResponse();
             documentListResponse.response = new ResponseStatus();
 
-            documentListResponse.documentList = RepDocument.List( documentListRequest.headerInfo, documentListRequest.inCondition );
+            documentListResponse.documentList = RepDocument.List(documentListRequest.headerInfo, documentListRequest.inCondition);
 
             return documentListResponse;
         }
@@ -30,12 +30,12 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
         /// <summary>
         /// List of documents
         /// </summary>
-        public static DocumentListResponse DocumentListDocuments( DocumentListRequest documentListRequest )
+        public static DocumentListResponse DocumentListDocuments(DocumentListRequest documentListRequest)
         {
             var documentListResponse = new DocumentListResponse();
             documentListResponse.response = new ResponseStatus();
 
-            documentListResponse.documentList = RepDocument.ListDocuments( documentListRequest.headerInfo );
+            documentListResponse.documentList = RepDocument.ListDocuments(documentListRequest.headerInfo);
 
             return documentListResponse;
         }
@@ -57,12 +57,12 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
         /// <summary>
         /// List of documents
         /// </summary>
-        public static DocumentListResponse DocumentListFolders( DocumentListRequest documentListRequest )
+        public static DocumentListResponse DocumentListFolders(DocumentListRequest documentListRequest)
         {
             var documentListResponse = new DocumentListResponse();
             documentListResponse.response = new ResponseStatus();
 
-            documentListResponse.documentList = RepDocument.ListFolders( documentListRequest.headerInfo );
+            documentListResponse.documentList = RepDocument.ListFolders(documentListRequest.headerInfo);
 
             return documentListResponse;
         }
@@ -76,8 +76,8 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
         public static DocumentReadResponse DocumentRead(DocumentReadRequest documentReadRequest)
         {
             var documentRead = RepDocument.Read(
-                documentReadRequest.retrieveVoidedDocuments, 
-                documentReadRequest.UID, 
+                documentReadRequest.retrieveVoidedDocuments,
+                documentReadRequest.UID,
                 documentReadRequest.CUID);
 
             var documentReadResponse = new DocumentReadResponse();
@@ -94,7 +94,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
         /// <returns></returns>
         public static Document GetRootDocument()
         {
-            var documentRead = RepDocument.Read(false,0,"ROOT");
+            var documentRead = RepDocument.Read(false, 0, "ROOT");
 
             return documentRead;
         }
@@ -130,20 +130,20 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
                         documentSaveRequest.headerInfo,
                         documentSaveRequest.inDocument,
                         documentSaveRequest.saveType);
-            
+
             var documentSaveResponse = new DocumentSaveResponse();
             documentSaveResponse.document = documentSaveRequest.inDocument;
             documentSaveResponse.document.UID = repDocSaveResp;
-            if( repDocSaveResp == 0)
+            if (repDocSaveResp == 0)
             {
-                documentSaveResponse.response = new ResponseStatus( MessageType.Error);
+                documentSaveResponse.response = new ResponseStatus(MessageType.Error);
                 documentSaveResponse.response.Message = "Error Saving Document.";
                 documentSaveResponse.response.Successful = false;
                 documentSaveResponse.response.ReturnCode = -0010;
             }
             else
             {
-                documentSaveResponse.response = new ResponseStatus( MessageType.Informational );
+                documentSaveResponse.response = new ResponseStatus(MessageType.Informational);
             }
 
             return documentSaveResponse;
@@ -153,7 +153,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
         /// Update or Create document
         /// </summary>
         /// <returns></returns>
-        public static Document DocumentCreate( HeaderInfo headerInfo, string filename, string filelocation, int parentUID, string recordtype = "DOCUMENT" )
+        public static Document DocumentCreate(HeaderInfo headerInfo, string filename, string filelocation, int parentUID, string recordtype = "DOCUMENT")
         {
 
             string documenttype = "WORD"; // Just setting as initial value
@@ -162,7 +162,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
 
             document.ParentUID = parentUID;
 
-            document.CUID = filename.Substring( 0, 6 );
+            document.CUID = filename.Substring(0, 6);
             document.Location = filelocation;
             document.Location = Utils.getReferenceFilePathName(filelocation);
 
@@ -173,7 +173,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
             document.FileExtension = String.Concat("." + filesplit[1]);
             document.FileName = filename;
             document.RecordType = recordtype;
-            
+
             string wordExtensions = ".doc .docx .dotx";
             string excelExtensions = ".xls .xlsx";
             string pdfExtensions = ".pdf";
@@ -205,7 +205,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
             documentSaveRequest.inDocument = document;
             documentSaveRequest.headerInfo = headerInfo;
 
-            var docresp = BUSDocument.DocumentSave( documentSaveRequest );
+            var docresp = BUSDocument.DocumentSave(documentSaveRequest);
 
             if (docresp.response.ReturnCode <= 0)
             {

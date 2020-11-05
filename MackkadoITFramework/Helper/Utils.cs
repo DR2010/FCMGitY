@@ -1,20 +1,20 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Forms;
-using FCMMySQLBusinessLibrary;
+﻿using FCMMySQLBusinessLibrary;
 using MackkadoITFramework.APIDocument;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.ReferenceData;
 using MackkadoITFramework.UserSettingsNS;
 using MackkadoITFramework.Utils;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Windows.Forms;
 
 namespace MackkadoITFramework.Helper
 {
     public static class Utils
     {
         public static ImageList imageList;
-        
+
         private static string userID;
         private static int clientID;
         private static int clientSetID;
@@ -43,8 +43,8 @@ namespace MackkadoITFramework.Helper
         /// </summary>
         public static string UserID
         {
-            set 
-            { 
+            set
+            {
                 userID = value;
 
                 // Save last user id to database
@@ -56,7 +56,7 @@ namespace MackkadoITFramework.Helper
 
                 cv.Save();
             }
-    
+
             get { return userID; }
         }
 
@@ -127,7 +127,7 @@ namespace MackkadoITFramework.Helper
             public const string FCM = "FCM";
         }
 
-        
+
         public struct RecordType
         {
             public const string FOLDER = "FOLDER";
@@ -179,7 +179,7 @@ namespace MackkadoITFramework.Helper
 
         // It transforms the reference path into a physical path and add name to it
         //
-        public static string getFilePathName( string path, string name = "" )
+        public static string getFilePathName(string path, string name = "")
         {
             string filePathName = path + "\\" + name;
             string fullPathFileName = "";
@@ -243,7 +243,7 @@ namespace MackkadoITFramework.Helper
                 versionFolder =
                 CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBVERSIONFOLDER);
 
-                versionFolder = versionFolder.Replace( SYSTSET.WEBPORT, fcmPort );
+                versionFolder = versionFolder.Replace(SYSTSET.WEBPORT, fcmPort);
                 versionFolder = versionFolder.Replace(SYSTSET.HOSTIPADDRESS, fcmHost);
 
                 // ----------------------
@@ -309,11 +309,11 @@ namespace MackkadoITFramework.Helper
 
         // It transforms the reference path into a physical path and add name to it
         //
-        public static string getFilePathNameLOCAL( string path, string name = "" )
+        public static string getFilePathNameLOCAL(string path, string name = "")
         {
             string filePathName = "";
 
-            if ( string.IsNullOrEmpty( name ) )
+            if (string.IsNullOrEmpty(name))
             {
                 filePathName = path;
             }
@@ -324,69 +324,69 @@ namespace MackkadoITFramework.Helper
 
             string fullPathFileName = "";
 
-            var fcmPort = CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, SYSTSET.WEBPORT );
-            var fcmHost = CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, SYSTSET.HOSTIPADDRESS );
+            var fcmPort = CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, SYSTSET.WEBPORT);
+            var fcmHost = CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, SYSTSET.HOSTIPADDRESS);
 
             // Get template folder 
             var templateFolder =
-                CodeValue.GetCodeValueExtended( "SYSTSET", MakConstant.SYSFOLDER.TEMPLATEFOLDER );
+                CodeValue.GetCodeValueExtended("SYSTSET", MakConstant.SYSFOLDER.TEMPLATEFOLDER);
 
             // Get template folder 
             var clientFolder =
-                CodeValue.GetCodeValueExtended( "SYSTSET", MakConstant.SYSFOLDER.CLIENTFOLDER );
+                CodeValue.GetCodeValueExtended("SYSTSET", MakConstant.SYSFOLDER.CLIENTFOLDER);
 
             // Get version folder 
             var versionFolder =
-                CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.VERSIONFOLDER );
+                CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.VERSIONFOLDER);
 
             // Get logo folder 
             var logoFolder =
-                CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGOFOLDER );
+                CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGOFOLDER);
 
             // Get log file folder 
             var logFileFolder =
-                CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGFILEFOLDER );
+                CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGFILEFOLDER);
 
 
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.TEMPLATEFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.TEMPLATEFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.TEMPLATEFOLDER, templateFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.TEMPLATEFOLDER, templateFolder);
             }
 
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.CLIENTFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.CLIENTFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.CLIENTFOLDER, clientFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.CLIENTFOLDER, clientFolder);
 
             }
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.VERSIONFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.VERSIONFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.VERSIONFOLDER, versionFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.VERSIONFOLDER, versionFolder);
 
             }
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.LOGOFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.LOGOFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.LOGOFOLDER, logoFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.LOGOFOLDER, logoFolder);
 
             }
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.LOGFILEFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.LOGFILEFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.LOGFILEFOLDER, logFileFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.LOGFILEFOLDER, logFileFolder);
             }
 
-            if ( String.IsNullOrEmpty( fullPathFileName ) )
+            if (String.IsNullOrEmpty(fullPathFileName))
                 fullPathFileName = path + "\\" + name;
 
-            fullPathFileName = fullPathFileName.Replace( "\r", "" );
+            fullPathFileName = fullPathFileName.Replace("\r", "");
 
             return fullPathFileName;
         }
@@ -395,11 +395,11 @@ namespace MackkadoITFramework.Helper
 
         // It transforms the reference path into a physical path and add name to it
         //
-        public static string getFilePathNameWEB( string path, string name = "" )
+        public static string getFilePathNameWEB(string path, string name = "")
         {
             string filePathName = "";
 
-            if ( string.IsNullOrEmpty( name ) )
+            if (string.IsNullOrEmpty(name))
             {
                 filePathName = path;
             }
@@ -410,41 +410,41 @@ namespace MackkadoITFramework.Helper
 
             string fullPathFileName = "";
 
-            var fcmPort = CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, SYSTSET.WEBPORT );
-            var fcmHost = CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, SYSTSET.HOSTIPADDRESS );
+            var fcmPort = CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, SYSTSET.WEBPORT);
+            var fcmHost = CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, SYSTSET.HOSTIPADDRESS);
 
             // Get template folder 
             var templateFolder =
-                CodeValue.GetCodeValueExtended( "SYSTSET", MakConstant.SYSFOLDER.TEMPLATEFOLDER );
+                CodeValue.GetCodeValueExtended("SYSTSET", MakConstant.SYSFOLDER.TEMPLATEFOLDER);
 
             // Get template folder 
             var clientFolder =
-                CodeValue.GetCodeValueExtended( "SYSTSET", MakConstant.SYSFOLDER.CLIENTFOLDER );
+                CodeValue.GetCodeValueExtended("SYSTSET", MakConstant.SYSFOLDER.CLIENTFOLDER);
 
             // Get version folder 
             var versionFolder =
-                CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.VERSIONFOLDER );
+                CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.VERSIONFOLDER);
 
             // Get logo folder 
             var logoFolder =
-                CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGOFOLDER );
+                CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGOFOLDER);
 
             // Get log file folder 
             var logFileFolder =
-                CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGFILEFOLDER );
+                CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGFILEFOLDER);
 
 
             // Get WEB Paths
             //
 
-            string rpath = path.Replace( @"\", @"/" );
+            string rpath = path.Replace(@"\", @"/");
             path = rpath;
 
             // Different for WEB
 
-            if ( string.IsNullOrEmpty( name ) )
+            if (string.IsNullOrEmpty(name))
             {
-                filePathName = path ;
+                filePathName = path;
             }
             else
             {
@@ -455,84 +455,84 @@ namespace MackkadoITFramework.Helper
             // Get WEB template folder 
             // ----------------------
             templateFolder =
-            CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBTEMPLATEFOLDER );
+            CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBTEMPLATEFOLDER);
 
-            templateFolder = templateFolder.Replace( SYSTSET.WEBPORT, fcmPort );
-            templateFolder = templateFolder.Replace( SYSTSET.HOSTIPADDRESS, fcmHost );
+            templateFolder = templateFolder.Replace(SYSTSET.WEBPORT, fcmPort);
+            templateFolder = templateFolder.Replace(SYSTSET.HOSTIPADDRESS, fcmHost);
 
             // ----------------------
             // Get WEB client folder 
             // ----------------------
             clientFolder =
-            CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBCLIENTFOLDER );
+            CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBCLIENTFOLDER);
 
-            clientFolder = clientFolder.Replace( SYSTSET.WEBPORT, fcmPort );
-            clientFolder = clientFolder.Replace( SYSTSET.HOSTIPADDRESS, fcmHost );
+            clientFolder = clientFolder.Replace(SYSTSET.WEBPORT, fcmPort);
+            clientFolder = clientFolder.Replace(SYSTSET.HOSTIPADDRESS, fcmHost);
 
             // ----------------------
             // Get WEB version folder 
             // ----------------------
             versionFolder =
-            CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBVERSIONFOLDER );
+            CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBVERSIONFOLDER);
 
-            versionFolder = versionFolder.Replace( SYSTSET.WEBPORT, fcmPort );
-            versionFolder = versionFolder.Replace( SYSTSET.HOSTIPADDRESS, fcmHost );
+            versionFolder = versionFolder.Replace(SYSTSET.WEBPORT, fcmPort);
+            versionFolder = versionFolder.Replace(SYSTSET.HOSTIPADDRESS, fcmHost);
 
             // ----------------------
             // Get WEB logo folder 
             // ----------------------
             logoFolder =
-            CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBLOGOFOLDER );
+            CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.WEBLOGOFOLDER);
 
-            logoFolder = logoFolder.Replace( SYSTSET.WEBPORT, fcmPort );
-            logoFolder = logoFolder.Replace( SYSTSET.HOSTIPADDRESS, fcmHost );
+            logoFolder = logoFolder.Replace(SYSTSET.WEBPORT, fcmPort);
+            logoFolder = logoFolder.Replace(SYSTSET.HOSTIPADDRESS, fcmHost);
 
             // --------------------------------------------------------------
             // Get WEB LOG folder - This is LOG for recording what happened
             // --------------------------------------------------------------
             logFileFolder =
-            CodeValue.GetCodeValueExtended( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGFILEFOLDER );
+            CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.LOGFILEFOLDER);
 
-            logFileFolder = logFileFolder.Replace( SYSTSET.WEBPORT, fcmPort );
-            logFileFolder = logFileFolder.Replace( SYSTSET.HOSTIPADDRESS, fcmHost );
+            logFileFolder = logFileFolder.Replace(SYSTSET.WEBPORT, fcmPort);
+            logFileFolder = logFileFolder.Replace(SYSTSET.HOSTIPADDRESS, fcmHost);
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.TEMPLATEFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.TEMPLATEFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.TEMPLATEFOLDER, templateFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.TEMPLATEFOLDER, templateFolder);
             }
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.CLIENTFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.CLIENTFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.CLIENTFOLDER, clientFolder );
-
-            }
-
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.VERSIONFOLDER ) )
-            {
-                fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.VERSIONFOLDER, versionFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.CLIENTFOLDER, clientFolder);
 
             }
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.LOGOFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.VERSIONFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.LOGOFOLDER, logoFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.VERSIONFOLDER, versionFolder);
 
             }
 
-            if ( filePathName.Contains( MakConstant.SYSFOLDER.LOGFILEFOLDER ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.LOGOFOLDER))
             {
                 fullPathFileName =
-                    filePathName.Replace( MakConstant.SYSFOLDER.LOGFILEFOLDER, logFileFolder );
+                    filePathName.Replace(MakConstant.SYSFOLDER.LOGOFOLDER, logoFolder);
+
             }
 
-            if ( String.IsNullOrEmpty( fullPathFileName ) )
+            if (filePathName.Contains(MakConstant.SYSFOLDER.LOGFILEFOLDER))
+            {
+                fullPathFileName =
+                    filePathName.Replace(MakConstant.SYSFOLDER.LOGFILEFOLDER, logFileFolder);
+            }
+
+            if (String.IsNullOrEmpty(fullPathFileName))
                 fullPathFileName = path + "\\" + name;
 
-            fullPathFileName = fullPathFileName.Replace( "\r", "" );
+            fullPathFileName = fullPathFileName.Replace("\r", "");
 
             return fullPathFileName;
         }
@@ -554,7 +554,7 @@ namespace MackkadoITFramework.Helper
                 CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.CLIENTFOLDER);
 
             // Get version folder 
-            var versionFolder  =
+            var versionFolder =
                 CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.VERSIONFOLDER);
 
             // Get logo folder 
@@ -605,7 +605,7 @@ namespace MackkadoITFramework.Helper
                 CodeValue.GetCodeValueExtended(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.TEMPLATEFOLDER);
 
             var templateFolderPhysical =
-                CodeValue.GetCodeValueExtraString( MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.TEMPLATEFOLDER );
+                CodeValue.GetCodeValueExtraString(MakConstant.CodeTypeString.SYSTSET, MakConstant.SYSFOLDER.TEMPLATEFOLDER);
 
 
             // Get template folder 
@@ -617,10 +617,10 @@ namespace MackkadoITFramework.Helper
                 referencePathFileName =
                     filePathName.Replace(templateFolder, MakConstant.SYSFOLDER.TEMPLATEFOLDER);
             }
-            if ( filePathName.Contains( templateFolderPhysical ) )
+            if (filePathName.Contains(templateFolderPhysical))
             {
                 referencePathFileName =
-                    filePathName.Replace( templateFolderPhysical, MakConstant.SYSFOLDER.TEMPLATEFOLDER );
+                    filePathName.Replace(templateFolderPhysical, MakConstant.SYSFOLDER.TEMPLATEFOLDER);
             }
 
 
@@ -650,7 +650,7 @@ namespace MackkadoITFramework.Helper
             if (filePathName.Contains(MakConstant.SYSFOLDER.TEMPLATEFOLDER))
             {
                 opposite =
-                    filePathName.Replace(MakConstant.SYSFOLDER.TEMPLATEFOLDER, 
+                    filePathName.Replace(MakConstant.SYSFOLDER.TEMPLATEFOLDER,
                     MakConstant.SYSFOLDER.CLIENTFOLDER);
 
             }
@@ -768,7 +768,7 @@ namespace MackkadoITFramework.Helper
 
         // Open document for Location and Name
         //
-        public static ResponseStatus OpenDocument( string Location, string Name, string Type, object vkReadOnly, bool isFromWeb )
+        public static ResponseStatus OpenDocument(string Location, string Name, string Type, object vkReadOnly, bool isFromWeb)
         {
             if (Type == DocumentType.WORD)
             {
@@ -778,7 +778,7 @@ namespace MackkadoITFramework.Helper
 
                 var response = WordDocumentTasks.OpenDocument(filePathName, vkReadOnly, isFromWeb);
 
-                if ( response.ReturnCode < 1 )
+                if (response.ReturnCode < 1)
                 {
                     return response;
                 }
@@ -799,15 +799,15 @@ namespace MackkadoITFramework.Helper
             if (Type == DocumentType.PDF)
             {
                 string filePathName =
-                    getFilePathName( Location,
-                                          Name );
+                    getFilePathName(Location,
+                                          Name);
                 Process proc = new Process();
-                var adobe = CodeValue.GetCodeValueExtended( iCodeType: MakConstant.CodeTypeString.SYSTSET, iCodeValueID: "PDFEXEPATH" );
+                var adobe = CodeValue.GetCodeValueExtended(iCodeType: MakConstant.CodeTypeString.SYSTSET, iCodeValueID: "PDFEXEPATH");
 
-                if (!File.Exists( adobe ))
+                if (!File.Exists(adobe))
                 {
-                    MessageBox.Show( "I can't find Adobe Reader. Please configure SYSTSET.PDFEXTPATH." );
-                    
+                    MessageBox.Show("I can't find Adobe Reader. Please configure SYSTSET.PDFEXTPATH.");
+
                     var error = new ResponseStatus(MessageType.Error);
                     error.Message = "Adobe Reader can't be found. Please configure SYSTSET.PDFEXTPATH.";
                     return error;
@@ -819,7 +819,7 @@ namespace MackkadoITFramework.Helper
 
             }
 
-            return new ResponseStatus( MessageType.Informational );
+            return new ResponseStatus(MessageType.Informational);
         }
 
         /// <summary>
@@ -856,7 +856,7 @@ namespace MackkadoITFramework.Helper
         /// </summary>
         /// <param name="clientUID"></param>
         /// <returns></returns>
-        public static string GetImageUrl( string DocumentType, string curEnvironment = EnvironmentList.LOCAL )
+        public static string GetImageUrl(string DocumentType, string curEnvironment = EnvironmentList.LOCAL)
         {
 
             string image = "";
@@ -895,9 +895,9 @@ namespace MackkadoITFramework.Helper
             // Set no icon image if necessary
             //
             logoPath = MakConstant.SYSFOLDER.LOGOFOLDER;
-            logoName = logoName.Replace( MakConstant.SYSFOLDER.LOGOFOLDER, String.Empty );
-            
-            logoPathName = getFilePathName( logoPath, logoName );
+            logoName = logoName.Replace(MakConstant.SYSFOLDER.LOGOFOLDER, String.Empty);
+
+            logoPathName = getFilePathName(logoPath, logoName);
 
             return logoPathName;
         }
@@ -909,7 +909,7 @@ namespace MackkadoITFramework.Helper
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <returns></returns>
-        public static int GetFileImage(char source, char destination, string documentType )
+        public static int GetFileImage(char source, char destination, string documentType)
         {
             int image = MakConstant.Image.WordFileSourceNoDestinationNo;
 
@@ -1023,7 +1023,7 @@ namespace MackkadoITFramework.Helper
         /// Retrieves cached value for user settings
         /// </summary>
         /// <returns></returns>
-        public static string UserSettingGetCacheValue( UserSettings userSettings)
+        public static string UserSettingGetCacheValue(UserSettings userSettings)
         {
             string valueReturned = "";
 
@@ -1052,31 +1052,31 @@ namespace MackkadoITFramework.Helper
         {
             string fileExtension = "";
 
-            int pos = filename.IndexOf( '.' );
+            int pos = filename.IndexOf('.');
             // Check position
             //
-            string charExt4 = filename.Substring( filename.Length - 4, 1 );
-            if ( charExt4 == "." )
+            string charExt4 = filename.Substring(filename.Length - 4, 1);
+            if (charExt4 == ".")
             {
                 // It has 4 characters
                 //
                 pos = filename.Length - 4;
             }
-            string charExt3 = filename.Substring( filename.Length - 3, 1 );
-            if ( charExt3 == "." )
+            string charExt3 = filename.Substring(filename.Length - 3, 1);
+            if (charExt3 == ".")
             {
                 // It has 4 characters
                 //
                 pos = filename.Length - 4;
             }
 
-            if ( pos > 1 )
-                fileExtension = filename.Substring( pos + 1, filename.Length - pos - 1 );
+            if (pos > 1)
+                fileExtension = filename.Substring(pos + 1, filename.Length - pos - 1);
             else
                 fileExtension = "UNK";
 
             return fileExtension;
         }
-    
+
     }
 }

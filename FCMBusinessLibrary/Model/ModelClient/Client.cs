@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
+using MackkadoITFramework.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using FCMMySQLBusinessLibrary.FCMUtils;
-using MackkadoITFramework.Utils;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClient
 {
@@ -13,8 +13,8 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
         public int UID { get; set; }
         public int LogoImageSeqNum { get; set; }
 
-        [Required( ErrorMessage = "ABN is mandatory." )]
-        [Display( Name = "ABN" )]
+        [Required(ErrorMessage = "ABN is mandatory.")]
+        [Display(Name = "ABN")]
         public string ABN { get; set; }
 
         [Required(ErrorMessage = "Client name is mandatory.")]
@@ -25,12 +25,12 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
         [Display(Name = "Legal Name")]
         public string LegalName { get; set; }
 
-        [Required( ErrorMessage = "Address is mandatory." )]
-        [Display( Name = "Address" )]
+        [Required(ErrorMessage = "Address is mandatory.")]
+        [Display(Name = "Address")]
         public string Address { get; set; }
 
-        [Required( ErrorMessage = "Phone is mandatory." )]
-        [Display( Name = "Phone Number" )]
+        [Required(ErrorMessage = "Phone is mandatory.")]
+        [Display(Name = "Phone Number")]
         public string Phone { get; set; }
         public string Fax { get; set; }
 
@@ -57,10 +57,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
         [Display(Name = "Client logs on to the system with user")]
         public string FKUserID { get; set; }
 
-        [Display( Name = "Contractor Size" )]
+        [Display(Name = "Contractor Size")]
         public int FKDocumentSetUID { get; set; }
 
-        [Display( Name = "Contractor Size Description" )]
+        [Display(Name = "Contractor Size Description")]
         public string DocSetUIDDisplay { get; set; }
 
         public string UserIdCreatedBy { get; set; }
@@ -75,7 +75,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
         public FCMConstant.DataBaseType databasetype;
         public HeaderInfo _headerInfo { get; set; }
 
-        public List<Client> clientList { get; set; } 
+        public List<Client> clientList { get; set; }
 
         public Client()
         {

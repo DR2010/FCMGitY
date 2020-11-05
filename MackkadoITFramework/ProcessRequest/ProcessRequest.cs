@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary;
+﻿using FCMMySQLBusinessLibrary;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace MackkadoITFramework.ProcessRequest
 {
     public class ProcessRequest
     {
-       
+
         #region Fields 
         public int UID { get; set; }
         public string Description { get; set; }
@@ -82,7 +82,7 @@ namespace MackkadoITFramework.ProcessRequest
             {
                 processRequest.FKClientUID = Convert.ToInt32(reader[FieldName.FKClientUID].ToString());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 processRequest.FKClientUID = 0;
             }
@@ -211,7 +211,7 @@ namespace MackkadoITFramework.ProcessRequest
                         FieldString() +
                         ")" +
                             " VALUES " +
-                        "( "+
+                        "( " +
                     "  @" + FieldName.UID +
                     ", @" + FieldName.Description +
                     ", @" + FieldName.FKClientUID +

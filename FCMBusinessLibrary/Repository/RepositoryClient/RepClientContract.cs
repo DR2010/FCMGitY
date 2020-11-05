@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using FCMMySQLBusinessLibrary.Model.ModelClient;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
 using ConnString = MackkadoITFramework.Utils.ConnString;
-using FCMMySQLBusinessLibrary.Model.ModelClient;
 
 namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
 {
-    internal class RepClientContract: ClientContract
+    internal class RepClientContract : ClientContract
     {
-        
+
         // var student1 = new Student{firstName = "Bruce", lastName = "Willis"};
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// </summary>
         /// <returns></returns>
         public static ResponseStatus Insert(
-            HeaderInfo headerInfo, 
+            HeaderInfo headerInfo,
             ClientContract clientContract)
         {
             var rs = new ResponseStatus();
@@ -206,7 +206,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// <returns></returns>
         public static ResponseStatus Update(
             HeaderInfo headerInfo,
-            ClientContract clientContract )
+            ClientContract clientContract)
         {
             ResponseStatus ret = new ResponseStatus();
             ret.Message = "Item updated successfully";
@@ -341,7 +341,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             catch { clientContract.UpdateDateTime = DateTime.Now; }
             try { clientContract.CreationDateTime = Convert.ToDateTime(reader[FCMDBFieldName.ClientContract.CreationDateTime].ToString()); }
             catch { clientContract.CreationDateTime = DateTime.Now; }
-        
+
         }
 
         public static ResponseStatus GetValidContractOnDate(int clientID, DateTime date)

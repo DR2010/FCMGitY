@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows.Forms;
-using FCMMySQLBusinessLibrary.FCMUtils;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
 using FCMMySQLBusinessLibrary.Model.ModelClientDocument;
 using FCMMySQLBusinessLibrary.Model.ModelDocument;
 using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
@@ -11,25 +7,29 @@ using FCMMySQLBusinessLibrary.Service.SVCClientDocument.Interface;
 using FCMMySQLBusinessLibrary.Service.SVCClientDocument.ServiceContract;
 using FCMMySQLBusinessLibrary.Service.SVCDocument.Service;
 using FCMMySQLBusinessLibrary.Service.SVCDocument.ServiceContract;
-using MackkadoITFramework.Utils;
 using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Utils;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
 using Utils = MackkadoITFramework.Helper.Utils;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
 {
-    public class BUSClientDocument 
-    
+    public class BUSClientDocument
+
     {
         /// <summary>
         /// Client document list
         /// </summary>
         /// <returns></returns>
-        public static ClientDocumentListResponse List( ClientDocumentListRequest request )
+        public static ClientDocumentListResponse List(ClientDocumentListRequest request)
         {
             var response = new ClientDocumentListResponse();
             response.clientList = new List<scClientDocSetDocLink>();
 
-            response.clientList = RepClientDocument.ListS( request.clientUID, request.clientDocumentSetUID );
+            response.clientList = RepClientDocument.ListS(request.clientUID, request.clientDocumentSetUID);
 
             return response;
 
@@ -42,9 +42,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// <param name="clientID"> </param>
         /// <param name="clientDocumentSetUID"> </param>
         /// <returns></returns>
-        public static void ListCD( ClientDocument clientDocument, int clientID, int clientDocumentSetUID )
+        public static void ListCD(ClientDocument clientDocument, int clientID, int clientDocumentSetUID)
         {
-            RepClientDocument.List( clientDocument, clientID, clientDocumentSetUID );
+            RepClientDocument.List(clientDocument, clientID, clientDocumentSetUID);
         }
 
 
@@ -54,17 +54,17 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// <returns></returns>
         public static ClientDocument ClientDocumentReadS(int clientDocumentUID)
         {
-            return RepClientDocument.Read( clientDocumentUID );
+            return RepClientDocument.Read(clientDocumentUID);
         }
 
         /// <summary>
         /// Client document update
         /// </summary>
         /// <returns></returns>
-        public static SCClientDocument.ClientDocumentUpdateResponse ClientDocumentUpdate( ClientDocument clientDocument )
+        public static SCClientDocument.ClientDocumentUpdateResponse ClientDocumentUpdate(ClientDocument clientDocument)
         {
             var clientDocumentUpdateResponse = new SCClientDocument.ClientDocumentUpdateResponse();
-            clientDocumentUpdateResponse.responseStatus = RepClientDocument.Update( clientDocument );
+            clientDocumentUpdateResponse.responseStatus = RepClientDocument.Update(clientDocument);
 
             return clientDocumentUpdateResponse;
         }
@@ -73,7 +73,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// Client document delete multiple
         /// </summary>
         /// <returns></returns>
-        public static ResponseStatus ClientDocumentDeleteMultiple( HeaderInfo headerInfo, int clientUID, int clientDocumentSetUID, List<int> documentIDList )
+        public static ResponseStatus ClientDocumentDeleteMultiple(HeaderInfo headerInfo, int clientUID, int clientDocumentSetUID, List<int> documentIDList)
         {
             ResponseStatus response = new ResponseStatus();
 
@@ -81,7 +81,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
             {
                 response = ClientDocumentDelete(headerInfo, clientUID, clientDocumentSetUID, i);
             }
-            
+
             return response;
         }
 
@@ -89,51 +89,51 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// Client document delete
         /// </summary>
         /// <returns></returns>
-        public static ResponseStatus ClientDocumentDelete( HeaderInfo headerInfo, int clientUID, int clientDocumentSetUID, int clientDocumentUID )
+        public static ResponseStatus ClientDocumentDelete(HeaderInfo headerInfo, int clientUID, int clientDocumentSetUID, int clientDocumentUID)
         {
 
             string filePhysicallyRemoved = "";
 
             // Get client document
-            var clientDocument = RepClientDocument.Read( clientDocumentUID );
+            var clientDocument = RepClientDocument.Read(clientDocumentUID);
 
             // Delete file from folder
-            var fileNamePath = Utils.getFilePathNameLOCAL( clientDocument.clientDocumentSet.Folder + clientDocument.Location, clientDocument.FileName );
+            var fileNamePath = Utils.getFilePathNameLOCAL(clientDocument.clientDocumentSet.Folder + clientDocument.Location, clientDocument.FileName);
 
-            if ( File.Exists( fileNamePath ) )
+            if (File.Exists(fileNamePath))
             {
                 filePhysicallyRemoved = " File exists but not removed. ";
                 try
                 {
-                    File.Delete( fileNamePath );
+                    File.Delete(fileNamePath);
                     filePhysicallyRemoved = " File exists and has been removed. ";
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
-                    LogFile.WriteToTodaysLogFile( "Error deleting file after Remove issued" + ex );
+                    LogFile.WriteToTodaysLogFile("Error deleting file after Remove issued" + ex);
                     filePhysicallyRemoved = " File exists but not removed. ";
                 }
             }
 
             // Delete record from database
-            var response = RepClientDocument.Delete( clientUID, clientDocumentSetUID, clientDocumentUID );
+            var response = RepClientDocument.Delete(clientUID, clientDocumentSetUID, clientDocumentUID);
 
             response.Message = response.Message.Trim() + filePhysicallyRemoved;
 
-            LogFile.WriteToTodaysLogFile( response.Message + " " + clientDocument.FileName + " " + clientDocument.UID, headerInfo.UserID, "", "BUSClientDocument.cs" );
+            LogFile.WriteToTodaysLogFile(response.Message + " " + clientDocument.FileName + " " + clientDocument.UID, headerInfo.UserID, "", "BUSClientDocument.cs");
 
             return response;
         }
 
 
-        public static string NewVersion( ClientDocument clientDocument )
+        public static string NewVersion(ClientDocument clientDocument)
         {
-            return RepClientDocument.NewVersion( clientDocument );
+            return RepClientDocument.NewVersion(clientDocument);
         }
 
-        public static string NewVersionWeb( ClientDocument clientDocument )
+        public static string NewVersionWeb(ClientDocument clientDocument)
         {
-            return RepClientDocument.NewVersionWeb( clientDocument );
+            return RepClientDocument.NewVersionWeb(clientDocument);
         }
 
 
@@ -141,33 +141,33 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         {
             RepClientDocument.ListProjectPlanInTree(clientDocument, clientID, clientDocumentSetUID, fileList);
         }
-        
+
         public static void ListInTree(ClientDocument clientDocument, TreeView fileList, string listType)
         {
             RepClientDocument.ListInTree(clientDocument, fileList, listType);
         }
-        
+
         public static void ListImpacted(ClientDocument clientDocument, Model.ModelDocument.Document document)
         {
             RepClientDocument.ListImpacted(clientDocument, document);
         }
 
-        public static void AddRootFolder( ClientDocument clientDocument, int clientUID, int DocSetUID, string DestinationFolder )
+        public static void AddRootFolder(ClientDocument clientDocument, int clientUID, int DocSetUID, string DestinationFolder)
         {
             RepClientDocument.AddRootFolder(clientDocument, clientUID, DocSetUID, DestinationFolder);
         }
 
-        public static string GetComboIssueNumber( string documentCUID, int documentVersionNumber, int clientUID )
+        public static string GetComboIssueNumber(string documentCUID, int documentVersionNumber, int clientUID)
         {
 
-            return RepClientDocument.GetComboIssueNumber( documentCUID,
+            return RepClientDocument.GetComboIssueNumber(documentCUID,
                                                   documentVersionNumber,
-                                                  clientUID );
+                                                  clientUID);
         }
 
-        public static int GetLastClientCUID( int clientUID )
+        public static int GetLastClientCUID(int clientUID)
         {
-            return RepClientDocument.GetLastClientCUID( clientUID );
+            return RepClientDocument.GetLastClientCUID(clientUID);
 
         }
 
@@ -187,9 +187,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// </summary>
         /// <param name="clientDocumentUID"></param>
         /// <returns></returns>
-        public static ResponseStatus DeleteFile( int clientDocumentUID )
+        public static ResponseStatus DeleteFile(int clientDocumentUID)
         {
-            RepClientDocument.DeleteFile( clientDocumentUID );
+            RepClientDocument.DeleteFile(clientDocumentUID);
             return new ResponseStatus();
         }
 
@@ -239,7 +239,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// <param name="documentSetUID"></param>
         /// <param name="headerInfo"> </param>
         public static void AssociateDocumentsToClient(
-            ClientDocumentSet clientDocumentSet, 
+            ClientDocumentSet clientDocumentSet,
             int documentSetUID,
             HeaderInfo headerInfo)
         {
@@ -261,19 +261,19 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
             ClientDocument clientDocument = new ClientDocument();
             // clientDocument.AddRootFolder( clientDocumentSet.FKClientUID, clientDocumentSet.ClientSetID, clientDocumentSet.FolderOnly );
 
-            RepClientDocument.AddRootFolder( clientDocument, clientDocumentSet.FKClientUID, clientDocumentSet.ClientSetID, clientDocumentSet.FolderOnly );
+            RepClientDocument.AddRootFolder(clientDocument, clientDocumentSet.FKClientUID, clientDocumentSet.ClientSetID, clientDocumentSet.FolderOnly);
 
             // List client document list !!!!!!! Important because the ROOT folder is loaded ;-)
-            
+
             var documentSetList = new ClientDocument();
             // documentSetList.List( clientDocumentSet.FKClientUID, clientDocumentSet.ClientSetID );
 
-            RepClientDocument.List( documentSetList, clientDocumentSet.FKClientUID, clientDocumentSet.ClientSetID );
+            RepClientDocument.List(documentSetList, clientDocumentSet.FKClientUID, clientDocumentSet.ClientSetID);
 
             tvFileList.Nodes.Clear();
             // documentSetList.ListInTree(tvFileList, "CLIENT");
 
-            RepClientDocument.ListInTree(documentSetList, tvFileList, "CLIENT" );
+            RepClientDocument.ListInTree(documentSetList, tvFileList, "CLIENT");
 
             if (tvFileList.Nodes.Count > 0)
                 tvFileList.Nodes[0].Expand();
@@ -287,7 +287,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
             DocumentSet documentSet = new DocumentSet();
             documentSet.UID = documentSetUID;
             documentSet.Read(IncludeDocuments: 'Y');
-            
+
             // Load document in the treeview
             //
             Model.ModelDocument.Document root = new Model.ModelDocument.Document();
@@ -479,7 +479,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
             //
             // documentLink.clientDocument.UID = cdsl.LinkDocumentToClientSet(documentLink);
 
-            documentLink.clientDocument.UID = RepClientDocument.LinkDocumentToClientSet( documentLink );
+            documentLink.clientDocument.UID = RepClientDocument.LinkDocumentToClientSet(documentLink);
 
             foreach (TreeNode children in treeNode.Nodes)
             {
@@ -497,9 +497,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         public static string GetClientDocumentLocation(int clientDocumentUID)
         {
             string ret = "";
-            var clientDocument = BUSClientDocument.ClientDocumentReadS( clientDocumentUID );
+            var clientDocument = BUSClientDocument.ClientDocumentReadS(clientDocumentUID);
 
-            if ( clientDocument.UID > 0)
+            if (clientDocument.UID > 0)
             {
                 //  This is to prevent the first level from taking an extra \\ at the front
                 // it was causing the folder to be like \\%CLIENTFOLDER%\\
@@ -524,12 +524,12 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// <summary>
         /// List of documents
         /// </summary>
-        public static List<Document> ListDocumentsNotInSet( HeaderInfo headerInfo, int clientUID, int documentSetUID )
+        public static List<Document> ListDocumentsNotInSet(HeaderInfo headerInfo, int clientUID, int documentSetUID)
         {
             ClientDocumentSet documentSet = new ClientDocumentSet();
             documentSet.UID = documentSetUID;
 
-            var documentsNotInSet = documentSet.ListDocumentsNotInSet( headerInfo, clientUID, documentSetUID );
+            var documentsNotInSet = documentSet.ListDocumentsNotInSet(headerInfo, clientUID, documentSetUID);
 
             return documentsNotInSet;
         }
@@ -542,19 +542,19 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// <param name="clientDocumentSetUID"></param>
         /// <param name="documentUID"></param>
         /// <returns></returns>
-        public static ResponseStatus AddDocumentToSet( HeaderInfo headerInfo, int clientUID, int clientDocumentSetUID, int documentUID )
+        public static ResponseStatus AddDocumentToSet(HeaderInfo headerInfo, int clientUID, int clientDocumentSetUID, int documentUID)
         {
             string sourceFolder = "";
             string destinationFolder = "";
 
 
-            if ( clientUID <= 0 )
-                return new ResponseStatus { Message = "Client UID was not supplied.", XMessageType = MessageType.Error, ReturnCode = -0020, ReasonCode = 0001};
+            if (clientUID <= 0)
+                return new ResponseStatus { Message = "Client UID was not supplied.", XMessageType = MessageType.Error, ReturnCode = -0020, ReasonCode = 0001 };
 
-            if ( clientDocumentSetUID <= 0 )
+            if (clientDocumentSetUID <= 0)
                 return new ResponseStatus { Message = "Client Document Set UID  was not supplied.", XMessageType = MessageType.Error, ReturnCode = -0020, ReasonCode = 0002 };
 
-            if ( documentUID <= 0 )
+            if (documentUID <= 0)
                 return new ResponseStatus { Message = "Document UID  was not supplied.", XMessageType = MessageType.Error, ReturnCode = -0020, ReasonCode = 0003 };
 
             // Find Document
@@ -564,7 +564,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
             documentReadRequest.retrieveVoidedDocuments = false;
             documentReadRequest.UID = documentUID;
 
-            var documentReadResponse = BUSDocument.DocumentRead( documentReadRequest );
+            var documentReadResponse = BUSDocument.DocumentRead(documentReadRequest);
             var documentSelected = new Document();
             documentSelected = documentReadResponse.document;
 
@@ -575,14 +575,14 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
             folderReadRequestParent.retrieveVoidedDocuments = false;
             folderReadRequestParent.UID = documentSelected.ParentUID; // Reading parent
 
-            var folderParentResponse = BUSDocument.DocumentRead( folderReadRequestParent );
+            var folderParentResponse = BUSDocument.DocumentRead(folderReadRequestParent);
             var folderParent = new Document();
             folderParent = folderParentResponse.document;
 
             // Find the equivalent parent in ClientDocumentSetDocument
             //
             var foundParent = RepClientDocument.Find(folderParent.UID, clientDocumentSetUID, 'N', clientUID);
-            if ( foundParent.UID <= 0 )
+            if (foundParent.UID <= 0)
                 return new ResponseStatus { Message = "Parent folder not found.", XMessageType = MessageType.Error, ReturnCode = -0020, ReasonCode = 0006 };
 
             // Find ClientDocumentSet
@@ -592,14 +592,14 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
             clientDocumentSet.FKClientUID = clientUID;
             clientDocumentSet.Read();
 
-            if ( clientDocumentSet.UID <= 0 )
-                return new ResponseStatus { Message = "Client Document Set not found.", XMessageType = MessageType.Error, ReturnCode = -0030, ReasonCode = 0004};
+            if (clientDocumentSet.UID <= 0)
+                return new ResponseStatus { Message = "Client Document Set not found.", XMessageType = MessageType.Error, ReturnCode = -0030, ReasonCode = 0004 };
 
             // Create link
             //
             var documentLink = new scClientDocSetDocLink();
 
-            if ( documentSelected.RecordType == "DOCUMENT" )
+            if (documentSelected.RecordType == "DOCUMENT")
             #region Document
             {
                 documentLink.document = new Document();
@@ -619,7 +619,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
                 documentLink.clientDocument.SourceIssueNumber = documentLink.document.IssueNumber;
                 documentLink.clientDocument.ClientIssueNumber = 00;
 
-                if ( documentLink.document.RecordType == FCMConstant.RecordType.FOLDER )
+                if (documentLink.document.RecordType == FCMConstant.RecordType.FOLDER)
                 {
                     documentLink.clientDocument.ComboIssueNumber = documentLink.document.CUID;
                     documentLink.clientDocument.FileName = documentLink.document.SimpleFileName;
@@ -627,9 +627,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
                 else
                 {
                     documentLink.clientDocument.ComboIssueNumber =
-                    BUSClientDocument.GetComboIssueNumber( documentLink.document.CUID,
+                    BUSClientDocument.GetComboIssueNumber(documentLink.document.CUID,
                                                            documentLink.document.IssueNumber,
-                                                           clientDocumentSet.FKClientUID );
+                                                           clientDocumentSet.FKClientUID);
 
 
                     documentLink.clientDocument.FileName = documentLink.clientDocument.ComboIssueNumber + " " +
@@ -650,7 +650,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
                 // 01-Jul-2013
                 // Retrieving the clientdocument parent using the UID for the parent clientdocument
                 //
-//                documentLink.clientDocument.Location = BUSClientDocument.GetClientDocumentLocation(folderReadRequestParent.UID);
+                //                documentLink.clientDocument.Location = BUSClientDocument.GetClientDocumentLocation(folderReadRequestParent.UID);
                 documentLink.clientDocument.Location = BUSClientDocument.GetClientDocumentLocation(foundParent.UID);
 
                 documentLink.clientDocument.RecordType = documentLink.document.RecordType;
@@ -673,7 +673,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
             //
             // documentLink.clientDocument.UID = cdsl.LinkDocumentToClientSet(documentLink);
 
-            documentLink.clientDocument.UID = LinkDocumentToClientSet( documentLink );
+            documentLink.clientDocument.UID = LinkDocumentToClientSet(documentLink);
 
             return new ResponseStatus();
 
@@ -686,7 +686,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service
         /// This client document is not related to a MASTER document.
         /// </summary>
         /// <returns></returns>
-        public static ResponseStatus AddNewDocumentToClient( ClientDocument clientDocument )
+        public static ResponseStatus AddNewDocumentToClient(ClientDocument clientDocument)
         {
             var response = RepClientDocument.Add(clientDocument);
 

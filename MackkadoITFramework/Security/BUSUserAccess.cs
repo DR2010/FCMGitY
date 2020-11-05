@@ -64,12 +64,12 @@ namespace MackkadoITFramework.Security
             UserAccess userRead = new UserAccess();
 
             var readuser = userRead.Read(inUser.UserID);
-            if (readuser.ReturnCode == 0001 && readuser.ReasonCode == 0001 )
+            if (readuser.ReturnCode == 0001 && readuser.ReasonCode == 0001)
             {
                 response = user.UpdatePassword();
                 return response;
             }
-            
+
             if (readuser.ReturnCode == 0001 && readuser.ReasonCode == 0002)
             {
                 response.ReturnCode = -0010;
@@ -79,10 +79,10 @@ namespace MackkadoITFramework.Security
                 return response;
             }
 
-            if (readuser.ReturnCode < 0000 )
+            if (readuser.ReturnCode < 0000)
             {
                 response = readuser;
-            }            
+            }
 
             return response;
         }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
+﻿using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using MackkadoITFramework.Helper;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
-using System.Windows.Forms;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 {
@@ -37,10 +37,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 
             using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
-                
+
                 var commandString = string.Format(
                 " SELECT " +
-                RepDocument.SQLDocumentConcat("DOC") + 
+                RepDocument.SQLDocumentConcat("DOC") +
                 "   FROM     Document DOC " +
                 "  WHERE DOC.SourceCode = 'FCM' " +
                 "    AND DOC.IsVoid = 'N' " +
@@ -58,7 +58,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                         {
                             Model.ModelDocument.Document _Document = new Model.ModelDocument.Document();
                             RepDocument.LoadDocumentFromReader(_Document, "DOC", reader);
-                            
+
                             documentList.Add(_Document);
                         }
                     }
@@ -69,7 +69,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
         // -----------------------------------------------------
         //        List Documents for a Document Set
         // -----------------------------------------------------
-        public void ListDocSet( int documentSetUID )
+        public void ListDocSet(int documentSetUID)
         {
             this.documentList = new List<Model.ModelDocument.Document>();
 
@@ -77,7 +77,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             {
 
                 var commandString = string.Format(
-                "  SELECT "+
+                "  SELECT " +
                 RepDocument.SQLDocumentConcat("DOC") +
                 " ,LNK.FKParentDocumentUID " +
                 " ,LNK.FKParentDocumentSetUID " +
@@ -120,7 +120,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
         //           Load documents in a tree
         // -----------------------------------------------------
         public static void ListInTree(
-            TreeView fileList, 
+            TreeView fileList,
             DocumentList documentList,
             Model.ModelDocument.Document root)
         {
@@ -135,7 +135,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             // rootDocument.Read();
 
             rootDocument = RepDocument.Read(false, root.UID);
-            
+
             // Create root
             //
             var rootNode = new TreeNode(rootDocument.FileName, MakConstant.Image.Folder, MakConstant.Image.Folder);
@@ -150,7 +150,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             {
                 // Ignore root folder
                 if (document.CUID == "ROOT") continue;
-                    
+
                 // Check if folder has a parent
                 string cdocumentUID = document.UID.ToString();
                 string cparentIUID = document.ParentUID.ToString();
@@ -194,14 +194,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     default:
                         image = MakConstant.Image.Word32;
                         imageSelected = MakConstant.Image.Word32;
- 
+
                         break;
                 }
                 #endregion Image
 
                 if (document.ParentUID == 0)
                 {
-                    var treeNode = new TreeNode( document.FileName, image, image );
+                    var treeNode = new TreeNode(document.FileName, image, image);
                     treeNode.Tag = document;
                     treeNode.Name = cdocumentUID;
 
@@ -212,11 +212,11 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     // Find the parent node
                     //
                     var node = fileList.Nodes.Find(cparentIUID, true);
-                    
+
                     if (node.Count() > 0)
                     {
 
-                        var treeNode = new TreeNode( document.FileName, image, imageSelected );
+                        var treeNode = new TreeNode(document.FileName, image, imageSelected);
                         treeNode.Tag = document;
                         treeNode.Name = cdocumentUID;
 
@@ -226,7 +226,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     {
                         // Add Element to the root
                         //
-                        var treeNode = new TreeNode( document.FileName, image, imageSelected );
+                        var treeNode = new TreeNode(document.FileName, image, imageSelected);
                         treeNode.Tag = document;
                         treeNode.Name = cdocumentUID;
 
@@ -236,7 +236,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 }
             }
         }
- 
+
         // -----------------------------------------------------
         //    List Documents for a client
         // -----------------------------------------------------
@@ -248,12 +248,12 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             {
 
                 var commandString = string.Format(
-                " SELECT " + 
+                " SELECT " +
                 RepDocument.SQLDocumentConcat("DOC") +
                 "   FROM Document DOC " +
                 "  WHERE SourceCode = 'CLIENT' " +
                 "    AND FKClientUID = {0} " +
-                "    AND IsVoid <> 'Y' " + 
+                "    AND IsVoid <> 'Y' " +
                 "  ORDER BY PARENTUID ASC, SequenceNumber ASC ",
                 clientUID);
 

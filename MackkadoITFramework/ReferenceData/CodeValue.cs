@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using MackkadoITFramework.ErrorHandling;
+﻿using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MackkadoITFramework.ReferenceData
 {
-    public class CodeValue 
+    public class CodeValue
     {
         [Display(Name = "Code Type")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Code Type must be supplied.")]
@@ -96,7 +96,7 @@ namespace MackkadoITFramework.ReferenceData
             using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
             {
 
-                var commandString = 
+                var commandString =
                                     " SELECT " +
                                     "       ValueExtended " +
                                     "  FROM rdCodeValue" +
@@ -144,12 +144,12 @@ namespace MackkadoITFramework.ReferenceData
         /// <param name="iCodeValueID"></param>
         /// <param name="headerInfo"> </param>
         /// <returns></returns>
-        public static string GetCodeValueExtraString( string iCodeType, string iCodeValueID, string constring = "" )
+        public static string GetCodeValueExtraString(string iCodeType, string iCodeValueID, string constring = "")
         {
-            if ( string.IsNullOrEmpty( constring ) )
+            if (string.IsNullOrEmpty(constring))
                 constring = ConnString.ConnectionStringFramework;
 
-            if ( string.IsNullOrEmpty( constring ) )
+            if (string.IsNullOrEmpty(constring))
             {
                 LogFile.WriteToTodaysLogFile(
                     "GetCodeValueExtraString Error. Connection string is empty.",
@@ -161,34 +161,34 @@ namespace MackkadoITFramework.ReferenceData
 
             string ret = "";
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionStringFramework ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
             {
 
-                var commandString = 
+                var commandString =
                                     " SELECT " +
                                     "       ExtraString " +
                                     "  FROM rdCodeValue" +
                                     " WHERE FKCodeType = @FKCodeType " +
                                     "   AND ID         = @UID ";
 
-                using ( var command = new MySqlCommand(
-                                            commandString, connection ) )
+                using (var command = new MySqlCommand(
+                                            commandString, connection))
                 {
 
-                    command.Parameters.AddWithValue( "@UID", iCodeValueID );
-                    command.Parameters.AddWithValue( "@FKCodeType", iCodeType );
+                    command.Parameters.AddWithValue("@UID", iCodeValueID);
+                    command.Parameters.AddWithValue("@FKCodeType", iCodeType);
 
                     try
                     {
                         connection.Open();
                         MySqlDataReader reader = command.ExecuteReader();
 
-                        if ( reader.Read() )
+                        if (reader.Read())
                         {
-                            ret = reader ["ExtraString"] as string;
+                            ret = reader["ExtraString"] as string;
                         }
                     }
-                    catch ( Exception ex )
+                    catch (Exception ex)
                     {
 
                         LogFile.WriteToTodaysLogFile(
@@ -196,7 +196,7 @@ namespace MackkadoITFramework.ReferenceData
                             programName: "ProcessRequestCodeValues.cs"
                             );
 
-                        throw new Exception( ex.ToString() );
+                        throw new Exception(ex.ToString());
 
                     }
                 }
@@ -213,7 +213,7 @@ namespace MackkadoITFramework.ReferenceData
             if (string.IsNullOrEmpty(constring))
                 constring = ConnString.ConnectionStringFramework;
 
-            if ( string.IsNullOrEmpty(constring) )
+            if (string.IsNullOrEmpty(constring))
             {
                 LogFile.WriteToTodaysLogFile(
                     "GetCodeValueDescription Error. Connection string is empty.",
@@ -226,7 +226,7 @@ namespace MackkadoITFramework.ReferenceData
             using (var connection = new MySqlConnection(constring))
             {
 
-                var commandString = 
+                var commandString =
                                     " SELECT " +
                                     "       Description " +
                                     "  FROM rdCodeValue" +
@@ -330,7 +330,7 @@ namespace MackkadoITFramework.ReferenceData
                     {
                         Description = ex.ToString();
 
-                        LogFile.WriteToTodaysLogFile(this.Description, Helper.Utils.UserID, null,"ProcessRequestCodeValues.cs");
+                        LogFile.WriteToTodaysLogFile(this.Description, Helper.Utils.UserID, null, "ProcessRequestCodeValues.cs");
 
                         throw new Exception(ex.ToString());
                     }
@@ -367,8 +367,8 @@ namespace MackkadoITFramework.ReferenceData
                 var commandString =
                 (
                    "INSERT INTO rdCodeValue ( " +
-                   "FKCodeType, "+
-                   "ID, " + 
+                   "FKCodeType, " +
+                   "ID, " +
                    "Description, " +
                    "Abbreviation, " +
                    "ValueExtended" +
@@ -406,10 +406,10 @@ namespace MackkadoITFramework.ReferenceData
             if (string.IsNullOrEmpty(FKCodeType))
                 return new ResponseStatus { ReturnCode = -0010, ReasonCode = 0001, Message = "Code Type is mandatory." };
 
-            if (string.IsNullOrEmpty( ID ))
+            if (string.IsNullOrEmpty(ID))
                 return new ResponseStatus { ReturnCode = -0010, ReasonCode = 0002, Message = "ID not supplied." };
 
-            if (string.IsNullOrEmpty( Description ))
+            if (string.IsNullOrEmpty(Description))
                 return new ResponseStatus { ReturnCode = -0010, ReasonCode = 0003, Message = "Description not supplied." };
 
             using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
@@ -425,9 +425,9 @@ namespace MackkadoITFramework.ReferenceData
                    "WHERE   " +
                    "      FKCodeType  = '{3}' " +
                    "  AND ID          = '{4}' ",
-                   Description, 
-                   Abbreviation ,
-                   ValueExtended, 
+                   Description,
+                   Abbreviation,
+                   ValueExtended,
                    FKCodeType,
                    ID
                  );
@@ -449,7 +449,7 @@ namespace MackkadoITFramework.ReferenceData
         //   Listing code values
         // -----------------------------------------------------
 
-        
+
         public void ListInCombo(string codeType, System.Windows.Forms.ComboBox input)
         {
             this.List(codeType);
@@ -485,7 +485,7 @@ namespace MackkadoITFramework.ReferenceData
             ListForCodeType = codeType;
 
             this.codeValueList = new List<CodeValue>();
-            this.codeValueIDList= new List<string>();
+            this.codeValueIDList = new List<string>();
 
             using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
             {
@@ -498,7 +498,7 @@ namespace MackkadoITFramework.ReferenceData
                 " ,Abbreviation " +
                 " ,ValueExtended " +
                 "   FROM rdCodeValue " +
-                " WHERE FKCodeType = '{0}'" , codeType  );
+                " WHERE FKCodeType = '{0}'", codeType);
 
                 using (var command = new MySqlCommand(
                                       commandString, connection))
@@ -535,7 +535,7 @@ namespace MackkadoITFramework.ReferenceData
         public static IEnumerable<CodeValue> ListCodeValues(string codeType)
         {
             List<CodeValue> listOfCodeValues = new List<CodeValue>();
-            
+
             using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
             {
 
@@ -704,7 +704,7 @@ namespace MackkadoITFramework.ReferenceData
                 " ,Abbreviation " +
                 " ,ValueExtended " +
                 "   FROM rdCodeValue " +
-                " ORDER BY FKCodeType " ) ;
+                " ORDER BY FKCodeType ");
 
                 using (var command = new MySqlCommand(
                                       commandString, connection))

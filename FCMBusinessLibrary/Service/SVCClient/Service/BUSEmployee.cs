@@ -1,20 +1,20 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.Model.ModelClient;
+using FCMMySQLBusinessLibrary.Service.SVCClient.ServiceContract;
+using MackkadoITFramework.ErrorHandling;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FCMMySQLBusinessLibrary.Service.SVCClient.ServiceContract;
-using MackkadoITFramework.ErrorHandling;
-using FCMMySQLBusinessLibrary.Model.ModelClient;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 {
     public class BUSEmployee
     {
 
-        public static SCEmployee.EmployeeListResponse EmployeeList( int clientUID )
+        public static SCEmployee.EmployeeListResponse EmployeeList(int clientUID)
         {
             var employeeList = new SCEmployee.EmployeeListResponse();
-            var list = Model.ModelClient.Employee.List( clientUID );
+            var list = Model.ModelClient.Employee.List(clientUID);
 
             employeeList.response = new ResponseStatus();
             employeeList.employeeList = list;
@@ -23,7 +23,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 
         }
 
-        public static SCEmployee.EmployeeReadResponse EmployeeRead( int clientUID, int employeeUID )
+        public static SCEmployee.EmployeeReadResponse EmployeeRead(int clientUID, int employeeUID)
         {
             var employeeResponse = new SCEmployee.EmployeeReadResponse();
 
@@ -36,7 +36,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             return employeeResponse;
         }
 
-        public static ResponseStatus EmployeeUpdate( Employee employee )
+        public static ResponseStatus EmployeeUpdate(Employee employee)
         {
             var employeeResponse = new ResponseStatus();
 
@@ -45,7 +45,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             return employeeResponse;
         }
 
-        public static SCEmployee.EmployeeCreateResponse EmployeeCreate( Employee employee )
+        public static SCEmployee.EmployeeCreateResponse EmployeeCreate(Employee employee)
         {
             var employeeResponse = new SCEmployee.EmployeeCreateResponse();
 
@@ -56,7 +56,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         }
 
 
-        public static ResponseStatus EmployeeDelete( Employee employee )
+        public static ResponseStatus EmployeeDelete(Employee employee)
         {
             var employeeResponse = new ResponseStatus();
 
@@ -65,6 +65,6 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             return employeeResponse;
         }
 
-    
+
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MackkadoITFramework.ErrorHandling;
+using System;
 using System.Windows.Forms;
-using MackkadoITFramework.ErrorHandling;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 {

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FCMMySQLBusinessLibrary.Model.ModelDocument;
+﻿using FCMMySQLBusinessLibrary.Model.ModelDocument;
 using FCMMySQLBusinessLibrary.Service.SVCDocument.ServiceContract;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
 {
@@ -47,7 +47,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
         /// <summary>
         /// List of documents
         /// </summary>
-        public static List<Document> ListDocumentsNotInSet( HeaderInfo headerInfo, int documentSetUID )
+        public static List<Document> ListDocumentsNotInSet(HeaderInfo headerInfo, int documentSetUID)
         {
             DocumentSet documentSet = new DocumentSet();
             documentSet.UID = documentSetUID;
@@ -57,7 +57,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
             return documentsNotInSet;
         }
 
-        public static ResponseStatus AddDocumentToSet( HeaderInfo headerInfo, int documentSetUID, int documentUID)
+        public static ResponseStatus AddDocumentToSet(HeaderInfo headerInfo, int documentSetUID, int documentUID)
         {
 
             // Find Document
@@ -78,7 +78,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCDocument.Service
             folderReadRequestParent.retrieveVoidedDocuments = false;
             folderReadRequestParent.UID = documentSelected.ParentUID; // Reading parent
 
-            var folderParentResponse = BUSDocument.DocumentRead( folderReadRequestParent );
+            var folderParentResponse = BUSDocument.DocumentRead(folderReadRequestParent);
             var folderParent = new Document();
             folderParent = folderParentResponse.document;
 

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace MackkadoITFramework.ReferenceData
 {
@@ -112,7 +112,7 @@ namespace MackkadoITFramework.ReferenceData
                 "   FROM rdRelatedCodeValue " +
                 " WHERE FKRelatedCodeID = '{0}' " +
                 "   AND FKCodeTypeFrom = '{1}' " +
-                "   AND FKCodeValueFrom = '{2}' " 
+                "   AND FKCodeValueFrom = '{2}' "
                 , RelatedCodeID
                 , CodeTypeFrom
                 , CodeValueFrom);
@@ -162,7 +162,7 @@ namespace MackkadoITFramework.ReferenceData
                 " ,FKCodeTypeTo " +
                 " ,FKCodeValueTo " +
                 "   FROM rdRelatedCodeValue " +
-                " ORDER BY FKRelatedCodeID, FKCodeTypeFrom, FKCodeValueFrom " 
+                " ORDER BY FKRelatedCodeID, FKCodeTypeFrom, FKCodeValueFrom "
                 );
 
                 using (var command = new MySqlCommand(
@@ -190,6 +190,6 @@ namespace MackkadoITFramework.ReferenceData
 
         }
 
-    
+
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 {
@@ -53,7 +53,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                     {
                         try
                         {
-                            this.UID = Convert.ToInt32( reader["UID"].ToString());
+                            this.UID = Convert.ToInt32(reader["UID"].ToString());
                             this.FKClientDocumentUID = Convert.ToInt32(reader["FKClientDocumentUID"].ToString());
                             this.FKClientUID = Convert.ToInt32(reader["FKClientUID"].ToString());
                             this.IssueNumberText = reader["IssueNumberText"].ToString();

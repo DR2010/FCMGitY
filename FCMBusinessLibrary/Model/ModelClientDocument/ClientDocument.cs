@@ -1,16 +1,16 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Linq;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
 using FCMMySQLBusinessLibrary.Repository;
 using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
+using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.ReferenceData;
 using MackkadoITFramework.Utils;
-using FCMMySQLBusinessLibrary.FCMUtils;
-using MackkadoITFramework.ErrorHandling;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 {
@@ -24,70 +24,72 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
         public int UID { get; set; }
 
-        [Display( Name = "Document Unique ID" )]
-        public string DocumentCUID { 
-            get { return _DocumentCUID; } 
-            set { 
+        [Display(Name = "Document Unique ID")]
+        public string DocumentCUID
+        {
+            get { return _DocumentCUID; }
+            set
+            {
                 _DocumentCUID = value;
 
                 if (_DocumentCUID.Trim().ToUpper() == "ROOT")
                     IsRoot = 'Y';
                 else
                     IsRoot = 'N';
-            } 
+            }
         }
 
-        [Display( Name = "Client Identifier" )]
+        [Display(Name = "Client Identifier")]
         public int FKClientUID { get; set; }
 
-        [Display( Name = "Client Document Set Identifier" )]
+        [Display(Name = "Client Document Set Identifier")]
         public int FKClientDocumentSetUID { get; set; }
 
-        [Display( Name = "Document Identifier" )]
+        [Display(Name = "Document Identifier")]
         public int FKDocumentUID { get; set; }
 
-        [Display( Name = "Source Location" )]
+        [Display(Name = "Source Location")]
         public string SourceLocation { get; set; }
 
-        [Display( Name = "Source File Name" )]
+        [Display(Name = "Source File Name")]
         public string SourceFileName { get; set; }
 
-        [Display( Name = "Location" )]
+        [Display(Name = "Location")]
         public string Location { get; set; }
 
-        [Display( Name = "File Name" )]
+        [Display(Name = "File Name")]
         public string FileName { get; set; }
 
-        [Display( Name = "Source Issue Number" )]
+        [Display(Name = "Source Issue Number")]
         public int SourceIssueNumber { get; set; }
 
-        [Display( Name = "Client Version Number" )]
+        [Display(Name = "Client Version Number")]
         public int ClientIssueNumber { get; set; }
 
-        [Display( Name = "Sequence Number" )]
+        [Display(Name = "Sequence Number")]
         public int SequenceNumber { get; set; }
 
-        [Display( Name = "Generated" )]
+        [Display(Name = "Generated")]
         public char Generated { get; set; }
 
-        [Display( Name = "Source File Present" )]
+        [Display(Name = "Source File Present")]
         public char SourceFilePresent { get; set; }
 
-        [Display( Name = "Destination File Present" )]
+        [Display(Name = "Destination File Present")]
         public char DestinationFilePresent { get; set; }
 
-        [Display( Name = "Start Date" )]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
-        [Display( Name = "End Date" )]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
-        [Display( Name = "Record Type" )]
+        [Display(Name = "Record Type")]
         public string RecordType
-        { 
-            get { return _RecordType; } 
-            set 
-            { 
+        {
+            get { return _RecordType; }
+            set
+            {
                 _RecordType = value;
 
                 if (_RecordType.Trim() == FCMConstant.RecordType.FOLDER)
@@ -95,37 +97,37 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 else
                     IsFolder = 'N';
 
-            } 
+            }
         }
 
-        [Display( Name = "Parent UID" )]
+        [Display(Name = "Parent UID")]
         public int ParentUID { get; set; }
 
-        [Display( Name = "Is Project Plan" )]
+        [Display(Name = "Is Project Plan")]
         public string IsProjectPlan { get; set; }
 
-        [Display( Name = "Document Type" )]
+        [Display(Name = "Document Type")]
         public string DocumentType { get; set; }
 
-        [Display( Name = "Combo Issue Number" )]
+        [Display(Name = "Combo Issue Number")]
         public string ComboIssueNumber { get; set; }
 
-        [Display( Name = "Is Void" )]
+        [Display(Name = "Is Void")]
         public char IsVoid { get; set; }
 
-        [Display( Name = "Is Root" )]
+        [Display(Name = "Is Root")]
         public char IsRoot { get; set; }
 
-        [Display( Name = "Is Folder" )]
+        [Display(Name = "Is Folder")]
         public char IsFolder { get; set; }
 
-        [Display( Name = "Is Checked" )]
+        [Display(Name = "Is Checked")]
         public bool IsChecked { get; set; }
 
-        [Display( Name = "Is Locked" )]
+        [Display(Name = "Is Locked")]
         public char IsLocked { get; set; }
 
-        [Display( Name = "Generation Message" )]
+        [Display(Name = "Generation Message")]
         public string GenerationMessage { get; set; }
 
         #endregion properties

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using MackkadoITFramework.ErrorHandling;
+﻿using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace MackkadoITFramework.Security
 {
@@ -38,7 +38,7 @@ namespace MackkadoITFramework.Security
             _headerInfo = headerInfo;
         }
 
-        public bool UserHasAccessToRole(string userid, string roleToCheck )
+        public bool UserHasAccessToRole(string userid, string roleToCheck)
         {
             var roleList = UserRoleList(userid);
             foreach (var role in roleList)
@@ -50,12 +50,12 @@ namespace MackkadoITFramework.Security
             return false;
         }
 
-        public List<SecurityUserRole> UserRoleList( string userid )
+        public List<SecurityUserRole> UserRoleList(string userid)
         {
             List<SecurityUserRole> rolelist = new List<SecurityUserRole>();
             securityUserRoles = new List<SecurityUserRole>();
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionStringFramework ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionStringFramework))
             {
 
                 var commandString = string.Format(
@@ -68,10 +68,10 @@ namespace MackkadoITFramework.Security
                 " ,IsActive " +
                 " ,IsVoid " +
                 "   FROM SecurityUserRole " +
-                " WHERE FK_UserID = '{0}' AND IsActive='Y' ", userid );
+                " WHERE FK_UserID = '{0}' AND IsActive='Y' ", userid);
 
                 using (var command = new MySqlCommand(
-                                      commandString, connection ))
+                                      commandString, connection))
                 {
                     connection.Open();
                     using (MySqlDataReader reader = command.ExecuteReader())
@@ -79,16 +79,16 @@ namespace MackkadoITFramework.Security
                         while (reader.Read())
                         {
                             SecurityUserRole SecurityUserRole = new SecurityUserRole(_headerInfo);
-                            SecurityUserRole.UniqueID = Convert.ToInt32( reader["UniqueID"].ToString() );
+                            SecurityUserRole.UniqueID = Convert.ToInt32(reader["UniqueID"].ToString());
                             SecurityUserRole.FK_UserID = reader["FK_UserID"].ToString();
                             SecurityUserRole.FK_Role = reader["FK_Role"].ToString();
-                            SecurityUserRole.StartDate = Convert.ToDateTime( reader["StartDate"].ToString() );
-                            SecurityUserRole.EndDate = Convert.ToDateTime( reader["EndDate"] );
+                            SecurityUserRole.StartDate = Convert.ToDateTime(reader["StartDate"].ToString());
+                            SecurityUserRole.EndDate = Convert.ToDateTime(reader["EndDate"]);
                             SecurityUserRole.IsActive = reader["IsActive"].ToString();
                             SecurityUserRole.IsVoid = reader["IsVoid"].ToString();
 
-                            rolelist.Add( SecurityUserRole );
-                            securityUserRoles.Add( SecurityUserRole );
+                            rolelist.Add(SecurityUserRole);
+                            securityUserRoles.Add(SecurityUserRole);
                         }
                     }
                 }
@@ -239,14 +239,15 @@ namespace MackkadoITFramework.Security
                 catch (Exception ex)
                 {
 
-                    LogFile.WriteToTodaysLogFile( ex.ToString(), _headerInfo.UserID, "", "SecurityUserRole.cs");
-                    
+                    LogFile.WriteToTodaysLogFile(ex.ToString(), _headerInfo.UserID, "", "SecurityUserRole.cs");
+
                     return new ResponseStatus(MessageType.Error)
-                               {
-                                   ReturnCode = -0010, ReasonCode = 0001, 
-                                   Message = "Error deleting user role.",
-                                   UniqueCode = ResponseStatus.MessageCode.Error.FCMERR00000002
-                               };
+                    {
+                        ReturnCode = -0010,
+                        ReasonCode = 0001,
+                        Message = "Error deleting user role.",
+                        UniqueCode = ResponseStatus.MessageCode.Error.FCMERR00000002
+                    };
                 }
             }
             return ret;
@@ -265,7 +266,7 @@ namespace MackkadoITFramework.Security
                 FieldName.FK_UserID + "," +
                 FieldName.FK_Role + " " +
                 "   FROM SecurityUserRole " +
-                "  WHERE FK_UserID = '{0}' "+
+                "  WHERE FK_UserID = '{0}' " +
                 "   ORDER BY FK_Role ASC ", userID
                 );
 
@@ -317,7 +318,7 @@ namespace MackkadoITFramework.Security
             return ret;
         }
 
-        
+
 
     }
 }

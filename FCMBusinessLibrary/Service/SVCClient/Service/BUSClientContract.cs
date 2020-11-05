@@ -1,8 +1,8 @@
-﻿using System;
-using FCMMySQLBusinessLibrary.Repository.RepositoryClient;
+﻿using FCMMySQLBusinessLibrary.Repository.RepositoryClient;
 using FCMMySQLBusinessLibrary.Service.SVCClient.Contract;
 using FCMMySQLBusinessLibrary.Service.SVCClient.Interface;
 using MackkadoITFramework.ErrorHandling;
+using System;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 {
@@ -19,7 +19,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             // Using Repository
             ClientContractAddResponse response = new ClientContractAddResponse();
             response.responseStatus = RepClientContract.Insert(
-                clientContract.headerInfo, 
+                clientContract.headerInfo,
                 clientContract.clientContract);
 
             return response;
@@ -34,9 +34,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         public static ResponseStatus ClientContractList(int clientContractUID)
         {
             var response = new ResponseStatus
-                               {
-                                   Contents = RepClientContract.List(clientContractUID)
-                               };
+            {
+                Contents = RepClientContract.List(clientContractUID)
+            };
             return response;
         }
 
@@ -81,7 +81,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         {
             var response = new ClientContractDeleteResponse();
             response.responseStatus = RepClientContract.Delete(
-                clientContractDelete.headerInfo, 
+                clientContractDelete.headerInfo,
                 clientContractDelete.clientContract);
 
             return response;

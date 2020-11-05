@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MackkadoITFramework.Utils;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-using System.Data;
-using MackkadoITFramework.Utils;
-using MySql.Data.MySqlClient;
 
 namespace FCMMySQLBusinessLibrary
 {
@@ -55,7 +55,7 @@ namespace FCMMySQLBusinessLibrary
         /// List user settings for a given user
         /// </summary>
         /// <returns></returns>
-        public static List<UserSettings> List( string userID )
+        public static List<UserSettings> List(string userID)
         {
             List<UserSettings> userSettingList = new List<UserSettings>();
 
@@ -69,7 +69,7 @@ namespace FCMMySQLBusinessLibrary
                     "       FKUserID = @FKUserID " +
                     "   ORDER BY FKUserID ASC, FKScreenCode ASC ";
 
-                using (var command = new MySqlCommand( commandString, connection ))
+                using (var command = new MySqlCommand(commandString, connection))
                 {
 
                     command.Parameters.Add("@FKUserID", MySqlDbType.VarChar).Value = userID.Trim();
@@ -92,7 +92,7 @@ namespace FCMMySQLBusinessLibrary
             }
 
             return userSettingList;
-            
+
         }
 
         /// <summary>
@@ -104,8 +104,8 @@ namespace FCMMySQLBusinessLibrary
             checkOnly._FKUserID = _FKUserID;
             checkOnly._FKScreenCode = _FKScreenCode;
             checkOnly._FKControlCode = _FKControlCode;
-            checkOnly._FKPropertyCode  = _FKPropertyCode;
-            
+            checkOnly._FKPropertyCode = _FKPropertyCode;
+
             if (checkOnly.Read())
             {
                 Update();
@@ -148,7 +148,7 @@ namespace FCMMySQLBusinessLibrary
                     command.Parameters.Add("@FKControlCode", MySqlDbType.VarChar).Value = FKControlCode;
                     command.Parameters.Add("@FKPropertyCode", MySqlDbType.VarChar).Value = FKPropertyCode;
 
-                    
+
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
 
@@ -202,7 +202,7 @@ namespace FCMMySQLBusinessLibrary
                    FieldName.FKUserID + " = @" + FieldName.FKUserID + " AND " +
                    FieldName.FKScreenCode + " = @" + FieldName.FKScreenCode + " AND " +
                    FieldName.FKControlCode + " = @" + FieldName.FKControlCode + " AND " +
-                   FieldName.FKPropertyCode + " = @" + FieldName.FKPropertyCode  
+                   FieldName.FKPropertyCode + " = @" + FieldName.FKPropertyCode
                 );
 
                 using (var command = new MySqlCommand(
@@ -294,11 +294,11 @@ namespace FCMMySQLBusinessLibrary
         public static string SQLConcat()
         {
             string ret = " " +
-            FieldName.FKScreenCode+ "," +
+            FieldName.FKScreenCode + "," +
             FieldName.FKControlCode + "," +
             FieldName.FKPropertyCode + "," +
             FieldName.FKUserID + "," +
-            FieldName.Value + " " ; 
+            FieldName.Value + " ";
 
             return ret;
         }

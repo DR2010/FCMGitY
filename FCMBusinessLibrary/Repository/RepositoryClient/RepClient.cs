@@ -1,18 +1,18 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
+using FCMMySQLBusinessLibrary.Model.ModelClient;
+using FCMMySQLBusinessLibrary.Model.ModelDocument;
+using FCMMySQLBusinessLibrary.Service.SVCClient.Contract;
+using FCMMySQLBusinessLibrary.Service.SVCClient.ServiceContract;
+using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Utils;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Globalization;
 using System.Transactions;
-using FCMMySQLBusinessLibrary.FCMUtils;
-using FCMMySQLBusinessLibrary.Model.ModelDocument;
-using FCMMySQLBusinessLibrary.Service.SVCClient.Contract;
-using FCMMySQLBusinessLibrary.Service.SVCClient.ServiceContract;
-using MackkadoITFramework.Utils;
-using MySql.Data.MySqlClient;
-using MackkadoITFramework.ErrorHandling;
 using FCMUtils = FCMMySQLBusinessLibrary.FCMUtils.Utils;
-using FCMMySQLBusinessLibrary.Model.ModelClient;
 
 namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
 {
@@ -22,7 +22,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
 
         public RepClient(HeaderInfo headerInfo)
         {
-                _headerInfo = headerInfo;
+            _headerInfo = headerInfo;
         }
 
         public RepClient()
@@ -42,7 +42,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
                 var commandString =
-                " SELECT " + 
+                " SELECT " +
                 ClientFieldString() +
                 "  FROM Client" +
                 " WHERE UID = @UID";
@@ -280,7 +280,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// Check if user is already connected to a client
         /// </summary>
         /// <returns></returns>
-        public static int ReadLinkedClient( string userID )
+        public static int ReadLinkedClient(string userID)
         {
 
             int clientUID = 0;
@@ -289,7 +289,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             // EA SQL database
             // 
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
                 var commandString =
                 " SELECT " +
@@ -297,23 +297,23 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 "  FROM Client" +
                 " WHERE FKUserID = @FKUserID ";
 
-                using ( var command = new MySqlCommand(
-                                            commandString, connection ) )
+                using (var command = new MySqlCommand(
+                                            commandString, connection))
                 {
-                    command.Parameters.Add( "@FKUserID", MySqlDbType.String ).Value = userID;
+                    command.Parameters.Add("@FKUserID", MySqlDbType.String).Value = userID;
 
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
 
-                    if ( reader.Read() )
+                    if (reader.Read())
                     {
                         try
                         {
-                            clientUID = Convert.ToInt32( reader [FCMDBFieldName.Client.UID] );
+                            clientUID = Convert.ToInt32(reader[FCMDBFieldName.Client.UID]);
                             // If client uid read is the same as user id passed in
                             // no issues
                         }
-                        catch ( Exception )
+                        catch (Exception)
                         {
                         }
                     }
@@ -378,34 +378,34 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// <param name="field">Field name - use Client.FieldName</param>
         /// <param name="clientUID"></param>
         /// <returns></returns>
-        internal static string GetClientName( int clientUID )
+        internal static string GetClientName(int clientUID)
         {
             var ret = "";
             // 
             // EA SQL database
             // 
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
                 const string commandString = " SELECT NAME FROM Client " +
                                              " WHERE UID = @clientUID ";
 
-                using ( var command = new MySqlCommand(
-                                            commandString, connection ) )
+                using (var command = new MySqlCommand(
+                                            commandString, connection))
                 {
 
-                    command.Parameters.AddWithValue( "@clientUID", clientUID );
+                    command.Parameters.AddWithValue("@clientUID", clientUID);
 
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
 
-                    if ( reader.Read() )
+                    if (reader.Read())
                     {
                         try
                         {
-                            ret = reader ["NAME"].ToString();
+                            ret = reader["NAME"].ToString();
                         }
-                        catch ( Exception )
+                        catch (Exception)
                         {
                         }
                     }
@@ -470,7 +470,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// Add new Client
         /// </summary>
         /// <returns></returns>
-        public static ResponseStatus Insert(HeaderInfo headerInfo, Client client, MySqlConnection connection = null )
+        public static ResponseStatus Insert(HeaderInfo headerInfo, Client client, MySqlConnection connection = null)
         {
 
             var response = new ResponseStatus();
@@ -488,7 +488,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 nextUID = DateTime.Now.Year * 100000 + 1;
             }
 
-            uid =  DateTime.Now.Year * 100000 + ( Convert.ToInt32( nextUID.ToString(CultureInfo.InvariantCulture).Substring(4,5) ) );
+            uid = DateTime.Now.Year * 100000 + (Convert.ToInt32(nextUID.ToString(CultureInfo.InvariantCulture).Substring(4, 5)));
 
             client.UID = uid;
 
@@ -498,7 +498,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             {
                 response.ReturnCode = -10;
                 response.ReasonCode = 1;
-                 response.Message = "Error: Client Name is Mandatory.";
+                response.Message = "Error: Client Name is Mandatory.";
                 return response;
             }
             if (client.Address == null)
@@ -507,7 +507,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             if (client.MainContactPersonName == null)
                 client.MainContactPersonName = "";
 
-//            using (var connection = new MySqlConnection(ConnString.ConnectionString))
+            //            using (var connection = new MySqlConnection(ConnString.ConnectionString))
 
             if (connection == null)
             {
@@ -515,7 +515,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 connection.Open();
             }
 
-            var commandString = 
+            var commandString =
             (
                 "INSERT INTO Client " +
                 "(" +
@@ -524,16 +524,16 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                     " VALUES " +
                 ClientFieldValue()
 
-                ); 
+                );
 
             using (var command = new MySqlCommand(
                                             commandString, connection))
-                {
-                    client.RecordVersion = 1;
-                    AddSqlParameters(command, MackkadoITFramework.Helper.Utils.SQLAction.CREATE, headerInfo, client);
+            {
+                client.RecordVersion = 1;
+                AddSqlParameters(command, MackkadoITFramework.Helper.Utils.SQLAction.CREATE, headerInfo, client);
 
-                    command.ExecuteNonQuery();
-                }
+                command.ExecuteNonQuery();
+            }
 
             response.Contents = uid;
 
@@ -748,9 +748,9 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         // -----------------------------------------------------
         public static List<Client> List(HeaderInfo _headerInfo)
         {
-            var clientList  = new List<Client>();
+            var clientList = new List<Client>();
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionString ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString = string.Format(
@@ -758,11 +758,11 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 ClientFieldString() +
                 "   FROM Client " +
                 "  WHERE IsVoid = 'N' " +
-                "  ORDER BY UID ASC " 
+                "  ORDER BY UID ASC "
                 );
 
                 using (var command = new MySqlCommand(
-                                      commandString, connection ))
+                                      commandString, connection))
                 {
                     connection.Open();
 
@@ -809,7 +809,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         /// <param name="clientUID"></param>
         /// <param name="curEnvironment"> </param>
         /// <returns></returns>
-        public static string GetClientLogoLocation(int clientUID, HeaderInfo headerInfo, string curEnvironment = MackkadoITFramework.Helper.Utils.EnvironmentList.LOCAL )
+        public static string GetClientLogoLocation(int clientUID, HeaderInfo headerInfo, string curEnvironment = MackkadoITFramework.Helper.Utils.EnvironmentList.LOCAL)
         {
 
             string logoPath = "";
@@ -887,8 +887,8 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
             try { client.DisplayLogo = Convert.ToChar(reader[FCMDBFieldName.Client.DisplayLogo]); }
             catch { client.DisplayLogo = ' '; }
 
-            try { client.UpdateDateTime = Convert.ToDateTime(reader[FCMDBFieldName.Client.UpdateDateTime].ToString()); } 
-            catch  { client.UpdateDateTime = DateTime.Now;  }
+            try { client.UpdateDateTime = Convert.ToDateTime(reader[FCMDBFieldName.Client.UpdateDateTime].ToString()); }
+            catch { client.UpdateDateTime = DateTime.Now; }
             try { client.CreationDateTime = Convert.ToDateTime(reader[FCMDBFieldName.Client.CreationDateTime].ToString()); }
             catch { client.CreationDateTime = DateTime.Now; }
             try { client.IsVoid = reader[FCMDBFieldName.Client.IsVoid].ToString(); }

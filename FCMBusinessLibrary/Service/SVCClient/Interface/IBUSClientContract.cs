@@ -1,5 +1,5 @@
-﻿using System.ServiceModel;
-using FCMMySQLBusinessLibrary.Service.SVCClient.Contract;
+﻿using FCMMySQLBusinessLibrary.Service.SVCClient.Contract;
+using System.ServiceModel;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.Interface
 {

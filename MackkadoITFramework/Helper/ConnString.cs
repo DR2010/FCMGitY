@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary;
+using System;
 using System.Configuration;
 using System.Web.Configuration;
-using FCMMySQLBusinessLibrary;
 
 namespace MackkadoITFramework.Utils
 {
@@ -21,7 +21,7 @@ namespace MackkadoITFramework.Utils
                 if (string.IsNullOrEmpty(connectionString))
                 {
                     connectionString = XmlConfig.Read(MakConstant.ConfigXml.ConnectionStringMySql);
-                    
+
                     //"Persist Security info=false;" +
                     //"integrated security=sspi;";
 
@@ -87,7 +87,7 @@ namespace MackkadoITFramework.Utils
                 {
 
                     string webconstring = GetConnectionStringFromWebConfig("makkframework");
-                    if (!(string.IsNullOrEmpty(webconstring) || webconstring == "Empty"))   
+                    if (!(string.IsNullOrEmpty(webconstring) || webconstring == "Empty"))
                     {
                         return webconstring;
                     }
@@ -137,8 +137,8 @@ namespace MackkadoITFramework.Utils
 
         private static string Toshiba
         {
-            get 
-            { 
+            get
+            {
                 return
                     "Data Source=TOSHIBAPC\\SQLEXPRESS;" +
                     "Initial Catalog=management;" +

@@ -33,11 +33,11 @@
         /// </summary>
         public enum DataBaseType
         {
-            SQLSERVER, 
+            SQLSERVER,
             MYSQL
         }
 
-        
+
         /// <summary>
         /// Integer represent the sequence of the image on the Image List.
         /// </summary>
@@ -262,7 +262,7 @@
         //    /// Error.
         //    /// </summary>
         //    public const string FCMERR00009999 = "FCMINF00.00.9999";
-            
+
         //    // ---------------------- //
         //    // INFORMATIONAL MESSAGES //
         //    // ---------------------- //

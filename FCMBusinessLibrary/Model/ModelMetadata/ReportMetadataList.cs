@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
 {
@@ -53,7 +53,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
                     {
                         while (reader.Read())
                         {
-                           
+
                             ReportMetadata _reportMetadata = new ReportMetadata();
                             _reportMetadata.UID = Convert.ToInt32(reader["UID"].ToString());
                             _reportMetadata.Description = reader["Description"].ToString();
@@ -79,7 +79,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
                             {
                                 _reportMetadata.ClientUID = 0;
                             }
-                            
+
                             _reportMetadata.InformationType = reader["InformationType"].ToString();
 
                             this.reportMetadataList.Add(_reportMetadata);
@@ -184,7 +184,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelMetadata
                 " ,Enabled " +
                 "   FROM ReportMetadata " +
                 "  WHERE RecordType = 'CL' " +
-                enabledOnlyCriteria + 
+                enabledOnlyCriteria +
                 "    AND ClientUID = {0} ",
                 clientUID
                 );

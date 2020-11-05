@@ -274,12 +274,6 @@
             </summary>
             <param name="doco"></param>
         </member>
-        <member name="M:FCMMySQLBusinessLibrary.Model.ModelClientDocument.DocumentGeneration.GenerateGroupOfDocuments(System.Collections.Generic.List{System.Int32},System.Boolean)">
-            <summary>
-            Generate selected documents
-            </summary>
-            <param name="clientDocumentUIDList"></param>
-        </member>
         <member name="M:FCMMySQLBusinessLibrary.Model.ModelClientDocument.DocumentGeneration.GenerateSingleDocument(System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Generate single document
@@ -287,6 +281,18 @@
             <param name="clientDocumentUID"></param>
         </member>
         <member name="M:FCMMySQLBusinessLibrary.Model.ModelClientDocument.DocumentGeneration.GenerateFullSetForClient(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Generate selected documents
+            </summary>
+            <param name="clientDocumentUIDList"></param>
+        </member>
+        <member name="M:FCMMySQLBusinessLibrary.Model.ModelClientDocument.DocumentGeneration.GenerateGroupOfDocuments(System.Collections.Generic.List{System.Int32},System.Boolean)">
+            <summary>
+            Generate selected documents
+            </summary>
+            <param name="clientDocumentUIDList"></param>
+        </member>
+        <member name="M:FCMMySQLBusinessLibrary.Model.ModelClientDocument.DocumentGeneration.GenerateGroupOfDocumentsParallel(System.Collections.Generic.List{System.Int32},System.Boolean)">
             <summary>
             Generate selected documents
             </summary>

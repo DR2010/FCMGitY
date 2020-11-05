@@ -1,0 +1,67 @@
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resource1.resources
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.dll
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.pdb
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\MackkadoITFramework.dll
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\MackkadoITFramework.pdb
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+C:\I_Daniel\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.tlb
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resource1.resources
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.dll
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.pdb
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.tlb
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\MackkadoITFramework.dll
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\MySql.Data.dll
+C:\Users\MACHADO\Dropbox\FCM - MySQL\FCMBusinessLibrary\bin\Debug\MackkadoITFramework.pdb
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resource1.resources
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.dll
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.pdb
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\bin\Debug\FCMMySQLBusinessLibrary.tlb
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\bin\Debug\MackkadoITFramework.dll
+C:\I_Daniel\Dropbox\FCM - MySQL - Final\FCMBusinessLibrary\bin\Debug\MackkadoITFramework.pdb
+C:\Program Files\fcm\FCMMySQLBusinessLibrary.dll.config
+C:\Program Files\FCM\FCMMySQLBusinessLibrary.XML
+C:\Program Files\fcm\FCMMySQLBusinessLibrary.dll
+C:\Program Files\fcm\FCMMySQLBusinessLibrary.pdb
+C:\Program Files\fcm\FCMMySQLBusinessLibrary.tlb
+C:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+C:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resources.resources
+C:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Resource1.resources
+C:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+C:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+C:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.App.config
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resources.resources
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Resource1.resources
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.App.config
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resources.resources
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Resource1.resources
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.CoreCompileInputs.cache
+C:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+C:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resources.resources
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Resource1.resources
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.CoreCompileInputs.cache
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+D:\Program Files\fcm\FCMMySQLBusinessLibrary.dll.config
+D:\Program Files\FCM\FCMMySQLBusinessLibrary.XML
+D:\Program Files\fcm\FCMMySQLBusinessLibrary.dll
+D:\Program Files\fcm\FCMMySQLBusinessLibrary.pdb
+D:\Program Files\fcm\FCMMySQLBusinessLibrary.tlb
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb

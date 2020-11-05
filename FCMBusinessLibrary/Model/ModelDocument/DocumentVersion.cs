@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using MackkadoITFramework.Helper;
+﻿using MackkadoITFramework.Helper;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 {
@@ -37,7 +37,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
         public string _UserIdCreatedBy;
         public string _UserIdUpdatedBy;
 
-        
+
         #endregion Attributes
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     {
                         try
                         {
-                            this.UID = Convert.ToInt32( reader["UID"].ToString());
-                            this.FKDocumentUID = Convert.ToInt32( reader["FKDocumentUID"].ToString() );
+                            this.UID = Convert.ToInt32(reader["UID"].ToString());
+                            this.FKDocumentUID = Convert.ToInt32(reader["FKDocumentUID"].ToString());
                             this.FKDocumentCUID = reader["FKDocumentCUID"].ToString();
                             this.IssueNumber = Convert.ToInt32(reader["IssueNumber"].ToString());
                             this.Location = reader["Location"].ToString();

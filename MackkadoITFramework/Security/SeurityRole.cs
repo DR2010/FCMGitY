@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
-using MackkadoITFramework.ErrorHandling;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace MackkadoITFramework.Security
 {
@@ -10,8 +10,8 @@ namespace MackkadoITFramework.Security
     {
 
         #region Properties
-        public string Role {get;set;}
-        public string Description{get;set;}
+        public string Role { get; set; }
+        public string Description { get; set; }
         #endregion Properties
 
         #region FieldName

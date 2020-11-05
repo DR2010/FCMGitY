@@ -45,3 +45,38 @@ D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLib
 D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Resource1.resources
 D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
 D:\I_Daniel\Dropbox\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.App.config
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resources.resources
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Resource1.resources
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+C:\I_daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.CoreCompileInputs.cache
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.App.config
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resources.resources
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Resource1.resources
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.Cache
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.CoreCompileInputs.cache
+D:\Program Files\fcm\FCMMySQLBusinessLibrary.dll.config
+D:\Program Files\FCM\FCMMySQLBusinessLibrary.XML
+D:\Program Files\fcm\FCMMySQLBusinessLibrary.dll
+D:\Program Files\fcm\FCMMySQLBusinessLibrary.pdb
+D:\Program Files\fcm\FCMMySQLBusinessLibrary.tlb
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojResolveAssemblyReference.cache
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+D:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb
+C:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+C:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb
+Z:\Program Files\fcm\FCMMySQLBusinessLibrary.dll.config
+Z:\Program Files\FCM\FCMMySQLBusinessLibrary.XML
+Z:\Program Files\fcm\FCMMySQLBusinessLibrary.dll
+Z:\Program Files\fcm\FCMMySQLBusinessLibrary.pdb
+Z:\Program Files\fcm\FCMMySQLBusinessLibrary.tlb
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.App.config
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Properties.Resources.resources
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.Resource1.resources
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.GenerateResource.cache
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.CopyComplete
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.dll
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.pdb
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csprojAssemblyReference.cache
+Z:\I_Daniel\OneDrive\FCMMySQLGit\FCMBusinessLibrary\obj\Debug\FCMMySQLBusinessLibrary.csproj.CoreCompileInputs.cache

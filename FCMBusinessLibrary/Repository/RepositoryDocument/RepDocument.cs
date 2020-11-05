@@ -1,17 +1,17 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.Model.ModelDocument;
+using FCMMySQLBusinessLibrary.Service.SVCDocument.ServiceContract;
+using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.ReferenceData;
+using MackkadoITFramework.Utils;
+using MackkadoITFramework.Utils;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 //using FCMMySQLBusinessLibrary.Document;
 using System.Linq;
 using System.Windows.Forms;
-using FCMMySQLBusinessLibrary.Service.SVCDocument.ServiceContract;
-using MackkadoITFramework.ReferenceData;
-using FCMMySQLBusinessLibrary.Model.ModelDocument;
-using MackkadoITFramework.Utils;
-using MackkadoITFramework.ErrorHandling;
-using MackkadoITFramework.Utils;
-using MySql.Data.MySqlClient;
 using ConnString = MackkadoITFramework.Utils.ConnString;
 using HeaderInfo = MackkadoITFramework.Utils.HeaderInfo;
 using Utils = MackkadoITFramework.Helper.Utils;
@@ -342,31 +342,31 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
                 using (var command = new MySqlCommand(
                                           commandString, connection))
                 {
-                    command.Parameters.Add( "@UID", MySqlDbType.Int32 ).Value = docadd.UID;
-                    command.Parameters.Add( "@CUID", MySqlDbType.VarChar ).Value = docadd.CUID;
-                    command.Parameters.Add( "@Name", MySqlDbType.VarChar ).Value = docadd.Name;
-                    command.Parameters.Add( "@DisplayName", MySqlDbType.VarChar ).Value = docadd.DisplayName;
-                    command.Parameters.Add( "@SequenceNumber", MySqlDbType.VarChar ).Value = docadd.SequenceNumber;
-                    command.Parameters.Add( "@IssueNumber", MySqlDbType.Decimal ).Value = docadd.IssueNumber;
-                    command.Parameters.Add( "@Location", MySqlDbType.VarChar ).Value = docadd.Location;
-                    command.Parameters.Add( "@Comments", MySqlDbType.VarChar ).Value = docadd.Comments;
-                    command.Parameters.Add( "@FileName", MySqlDbType.VarChar ).Value = docadd.FileName;
-                    command.Parameters.Add( "@SimpleFileName", MySqlDbType.VarChar ).Value = docadd.SimpleFileName;
-                    command.Parameters.Add( "@SourceCode", MySqlDbType.VarChar ).Value = docadd.SourceCode;
-                    command.Parameters.Add( "@FKClientUID", MySqlDbType.Int32 ).Value = docadd.FKClientUID;
-                    command.Parameters.Add( "@IsVoid", MySqlDbType.VarChar ).Value = docadd.IsVoid;
-                    command.Parameters.Add( "@Skip", MySqlDbType.VarChar ).Value = docadd.Skip;
-                    command.Parameters.Add( "@ParentUID", MySqlDbType.VarChar ).Value = docadd.ParentUID;
-                    command.Parameters.Add( "@RecordType", MySqlDbType.VarChar ).Value = docadd.RecordType;
-                    command.Parameters.Add( "@IsProjectPlan", MySqlDbType.VarChar ).Value = docadd.IsProjectPlan;
-                    command.Parameters.Add( "@DocumentType", MySqlDbType.VarChar ).Value = docadd.DocumentType;
-                    command.Parameters.Add( "@FileExtension", MySqlDbType.VarChar ).Value = docadd.FileExtension;
-                    command.Parameters.Add( "@Status", MySqlDbType.VarChar ).Value = docadd.Status;
-                    command.Parameters.Add( "@RecordVersion", MySqlDbType.VarChar ).Value = docadd.RecordVersion;
-                    command.Parameters.Add( "@UserIdCreatedBy", MySqlDbType.VarChar ).Value = docadd.UserIdCreatedBy;
-                    command.Parameters.Add( "@UserIdUpdatedBy", MySqlDbType.VarChar ).Value = docadd.UserIdUpdatedBy;
-                    command.Parameters.Add( "@CreationDateTime", MySqlDbType.DateTime ).Value = docadd.CreationDateTime;
-                    command.Parameters.Add( "@UpdateDateTime", MySqlDbType.DateTime ).Value = docadd.UpdateDateTime;
+                    command.Parameters.Add("@UID", MySqlDbType.Int32).Value = docadd.UID;
+                    command.Parameters.Add("@CUID", MySqlDbType.VarChar).Value = docadd.CUID;
+                    command.Parameters.Add("@Name", MySqlDbType.VarChar).Value = docadd.Name;
+                    command.Parameters.Add("@DisplayName", MySqlDbType.VarChar).Value = docadd.DisplayName;
+                    command.Parameters.Add("@SequenceNumber", MySqlDbType.VarChar).Value = docadd.SequenceNumber;
+                    command.Parameters.Add("@IssueNumber", MySqlDbType.Decimal).Value = docadd.IssueNumber;
+                    command.Parameters.Add("@Location", MySqlDbType.VarChar).Value = docadd.Location;
+                    command.Parameters.Add("@Comments", MySqlDbType.VarChar).Value = docadd.Comments;
+                    command.Parameters.Add("@FileName", MySqlDbType.VarChar).Value = docadd.FileName;
+                    command.Parameters.Add("@SimpleFileName", MySqlDbType.VarChar).Value = docadd.SimpleFileName;
+                    command.Parameters.Add("@SourceCode", MySqlDbType.VarChar).Value = docadd.SourceCode;
+                    command.Parameters.Add("@FKClientUID", MySqlDbType.Int32).Value = docadd.FKClientUID;
+                    command.Parameters.Add("@IsVoid", MySqlDbType.VarChar).Value = docadd.IsVoid;
+                    command.Parameters.Add("@Skip", MySqlDbType.VarChar).Value = docadd.Skip;
+                    command.Parameters.Add("@ParentUID", MySqlDbType.VarChar).Value = docadd.ParentUID;
+                    command.Parameters.Add("@RecordType", MySqlDbType.VarChar).Value = docadd.RecordType;
+                    command.Parameters.Add("@IsProjectPlan", MySqlDbType.VarChar).Value = docadd.IsProjectPlan;
+                    command.Parameters.Add("@DocumentType", MySqlDbType.VarChar).Value = docadd.DocumentType;
+                    command.Parameters.Add("@FileExtension", MySqlDbType.VarChar).Value = docadd.FileExtension;
+                    command.Parameters.Add("@Status", MySqlDbType.VarChar).Value = docadd.Status;
+                    command.Parameters.Add("@RecordVersion", MySqlDbType.VarChar).Value = docadd.RecordVersion;
+                    command.Parameters.Add("@UserIdCreatedBy", MySqlDbType.VarChar).Value = docadd.UserIdCreatedBy;
+                    command.Parameters.Add("@UserIdUpdatedBy", MySqlDbType.VarChar).Value = docadd.UserIdUpdatedBy;
+                    command.Parameters.Add("@CreationDateTime", MySqlDbType.DateTime).Value = docadd.CreationDateTime;
+                    command.Parameters.Add("@UpdateDateTime", MySqlDbType.DateTime).Value = docadd.UpdateDateTime;
 
                     connection.Open();
 
@@ -446,7 +446,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
         /// <summary>
         /// Get Root document. If it does not exits, create a root document.
         /// </summary>
-        public static FCMMySQLBusinessLibrary.Model.ModelDocument.Document 
+        public static FCMMySQLBusinessLibrary.Model.ModelDocument.Document
             GetRoot(HeaderInfo headerInfo)
         {
 
@@ -457,7 +457,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
             docreturn.RecordType = Utils.RecordType.FOLDER;
             docreturn.UID = 0;
 
-            docreturn = RepDocument.Read(true,0, docreturn.CUID);
+            docreturn = RepDocument.Read(true, 0, docreturn.CUID);
 
             if (docreturn.UID <= 0) // Document not found
             {
@@ -483,7 +483,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
                 docreturn.UID = 0;
                 docreturn.SourceCode = Utils.SourceCode.FCM;
                 docreturn.FileExtension = "ROOT";
-                
+
                 Save(headerInfo, docreturn);
             }
 
@@ -633,7 +633,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
 
                         var destLocationDerivedClient = Utils.getReferenceFilePathName(indocument.Location);
 
-                        indocument.Location = destLocationDerivedClient; 
+                        indocument.Location = destLocationDerivedClient;
                         uidReturn = Update(headerInfo, indocument);
                     }
                 }
@@ -657,7 +657,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
         // -----------------------------------------------------
         //    Create new document version
         // -----------------------------------------------------
-        public static DocumentNewVersionResponse NewVersion( HeaderInfo headerInfo, Document document )
+        public static DocumentNewVersionResponse NewVersion(HeaderInfo headerInfo, Document document)
         {
 
             DocumentNewVersionResponse responseNewVersion = new DocumentNewVersionResponse();
@@ -668,8 +668,8 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
 
             // Update location - use reference path instead of fixed path
 
-            var destLocationDerivedClient = Utils.getReferenceFilePathName( document.Location );
-            document.Location = destLocationDerivedClient; 
+            var destLocationDerivedClient = Utils.getReferenceFilePathName(document.Location);
+            document.Location = destLocationDerivedClient;
 
             // Copy existing version to old folder version
             // Old folder comes from %VERSIONFOLDER%
@@ -701,7 +701,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
             // It was 10, today it was 7, now I am making it 10 again... something will go wrong :-(
             //
 
-            string simpleFileName = document.Name.Substring( 10 ).Trim();
+            string simpleFileName = document.Name.Substring(10).Trim();
 
             // string simpleFileName = document.Name.Substring(07).Trim();
 
@@ -722,10 +722,10 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
             //string realDestination = Utils.getFilePathName(documentVersion.Location, documentVersion.FileName);
             //string realPathDestination = Utils.getFilePathName( documentVersion.Location );
 
-            string realLocation = Utils.getFilePathNameLOCAL( document.Location, document.FileName );
-            string realDestination = Utils.getFilePathNameLOCAL( documentVersion.Location, documentVersion.FileName );
-            string realPathDestination = Utils.getFilePathNameLOCAL( documentVersion.Location );
-            
+            string realLocation = Utils.getFilePathNameLOCAL(document.Location, document.FileName);
+            string realDestination = Utils.getFilePathNameLOCAL(documentVersion.Location, documentVersion.FileName);
+            string realPathDestination = Utils.getFilePathNameLOCAL(documentVersion.Location);
+
             if (!System.IO.Directory.Exists(realPathDestination))
                 System.IO.Directory.CreateDirectory(realPathDestination);
 
@@ -747,7 +747,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
 
             // Copy file to new name
             //
-            string newFilePathName = Utils.getFilePathNameLOCAL(document.Location,newFileNameWithExtension);
+            string newFilePathName = Utils.getFilePathNameLOCAL(document.Location, newFileNameWithExtension);
 
             File.Copy(realLocation, newFilePathName, true);
 
@@ -764,7 +764,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
                 responseNewVersion.response.ReasonCode = 0004;
                 responseNewVersion.response.UniqueCode = ResponseStatus.MessageCode.Error.FCMERR00000006;
 
-                LogFile.WriteToTodaysLogFile( responseNewVersion.response.Message + " " + ex.ToString(), "", "", "Document.cs" );
+                LogFile.WriteToTodaysLogFile(responseNewVersion.response.Message + " " + ex.ToString(), "", "", "Document.cs");
 
                 return responseNewVersion;
             }
@@ -776,14 +776,14 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
             document.Name = newFileName;
             // this.UpdateVersion(headerInfo);
 
-            RepDocument.UpdateVersion(headerInfo, document );
+            RepDocument.UpdateVersion(headerInfo, document);
 
             // Build a screen to browse all versions of a file
             // Allow compare/ View
             // Check how to open a 
 
             responseNewVersion.outDocument = new Document();
-            responseNewVersion.outDocument = RepDocument.Read( true, document.UID );
+            responseNewVersion.outDocument = RepDocument.Read(true, document.UID);
 
             responseNewVersion.response.Contents = version;
             return responseNewVersion;
@@ -816,9 +816,9 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
             retDocument.ParentUID = Convert.ToInt32(reader[tablePrefix + FieldName.ParentUID].ToString());
             retDocument.RecordType = reader[tablePrefix + FieldName.RecordType].ToString();
             retDocument.IsProjectPlan = reader[tablePrefix + FieldName.IsProjectPlan].ToString();
-            retDocument.IsVoid = reader [tablePrefix + FieldName.IsVoid].ToString();
-            retDocument.Skip = reader [tablePrefix + FieldName.Skip].ToString();
-            retDocument.DocumentType = reader [tablePrefix + FieldName.DocumentType].ToString();
+            retDocument.IsVoid = reader[tablePrefix + FieldName.IsVoid].ToString();
+            retDocument.Skip = reader[tablePrefix + FieldName.Skip].ToString();
+            retDocument.DocumentType = reader[tablePrefix + FieldName.DocumentType].ToString();
             retDocument.RecordVersion = Convert.ToInt32(reader[tablePrefix + FieldName.RecordVersion].ToString());
 
 
@@ -896,17 +896,17 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
         // -----------------------------------------------------
         //    List Documents
         // -----------------------------------------------------
-        public static List<Document> ListDocuments( HeaderInfo headerInfo )
+        public static List<Document> ListDocuments(HeaderInfo headerInfo)
         {
-            return List( headerInfo, " AND DOC.RecordType = 'DOCUMENT'  " );
+            return List(headerInfo, " AND DOC.RecordType = 'DOCUMENT'  ");
         }
 
         // -----------------------------------------------------
         //    List Documents
         // -----------------------------------------------------
-        public static List<Document> ListFolders( HeaderInfo headerInfo )
+        public static List<Document> ListFolders(HeaderInfo headerInfo)
         {
-            return List( headerInfo, " AND DOC.RecordType = 'FOLDER'  " );
+            return List(headerInfo, " AND DOC.RecordType = 'FOLDER'  ");
         }
 
         public static List<Document> ListFoldersAndDocuments(HeaderInfo headerInfo)
@@ -961,7 +961,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
         // -----------------------------------------------------
         //    List Documents
         // -----------------------------------------------------
-        
+
         public static List<Document> List(HeaderInfo _headerInfo, string Condition = null)
         {
             var documentList = new List<Document>();
@@ -1228,12 +1228,12 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
         /// <param name="UID"></param>
         /// <param name="fieldName"></param>
         /// <param name="contents"></param>
-        public void UpdateFieldString( int UID, string fieldName, string contents )
+        public void UpdateFieldString(int UID, string fieldName, string contents)
         {
 
             string ret = "Item updated successfully";
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString =
@@ -1244,11 +1244,11 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryDocument
                    " WHERE UID = @UID "
                 );
 
-                using ( var command = new MySqlCommand(
-                                            commandString, connection ) )
+                using (var command = new MySqlCommand(
+                                            commandString, connection))
                 {
-                    command.Parameters.Add( "@UID", MySqlDbType.Int32 ).Value = UID;
-                    command.Parameters.Add( "@contents", MySqlDbType.VarChar ).Value = contents;
+                    command.Parameters.Add("@UID", MySqlDbType.Int32).Value = UID;
+                    command.Parameters.Add("@contents", MySqlDbType.VarChar).Value = contents;
 
                     connection.Open();
                     command.ExecuteNonQuery();

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Model.ModelDocument;
+﻿using FCMMySQLBusinessLibrary.Model.ModelDocument;
 using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
 using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 {
@@ -232,7 +232,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             var clientDocumentList = new ClientDocument();
             // clientDocumentList.List(ClientUID, ClientSetUID);
 
-            RepClientDocument.List( clientDocumentList, ClientUID, ClientSetUID );
+            RepClientDocument.List(clientDocumentList, ClientUID, ClientSetUID);
 
             // 2... foreach( clientDocument )
             // For each client document, retrieve the linked documents 
@@ -257,10 +257,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                     ClientDocument childDocument = new ClientDocument();
                     //childDocument.FKDocumentUID = child.UID;
                     childDocument.FKDocumentUID = child.documentTo.UID;
-                    
+
                     // childDocument.Find(child.documentTo.UID, clientDocument.clientDocumentSet.UID, 'N', ClientUID);
 
-                    childDocument = RepClientDocument.Find( child.documentTo.UID, clientDocument.clientDocumentSet.UID, 'N', ClientUID );
+                    childDocument = RepClientDocument.Find(child.documentTo.UID, clientDocument.clientDocumentSet.UID, 'N', ClientUID);
 
                     if (childDocument.UID > 0)
                     {
@@ -319,7 +319,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             var clientDocumentList = new ClientDocument();
             //clientDocumentList.List(ClientUID, ClientSetUID);
 
-            RepClientDocument.List(clientDocumentList, ClientUID, ClientSetUID );
+            RepClientDocument.List(clientDocumentList, ClientUID, ClientSetUID);
 
             // 2... foreach( clientDocument )
             // For each client document, retrieve the linked documents 
@@ -358,7 +358,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             //
             var clientDocumentList = new ClientDocument();
             //clientDocumentList.List( ClientUID, ClientSetUID );
-            RepClientDocument.List( clientDocumentList, ClientUID, ClientSetUID );
+            RepClientDocument.List(clientDocumentList, ClientUID, ClientSetUID);
 
             // 2... foreach( clientDocument )
             // For each client document, retrieve the linked documents 
@@ -415,7 +415,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 " WHERE IsVoid = 'N' " +
                 "   AND FKParentDocumentUID = {0}" +
                 "   AND FKChildDocumentUID = {1}" +
-                "   AND LinkType = '{2}' " + 
+                "   AND LinkType = '{2}' " +
                 "   AND FKClientUID = {3} " +
                 "   AND FKClientDocumentSetUID = {4} ",
                 ParentID,
@@ -456,7 +456,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         //    Save Links
         // -----------------------------------------------------
         public static void LinkDocuments(
-            int clientUID, 
+            int clientUID,
             int clientDocumentSetUID,
             int parentDocumentUID, int childDocumentUID,
             string LinkType)
@@ -465,9 +465,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             if (findOne.Read(
                     ParentID: parentDocumentUID,
                     ChildID: childDocumentUID,
-                    LinkType: LinkType, 
-                    clientUID: clientUID, 
-                    clientDocumentSetUID:clientDocumentSetUID ))
+                    LinkType: LinkType,
+                    clientUID: clientUID,
+                    clientDocumentSetUID: clientDocumentSetUID))
             {
                 // Already exists
             }

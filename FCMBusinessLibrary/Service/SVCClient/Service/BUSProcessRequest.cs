@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
+﻿using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.ProcessRequest;
 using MackkadoITFramework.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 {
@@ -27,7 +27,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static ResponseStatus GenerateDocumentClient( int clientUID, int clientSetID, string overrideDocuments, int clientDocumentUID = 0, string userID = "")
+        public static ResponseStatus GenerateDocumentClient(int clientUID, int clientSetID, string overrideDocuments, int clientDocumentUID = 0, string userID = "")
         {
             ResponseStatus response = new ResponseStatus();
 
@@ -61,7 +61,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             argument3.Add();
 
             // Generation for one specific document
-            if ( clientDocumentUID > 0 )
+            if (clientDocumentUID > 0)
             {
                 ProcessRequestArguments argument4 = new ProcessRequestArguments();
                 argument3.FKRequestUID = processRequest.UID;
@@ -70,18 +70,18 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                 argument3.Value = clientDocumentUID.ToString();
                 argument3.Add();
 
-                RepClientDocument.SetFlagToGenerationRequested( clientDocumentUID, Convert.ToInt32(response.Contents) );
+                RepClientDocument.SetFlagToGenerationRequested(clientDocumentUID, Convert.ToInt32(response.Contents));
             }
             else
             {
                 // Full set requested
                 // Update requests.
                 //
-                var list = RepClientDocument.ListS( clientUID, clientSetID );
-                foreach ( var doco in list )
+                var list = RepClientDocument.ListS(clientUID, clientSetID);
+                foreach (var doco in list)
                 {
                     // RepClientDocument.SetFlagToGenerationRequested( doco.clientDocument.UID );
-                    RepClientDocument.SetFlagToGenerationRequested( doco.clientDocument.UID, Convert.ToInt32( response.Contents ) );
+                    RepClientDocument.SetFlagToGenerationRequested(doco.clientDocument.UID, Convert.ToInt32(response.Contents));
 
                 }
             }
@@ -118,7 +118,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static ResponseStatus GenerateDocumentClient( int clientUID, int clientSetID, string overrideDocuments, List<int> listDocs, string userID = "")
+        public static ResponseStatus GenerateDocumentClient(int clientUID, int clientSetID, string overrideDocuments, List<int> listDocs, string userID = "")
         {
             ResponseStatus response = new ResponseStatus();
 
@@ -130,7 +130,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             string emailBody = "";
 
 
-            foreach ( var doc in listDocs )
+            foreach (var doc in listDocs)
             {
 
                 ProcessRequest processRequest = new ProcessRequest();
@@ -170,7 +170,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                 argument3.Value = doc.ToString();
                 argument3.Add();
 
-                RepClientDocument.SetFlagToGenerationRequested( doc, Convert.ToInt32(response.Contents) );
+                RepClientDocument.SetFlagToGenerationRequested(doc, Convert.ToInt32(response.Contents));
 
                 // Send email to requester
                 //
@@ -204,8 +204,8 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                 LogFile.WriteToTodaysLogFile("Sending email from Generate selected documents error " + ex.ToString());
             }
 
-            
-            
+
+
             return response;
         }
 
@@ -258,11 +258,11 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         public static List<ProcessRequest> ListUnfinishedRequests()
         {
             var statusIn = ProcessRequest.StatusValue.STARTED;
-            List<ProcessRequest> response = ProcessRequest.List( statusIn );
+            List<ProcessRequest> response = ProcessRequest.List(statusIn);
 
             return response;
         }
 
-    
+
     }
 }

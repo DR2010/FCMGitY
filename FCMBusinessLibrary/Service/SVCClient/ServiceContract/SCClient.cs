@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Model.ModelClient;
-using MackkadoITFramework.Utils;
+﻿using FCMMySQLBusinessLibrary.Model.ModelClient;
 using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Utils;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.ServiceContract
 {

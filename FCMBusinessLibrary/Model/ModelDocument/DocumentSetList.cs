@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
@@ -27,7 +27,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 " ,IsVoid " +
 
                 "   FROM DocumentSet " +
-                "  WHERE IsVoid = 'N' " 
+                "  WHERE IsVoid = 'N' "
                 );
 
                 using (var command = new MySqlCommand(
@@ -43,7 +43,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                             documentSet.TemplateType = reader["TemplateType"].ToString();
                             documentSet.TemplateFolder = reader["TemplateFolder"].ToString();
                             documentSet.IsVoid = Convert.ToChar(reader["IsVoid"].ToString());
-                            documentSet.UIDNameDisplay = documentSet.UID.ToString() + "; " + documentSet.TemplateType; 
+                            documentSet.UIDNameDisplay = documentSet.UID.ToString() + "; " + documentSet.TemplateType;
 
                             this.documentSetList.Add(documentSet);
                         }
@@ -60,7 +60,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             {
                 cbxList.Items.Add(docSet.UID + "; " + docSet.TemplateType);
             }
-            
+
         }
     }
 }

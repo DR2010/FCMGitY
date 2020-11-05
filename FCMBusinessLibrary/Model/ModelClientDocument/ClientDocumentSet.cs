@@ -1,29 +1,29 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.Model.ModelDocument;
+using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
+using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
+using FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service;
+using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Helper;
+using MackkadoITFramework.Utils;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Forms;
-using FCMMySQLBusinessLibrary.Model.ModelDocument;
-using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
-using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
-using FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service;
-using MackkadoITFramework.Helper;
-using MackkadoITFramework.Utils;
-using MackkadoITFramework.ErrorHandling;
-using MySql.Data.MySqlClient;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 {
     public class ClientDocumentSet
     {
 
-        [Display( Name = "Document Unique ID" )]
+        [Display(Name = "Document Unique ID")]
         public int UID { get; set; }
 
-        [Display( Name = "Client Unique ID" )]
+        [Display(Name = "Client Unique ID")]
         public int FKClientUID { get; set; }
 
-        [Display( Name = "Description" )]
+        [Display(Name = "Description")]
         public string Description { get; set; }
         public string CombinedIDName { get; set; }
         public string Folder { get; set; }
@@ -32,20 +32,20 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         public DateTime EndDate { get; set; }
         public string IsVoid { get; set; }
 
-        [Display( Name = "Client Document Set ID" )]
+        [Display(Name = "Client Document Set ID")]
         public int ClientSetID { get; set; }
 
-        [Display( Name = "Source Folder" )]
+        [Display(Name = "Source Folder")]
         public string SourceFolder { get; set; }
 
         public string Status { get; set; }
         public string UserIdCreatedBy { get; set; }
-        public string UserIdUpdatedBy { get; set;  }
-        public DateTime CreationDateTime { get; set;  }
-        public DateTime UpdateDateTime { get; set ; }
+        public string UserIdUpdatedBy { get; set; }
+        public DateTime CreationDateTime { get; set; }
+        public DateTime UpdateDateTime { get; set; }
         public List<ClientDocumentSet> clientDocumentSetList { get; set; }
         public List<Document> listOfDocumentsInSet { get; set; }
-    
+
         /// <summary>
         /// Constructor - Basic
         /// </summary>
@@ -76,7 +76,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         }
 
 
-        
+
         // -----------------------------------------------------
         //    Get Client set
         // -----------------------------------------------------
@@ -335,9 +335,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 command.Parameters.Add("@UpdateDateTime", MySqlDbType.DateTime).Value = UpdateDateTime;
                 command.Parameters.Add("@UserIdCreatedBy", MySqlDbType.VarChar).Value = UserIdCreatedBy;
                 command.Parameters.Add("@UserIdUpdatedBy", MySqlDbType.VarChar).Value = UserIdUpdatedBy;
-                
+
                 command.ExecuteNonQuery();
-                }
+            }
             return response;
         }
 
@@ -348,8 +348,8 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// <param name="MySqlTransaction"></param>
         /// <param name="headerInfo"></param>
         /// <returns></returns>
-        public ResponseStatus AddSubTransaction(            
-                                    MySqlConnection connection, 
+        public ResponseStatus AddSubTransaction(
+                                    MySqlConnection connection,
                                     MySqlTransaction MySqlTransaction,
                                     HeaderInfo headerInfo)
         {
@@ -441,9 +441,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             this.UserIdUpdatedBy = Utils.UserID;
 
 
-            if (string.IsNullOrEmpty( this.SourceFolder))
+            if (string.IsNullOrEmpty(this.SourceFolder))
             {
-                LogFile.WriteToTodaysLogFile("Error: Source folder not supplied. UID: " + this.UID + " Client UID: "+this.FKClientUID);
+                LogFile.WriteToTodaysLogFile("Error: Source folder not supplied. UID: " + this.UID + " Client UID: " + this.FKClientUID);
                 this.SourceFolder = "";
             }
 
@@ -474,7 +474,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                     command.Parameters.Add("@SourceFolder ", MySqlDbType.VarChar).Value = SourceFolder;
                     command.Parameters.Add("@UpdateDateTime ", MySqlDbType.DateTime).Value = UpdateDateTime;
                     command.Parameters.Add("@UserIdUpdatedBy ", MySqlDbType.VarChar).Value = UserIdUpdatedBy;
-                    
+
                     try
                     {
                         connection.Open();
@@ -502,11 +502,11 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         {
             public const string UID = "UID";
             public const string FKClientUID = "FKClientUID";
-            public const string ClientSetID = "ClientSetID"; 
+            public const string ClientSetID = "ClientSetID";
             public const string Description = "Description";
             public const string Folder = "Folder";
             public const string FolderOnly = "FolderOnly";
-            public const string Status = "Status"; 
+            public const string Status = "Status";
             public const string StartDate = "StartDate";
             public const string EndDate = "EndDate";
             public const string SourceFolder = "SourceFolder";
@@ -563,10 +563,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             obj.SourceFolder = reader[FieldName.SourceFolder].ToString();
             obj.Status = reader[FieldName.Status].ToString();
             obj.IsVoid = reader[FieldName.IsVoid].ToString();
-            
+
             // Derived field
             obj.CombinedIDName = obj.FKClientUID + ";" + obj.ClientSetID + "; " + obj.Description + "; " + obj.Status;
-            
+
             try { obj.UpdateDateTime = Convert.ToDateTime(reader[FieldName.UpdateDateTime].ToString()); }
             catch { obj.UpdateDateTime = DateTime.Now; }
             try { obj.CreationDateTime = Convert.ToDateTime(reader[FieldName.CreationDateTime].ToString()); }
@@ -590,7 +590,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// <returns></returns>
         public static List<ClientDocumentSet> List(int iClientUID, string sortOrder = "DESC")
         {
-            List <ClientDocumentSet> documentSetList = new List<ClientDocumentSet>();
+            List<ClientDocumentSet> documentSetList = new List<ClientDocumentSet>();
 
             // cds.FKClientUID + ";" + cds.ClientSetID + "; " + cds.Description + "; " +cds.Status
             //
@@ -628,37 +628,37 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             return documentSetList;
         }
 
-        public List<Document> ListDocumentsNotInSet( HeaderInfo headerInfo, int clientUID, int clientDocumentSetUID )
+        public List<Document> ListDocumentsNotInSet(HeaderInfo headerInfo, int clientUID, int clientDocumentSetUID)
         {
             var documentsNotInSet = new List<Document>();
             var documentsInSet = new List<ClientDocument>();
             var fullListOfDocuments = new List<Document>();
 
-            fullListOfDocuments = RepDocument.ListDocuments( headerInfo );
-            documentsInSet = RepClientDocument.ListCD( clientUID, clientDocumentSetUID );
+            fullListOfDocuments = RepDocument.ListDocuments(headerInfo);
+            documentsInSet = RepClientDocument.ListCD(clientUID, clientDocumentSetUID);
 
             bool found = false;
 
-            foreach ( var document in fullListOfDocuments )
+            foreach (var document in fullListOfDocuments)
             {
                 found = false;
 
-                foreach ( var documentInSet in documentsInSet )
+                foreach (var documentInSet in documentsInSet)
                 {
                     // Document already in set
-                    if ( document.UID == documentInSet.FKDocumentUID )
+                    if (document.UID == documentInSet.FKDocumentUID)
                     {
                         found = true;
                         break;
                     }
                 }
 
-                if ( found )
+                if (found)
                     continue;
 
                 // if gets to this point, document is not in set
 
-                documentsNotInSet.Add( document );
+                documentsNotInSet.Add(document);
             }
 
             return documentsNotInSet;
@@ -666,7 +666,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         }
 
 
-        public ClientDocument ListClientDocumentsByFolder( int clientUID, int clientDocumentSetUID)
+        public ClientDocument ListClientDocumentsByFolder(int clientUID, int clientDocumentSetUID)
         {
             ClientDocument listofdocuments = new ClientDocument();
             listofdocuments.clientDocumentList = new List<ClientDocument>();
@@ -677,7 +677,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             listofdocuments.FKClientDocumentSetUID = clientDocumentSetUID;
 
             // 1 - Get list of documents
-            
+
             var clientDocumentListRequest = new BUSClientDocument.ClientDocumentListRequest();
             clientDocumentListRequest.clientDocumentSetUID = clientDocumentSetUID;
             clientDocumentListRequest.clientUID = clientUID;
@@ -689,14 +689,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             tvFileList.Nodes.Clear();
             ListInTree(tvFileList, "CLIENT", clientDocumentListResponse.clientList);
-           
+
             if (tvFileList.Nodes.Count > 0)
                 tvFileList.Nodes[0].Expand();
 
             // 3 - Move to an ordered list
             foreach (TreeNode documentNode in tvFileList.Nodes)
             {
-                var docnode = (scClientDocSetDocLink) documentNode.Tag;
+                var docnode = (scClientDocSetDocLink)documentNode.Tag;
 
                 listofdocuments.clientDocSetDocLink.Add(docnode);
 
@@ -717,7 +717,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             foreach (TreeNode node in treeNode.Nodes)
             {
 
-                var scClientDocSetDocLink = (scClientDocSetDocLink) node.Tag;
+                var scClientDocSetDocLink = (scClientDocSetDocLink)node.Tag;
                 documentList.Add(scClientDocSetDocLink);
 
                 if (node.Nodes.Count > 0)
@@ -798,6 +798,6 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             }
         }
 
-    
+
     }
 }

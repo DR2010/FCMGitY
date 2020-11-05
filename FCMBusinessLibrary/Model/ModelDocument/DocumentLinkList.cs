@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
+﻿using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using MackkadoITFramework.Helper;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
-using System.Windows.Forms;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 {
@@ -21,7 +21,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             DocumentLinkList ret = new DocumentLinkList();
 
             ret.documentLinkList = new List<DocumentLink>();
-            string linktype="";
+            string linktype = "";
             if (type == "ALL" || string.IsNullOrEmpty(type))
             {
                 // do nothing
@@ -38,25 +38,25 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     " link.FKParentDocumentUID " +
                     " ,doc.UID DOCUID " +
                     " ,link.LinkType " +
-                    " ,doc.CUID "+ 
-                    " ,doc.Name "+
+                    " ,doc.CUID " +
+                    " ,doc.Name " +
                     " ,doc.SequenceNumber,doc.IssueNumber " +
                     " ,doc.Location,doc.Comments,doc.SourceCode,doc.FileName " +
                     " ,doc.FKClientUID,doc.ParentUID " +
                     " ,doc.RecordType,doc.IsProjectPlan " +
-                    " ,docFrom.CUID docFromCUID "+
-                    " ,docFrom.Name docFromName " + 
+                    " ,docFrom.CUID docFromCUID " +
+                    " ,docFrom.Name docFromName " +
                     " ,docFrom.SequenceNumber " +
                     " ,docFrom.IssueNumber " +
                     " ,docFrom.UID docFromUID " +
-                    " ,docFrom.Location docFromLocation " + 
+                    " ,docFrom.Location docFromLocation " +
                     " ,docFrom.Comments " +
                     " ,docFrom.SourceCode,docFrom.FileName  " +
                     " ,docFrom.FKClientUID,docFrom.ParentUID " +
                     " ,docFrom.RecordType,docFrom.IsProjectPlan " +
                     " ,link.UID,link.IsVoid  " +
                     " FROM Document doc,  " +
-                    "      DocumentLink link, " + 
+                    "      DocumentLink link, " +
                     "      Document docFrom  " +
                     " WHERE  " +
                     "      link.IsVoid            = 'N'   " +
@@ -190,7 +190,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 }
             }
         }
- 
+
 
 
         // -----------------------------------------------------

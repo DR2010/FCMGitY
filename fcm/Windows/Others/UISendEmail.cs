@@ -23,9 +23,10 @@ namespace fcm.Windows.Others
             InitializeComponent();
 
             txtHTMLPath.Text = "c:/temp/LetterClient.html";
-            txtAttachmentLocation.Text = "c:/FCM_FINAL SafetySeminars 4page eFlyer.pdf";
+            txtAttachmentLocation.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\CO_FA2 2018 Calendar ACT.pdf";
+            txtAttachmentLocation2.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\CO_FA2 NAVY 2018 Calendar NSW.pdf";
             txtDestination.Text = "DanielLGMachado@gmail.com";
-            txtinlineAttachment.Text = "c:/temp/FCMSignature.jpg";
+            txtinlineAttachment.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\conlogo.jpg";
             txtEmailCount.Text = "2";
             emailCount = 2;
             groupType = "Client";
@@ -58,12 +59,12 @@ namespace fcm.Windows.Others
             Cursor.Current = Cursors.WaitCursor;
             string emailTO = txtDestination.Text;
 
-            string emailSubject = "Free Safety Management Plan - October 2014";
+            string emailSubject = "Construction Outcomes (former Federal Construction Management)";
 
            switch (groupType)
             {
                 case "Client":
-                    emailSubject = "Free Safety Management Plan - October 2014";
+                    emailSubject = "Construction Outcomes (former Federal Construction Management)";
                     break;
                 case "Contractor":
                     emailSubject = "Construction Safety Workshop - October 2014 - Not to be missed";
@@ -102,7 +103,8 @@ namespace fcm.Windows.Others
                 iRecipient: emailTO,
                 iSubject: emailSubject,
                 iBody: finalemailBody,
-                // iAttachmentLocation:txtAttachmentLocation.Text,
+                iAttachmentLocation: txtAttachmentLocation.Text,
+                iAttachmentLocation2: txtAttachmentLocation2.Text,
                 inlineAttachment: emailinlineAttachment);
 
             Cursor.Current = Cursors.Arrow;
@@ -111,7 +113,7 @@ namespace fcm.Windows.Others
 
         private void btnToGraham_Click(object sender, EventArgs e)
         {
-            txtDestination.Text = "graham.coyle@federalcm.com.au";
+            txtDestination.Text = "graham.coyle@constructionoutcomes.com.au";
         }
 
         private void btnToDaniel_Click(object sender, EventArgs e)
@@ -134,11 +136,10 @@ namespace fcm.Windows.Others
             int numberOfEmailsSent = 0;
 
             // Client
-            string emailSubject = "Free Safety Management Plan";
-            
-            
+            string emailSubject = "Construction Outcomes (former Federal Construction Management)";
+
             // string emailSubject = "Construction Safety Workshop ";
-            
+
             string emailBody = webBrowser1.DocumentText;
 
             var listOfClientEmail = RepClientEmail.List(tgroupType);
@@ -158,7 +159,7 @@ namespace fcm.Windows.Others
                 switch (tgroupType)
                 {
                     case "Client":
-                        emailSubject = "Free Safety Management Plan - October 2014 ";
+                        emailSubject = "Construction Outcomes (former Federal Construction Management)";
                         finalemailBody = "<html><body>" +
                                     " Hello " + clientEmail.FirstName + " " + emailBody;
                         break;
@@ -184,7 +185,8 @@ namespace fcm.Windows.Others
                     iRecipient: clientEmail.EmailAddress,
                     iSubject: emailSubject,
                     iBody: finalemailBody,
-                    // iAttachmentLocation: txtAttachmentLocation.Text,
+                    iAttachmentLocation: txtAttachmentLocation.Text,
+                    iAttachmentLocation2: txtAttachmentLocation2.Text,
                     inlineAttachment: emailinlineAttachment);
 
                 LogFile.WriteToTodaysLogFile("Email sent to : " + clientEmail.EmailAddress + " " + clientEmail.FirstName, "DM0001");
@@ -234,38 +236,39 @@ namespace fcm.Windows.Others
             {
                 case "Client":
 
-                    txtHTMLPath.Text = @"C:/I_Daniel/Dropbox/I_Projects/FCM_Projects/Workshops/Dec2014/Letters/LetterParticipant.html";
+                    //txtHTMLPath.Text = @"C:/I_Daniel/Dropbox/I_Projects/FCM_Projects/Workshops/Dec2014/Letters/LetterParticipant.html";
+                    txtHTMLPath.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\LetterClient.html"; 
                     webBrowser1.Navigate(txtHTMLPath.Text);
                     break;
 
                 case "Sponsor":
 
-                    txtHTMLPath.Text = "c:/temp/LetterSponsor.html";
+                    txtHTMLPath.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\LetterClient.html";
                     webBrowser1.Navigate(txtHTMLPath.Text);
                     break;
 
                 case "Contractor":
 
-                    txtHTMLPath.Text = "c:/temp/LetterContractor.html";
+                    txtHTMLPath.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\LetterSponsor.html";
                     webBrowser1.Navigate(txtHTMLPath.Text);
                     break;
 
                 case "Presenter":
 
-                    txtHTMLPath.Text = "c:/temp/LetterPresenter.html";
+                    txtHTMLPath.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\LetterSponsor.html";
                     webBrowser1.Navigate(txtHTMLPath.Text);
                     break;
 
                 case "ISS":
 
-                    txtHTMLPath.Text = "c:/temp/CertificateISS.html";
+                    txtHTMLPath.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\LetterSponsor.html";
                     webBrowser1.Navigate(txtHTMLPath.Text);
                     break;
 
 
                 case "WSP":
 
-                    txtHTMLPath.Text = "c:/temp/CertificateWSP.html";
+                    txtHTMLPath.Text = @"D:\I_Daniel\OneDrive\I_Projects\FCM_Projects\Workshops\ConOutcomes\LetterSponsor.html";
                     webBrowser1.Navigate(txtHTMLPath.Text);
                     break;
             }

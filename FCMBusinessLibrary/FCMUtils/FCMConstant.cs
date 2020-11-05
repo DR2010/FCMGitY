@@ -28,11 +28,11 @@
         /// </summary>
         public enum DataBaseType
         {
-            SQLSERVER, 
+            SQLSERVER,
             MYSQL
         }
 
-        
+
         /// <summary>
         /// Integer represent the sequence of the image on the Image List.
         /// </summary>
@@ -268,7 +268,7 @@
             public const string APPENDIX = "APPENDIX";
         }
 
-        public struct UserRoleType      
+        public struct UserRoleType
         {
             public const string ADMIN = "ADMIN";
             public const string USER = "USER";

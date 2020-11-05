@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.FCMUtils;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.ReferenceData;
 using MackkadoITFramework.Security;
 using MackkadoITFramework.Utils;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 {
@@ -26,7 +26,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             var response = userRole.ListRoleForUser(userID, listOfRoles);
 
             foreach (var role in listOfRoles)
-            { 
+            {
                 // get list of screen for role
                 //
                 var listOfScreen = SecurityRoleScreen.List(role.FK_Role);
@@ -54,7 +54,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 
                 }
             }
-            
+
             return list;
         }
 

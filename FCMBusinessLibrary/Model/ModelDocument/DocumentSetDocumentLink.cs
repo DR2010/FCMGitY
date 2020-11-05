@@ -1,6 +1,6 @@
-﻿using System;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 {
@@ -120,11 +120,11 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
-                var commandString = 
+                var commandString =
                 (
                    "DELETE FROM DocumentSetDocumentLink  " +
                    " WHERE FKParentDocumentUID = @DocumentSetDocumentUID " +
-                   "   OR FKChildDocumentUID = @DocumentSetDocumentUID " 
+                   "   OR FKChildDocumentUID = @DocumentSetDocumentUID "
                 );
 
                 using (var command = new MySqlCommand(

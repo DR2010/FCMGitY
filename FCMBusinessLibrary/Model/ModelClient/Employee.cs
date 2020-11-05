@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.ReferenceData;
 using MackkadoITFramework.Utils;
-using MackkadoITFramework.ErrorHandling;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClient
 {
@@ -15,12 +15,12 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
         public int FKCompanyUID { get; set; }
         public int UID { get; set; }
 
-        [Required( ErrorMessage = "Employee name is mandatory." )]
-        [Display( Name = "Name" )]
+        [Required(ErrorMessage = "Employee name is mandatory.")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required( ErrorMessage = "Role is mandatory." )]
-        [Display( Name = "Role" )]
+        [Required(ErrorMessage = "Role is mandatory.")]
+        [Display(Name = "Role")]
         public string RoleType { get; set; }
 
         public string RoleDescription { get; set; }
@@ -72,7 +72,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
             {
                 var commandString =
                 " SELECT " +
-                EmployeeFieldsString() 
+                EmployeeFieldsString()
                 + "  FROM Employee" +
                 " WHERE UID = " + this.UID;
 
@@ -167,7 +167,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
                 var commandString =
                 (
                    "INSERT INTO Employee " +
-                   "( " + 
+                   "( " +
                     EmployeeFieldsString() +
                    ")" +
                         " VALUES " +
@@ -206,7 +206,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
         /// <returns></returns>
         public ResponseStatus Update()
         {
-            ResponseStatus ret = new ResponseStatus();      
+            ResponseStatus ret = new ResponseStatus();
             ret.Message = "Item updated successfully";
 
             if (Name == null)
@@ -257,7 +257,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
             if (Name == null)
                 Name = "";
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionString ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString =
@@ -269,9 +269,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
 
 
                 using (var command = new MySqlCommand(
-                                            commandString, connection ))
+                                            commandString, connection))
                 {
-                    command.Parameters.Add( "@UID", MySqlDbType.Int32 ).Value = UID;
+                    command.Parameters.Add("@UID", MySqlDbType.Int32).Value = UID;
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -284,11 +284,11 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
         /// List employees
         /// </summary>
         /// <param name="clientID"></param>
-        public static List<Employee> List( int clientID )
+        public static List<Employee> List(int clientID)
         {
             List<Employee> employeeList = new List<Employee>();
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionString ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString = string.Format(
@@ -296,10 +296,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
                 EmployeeFieldsString() +
                 "   FROM Employee " +
                 "   WHERE  FKCompanyUID = {0}",
-                clientID );
+                clientID);
 
                 using (var command = new MySqlCommand(
-                                      commandString, connection ))
+                                      commandString, connection))
                 {
                     connection.Open();
                     using (MySqlDataReader reader = command.ExecuteReader())
@@ -309,7 +309,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
                             Employee _employee = new Employee();
                             LoadEmployeeObject(reader, _employee);
 
-                            employeeList.Add( _employee );
+                            employeeList.Add(_employee);
                         }
                     }
                 }
@@ -363,7 +363,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
             }
 
         }
-        
+
         /// <summary>
         /// This method loads the information from the sqlreader into the Employee object
         /// </summary>
@@ -382,7 +382,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClient
             employee.UserIdUpdatedBy = reader[FieldName.UserIdCreatedBy].ToString();
             employee.RoleDescription = CodeValue.GetCodeValueDescription(MakConstant.CodeTypeString.RoleType, employee.RoleType);
 
-            try  { employee.IsAContact = Convert.ToChar(reader[FieldName.IsAContact].ToString()); }
+            try { employee.IsAContact = Convert.ToChar(reader[FieldName.IsAContact].ToString()); }
             catch { employee.IsAContact = 'N'; }
             try { employee.EmailAddress = reader[FieldName.EmailAddress].ToString(); }
             catch { employee.EmailAddress = ""; }

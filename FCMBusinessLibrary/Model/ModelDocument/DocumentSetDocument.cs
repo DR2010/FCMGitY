@@ -1,12 +1,12 @@
-﻿using System;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 {
     public class DocumentSetDocument
     {
-        
+
         public int UID;
         public int FKDocumentUID;
         public int FKDocumentSetUID;
@@ -25,56 +25,56 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             // It links a document to a document set
             //
 
-          using (var connection = new MySqlConnection(ConnString.ConnectionString))
-          {
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
+            {
 
-              var commandString =
-              (
-                 "INSERT INTO DocumentSetDocument " +
-                 "(UID "+ 
-                 ",FKDocumentUID " +
-                 ",FKDocumentSetUID" +
-                 ",SequenceNumber" +
-                 ",Location" +
-                 ",StartDate" +
-                 ",EndDate" +
-                 ",IsVoid" +
-                 ",FKParentDocumentUID" +
-                 ",FKParentDocumentSetUID" +
-                 ")" +
-                      " VALUES " +
-                 "( @UID     " +
-                 ", @FKDocumentUID    " +
-                 ", @FKDocumentSetUID " +
-                 ", @SequenceNumber" +
-                 ", @Location" +
-                 ", @StartDate" +
-                 ", @EndDate" +
-                 ", @IsVoid" +
-                 ", @FKParentDocumentUID" +
-                 ", @FKParentDocumentSetUID" +
-                 " ) "
-                 );
+                var commandString =
+                (
+                   "INSERT INTO DocumentSetDocument " +
+                   "(UID " +
+                   ",FKDocumentUID " +
+                   ",FKDocumentSetUID" +
+                   ",SequenceNumber" +
+                   ",Location" +
+                   ",StartDate" +
+                   ",EndDate" +
+                   ",IsVoid" +
+                   ",FKParentDocumentUID" +
+                   ",FKParentDocumentSetUID" +
+                   ")" +
+                        " VALUES " +
+                   "( @UID     " +
+                   ", @FKDocumentUID    " +
+                   ", @FKDocumentSetUID " +
+                   ", @SequenceNumber" +
+                   ", @Location" +
+                   ", @StartDate" +
+                   ", @EndDate" +
+                   ", @IsVoid" +
+                   ", @FKParentDocumentUID" +
+                   ", @FKParentDocumentSetUID" +
+                   " ) "
+                   );
 
-              using (var command = new MySqlCommand(
-                                          commandString, connection))
-              {
-                  command.Parameters.Add("@UID", MySqlDbType.Int32).Value = UID;
-                  command.Parameters.Add("@FKDocumentUID", MySqlDbType.Int32).Value = FKDocumentUID;
-                  command.Parameters.Add("@FKDocumentSetUID", MySqlDbType.Int32).Value = FKDocumentSetUID;
-                  command.Parameters.Add("@SequenceNumber", MySqlDbType.Int32).Value = SequenceNumber;
-                  command.Parameters.Add("@Location", MySqlDbType.Text).Value = Location;
-                  command.Parameters.Add("@StartDate", MySqlDbType.DateTime).Value = StartDate;
-                  command.Parameters.Add("@EndDate", MySqlDbType.DateTime).Value = EndDate;
-                  command.Parameters.Add("@IsVoid", MySqlDbType.VarChar).Value = IsVoid;
-                  command.Parameters.Add("@FKParentDocumentUID", MySqlDbType.Int32).Value = FKParentDocumentUID;
-                  command.Parameters.Add("@FKParentDocumentSetUID", MySqlDbType.Int32).Value = documentSet.UID;
+                using (var command = new MySqlCommand(
+                                            commandString, connection))
+                {
+                    command.Parameters.Add("@UID", MySqlDbType.Int32).Value = UID;
+                    command.Parameters.Add("@FKDocumentUID", MySqlDbType.Int32).Value = FKDocumentUID;
+                    command.Parameters.Add("@FKDocumentSetUID", MySqlDbType.Int32).Value = FKDocumentSetUID;
+                    command.Parameters.Add("@SequenceNumber", MySqlDbType.Int32).Value = SequenceNumber;
+                    command.Parameters.Add("@Location", MySqlDbType.Text).Value = Location;
+                    command.Parameters.Add("@StartDate", MySqlDbType.DateTime).Value = StartDate;
+                    command.Parameters.Add("@EndDate", MySqlDbType.DateTime).Value = EndDate;
+                    command.Parameters.Add("@IsVoid", MySqlDbType.VarChar).Value = IsVoid;
+                    command.Parameters.Add("@FKParentDocumentUID", MySqlDbType.Int32).Value = FKParentDocumentUID;
+                    command.Parameters.Add("@FKParentDocumentSetUID", MySqlDbType.Int32).Value = documentSet.UID;
 
-                  connection.Open();
-                  command.ExecuteNonQuery();
-              }
-          }
-          return;
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            return;
         }
 
         public void UnlinkDocument(DocumentSet documentSet, Model.ModelDocument.Document document)
@@ -129,7 +129,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 dslLocate.FKDocumentUID = doco.document.UID;
                 dslLocate.FKDocumentSetUID = doco.documentSet.UID;
 
-                if (dslLocate.Find(doco.document.UID, doco.documentSet.UID, 'N' ))
+                if (dslLocate.Find(doco.document.UID, doco.documentSet.UID, 'N'))
                 {
                     // Fact: There is an existing non-voided row
                     // Intention (1): Make it void
@@ -199,8 +199,8 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 "      ,EndDate " +
                 "      ,IsVoid " +
                 "  FROM DocumentSetDocument" +
-                " WHERE UID = '{0}' "+
-                voidRead 
+                " WHERE UID = '{0}' " +
+                voidRead
                 , this.UID);
 
                 using (var command = new MySqlCommand(
@@ -213,11 +213,11 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     {
                         try
                         {
-                            this.UID = Convert.ToInt32( reader["UID"].ToString() );
-                            this.FKDocumentUID = Convert.ToInt32( reader["FKDocumentUID"].ToString());
-                            this.FKDocumentSetUID = Convert.ToInt32( reader["FKDocumentSetUID"].ToString() );
-                            this.StartDate = Convert.ToDateTime( reader["StartDate"].ToString());
-                            this.EndDate = Convert.ToDateTime( reader["EndDate"].ToString());
+                            this.UID = Convert.ToInt32(reader["UID"].ToString());
+                            this.FKDocumentUID = Convert.ToInt32(reader["FKDocumentUID"].ToString());
+                            this.FKDocumentSetUID = Convert.ToInt32(reader["FKDocumentSetUID"].ToString());
+                            this.StartDate = Convert.ToDateTime(reader["StartDate"].ToString());
+                            this.EndDate = Convert.ToDateTime(reader["EndDate"].ToString());
                             this.IsVoid = Convert.ToChar(reader["IsVoid"]);
 
                             ret = true;
@@ -255,7 +255,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 "  FROM DocumentSetDocument" +
                 " WHERE FKDocumentUID = '{0}' " +
                 " AND   FKDocumentSetUID = '{1}' " +
-                " AND   IsVoid = '{2}' " 
+                " AND   IsVoid = '{2}' "
                 , documentUID
                 , docSetUID
                 , voidRead);
@@ -351,7 +351,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
         // -----------------------------------------------------
         //    Update Document Set Link
         // -----------------------------------------------------
-        private static void Update(int docLinkUID )
+        private static void Update(int docLinkUID)
         {
 
             string ret = "Item updated successfully";
@@ -466,12 +466,12 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             if (dsd.UID <= 0)
                 return;
 
-            DocumentSetDocumentLink.DeleteAllRelated(dsd.UID); 
+            DocumentSetDocumentLink.DeleteAllRelated(dsd.UID);
 
             using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
-                var commandString = 
+                var commandString =
                 (
                    "DELETE FROM DocumentSetDocument " +
                    " WHERE FKDocumentUID = @FKDocumentUID " +

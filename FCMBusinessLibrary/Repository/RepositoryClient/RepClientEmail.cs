@@ -1,11 +1,11 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.Model.ModelClient;
+using MackkadoITFramework.Utils;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using FCMMySQLBusinessLibrary.Model.ModelClient;
-using MackkadoITFramework.Utils;
-using MySql.Data.MySqlClient;
 
 namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
 {
@@ -16,12 +16,12 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
         // -----------------------------------------------------
         public static List<ClientEmail> List(string groupType)
         {
-            var clientEmailList  = new List<ClientEmail>();
+            var clientEmailList = new List<ClientEmail>();
 
             if (string.IsNullOrEmpty(groupType))
                 return new List<ClientEmail>();
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionString ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString = string.Format(
@@ -32,12 +32,12 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 ", EmailAddress " +
                 ", Type " +
                 "   FROM ClientEmail " +
-                "   WHERE (EmailSent is null or EmailSent = '') and Type = @groupType" +
-                "  ORDER BY UID ASC " 
+                "   WHERE (EmailSent is null or EmailSent = '' or EmailSent = 'N') and Type = @groupType" +
+                "  ORDER BY UID ASC "
                 );
 
                 using (var command = new MySqlCommand(
-                                      commandString, connection ))
+                                      commandString, connection))
                 {
                     command.Parameters.Add("@groupType", MySqlDbType.VarChar).Value = groupType;
 
@@ -97,7 +97,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                 ", CertificateType " +
                 "   FROM ClientEmail, temp_emailattach" +
                 "   WHERE  " +
-                "   FKEmailClientID = SecID and "  +
+                "   FKEmailClientID = SecID and " +
                 "   Type = @groupType and CertificateType = @certType " +
                 "  ORDER BY UID ASC "
                 );
@@ -161,7 +161,7 @@ namespace FCMMySQLBusinessLibrary.Repository.RepositoryClient
                    " SET " +
                    " EmailSent = @EmailSent" +
                    "  WHERE  " +
-                   "        UID = @UID   " 
+                   "        UID = @UID   "
                 );
 
                 using (var command = new MySqlCommand(

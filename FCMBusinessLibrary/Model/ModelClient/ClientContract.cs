@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using MackkadoITFramework.ErrorHandling;
+﻿using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
 using ConnString = MackkadoITFramework.Utils.ConnString;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClient
 {
     public class ClientContract
     {
-        
+
         public int FKCompanyUID { get; set; }
         public int UID { get; set; }
         public string ExternalID { get; set; }

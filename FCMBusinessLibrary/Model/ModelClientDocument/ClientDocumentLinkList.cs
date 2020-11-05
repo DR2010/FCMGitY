@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
+﻿using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
 using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 {
@@ -16,14 +16,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         // -----------------------------------
         public void ListChildrenDocuments(
             int clientUID,
-            int clientDocumentSetUID, 
-            int documentUID, 
-            string type )
-            
+            int clientDocumentSetUID,
+            int documentUID,
+            string type)
+
         {
 
             string linktype = "";
-            if (type == "ALL" || string.IsNullOrEmpty( type ))
+            if (type == "ALL" || string.IsNullOrEmpty(type))
             {
                 // do nothing
             }
@@ -35,7 +35,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             // The client document UID is unique
             // The link table does not have document set uid
             //
-            
+
             clientDocumentLinkList = new List<ClientDocumentLink>();
 
             using (var connection = new MySqlConnection(ConnString.ConnectionString))
@@ -172,8 +172,8 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
         public static ClientDocumentLinkList ListRelatedDocuments(
             int clientUID,
-            int clientDocumentSetUID, 
-            int documentUID, 
+            int clientDocumentSetUID,
+            int documentUID,
             string type)
         {
             ClientDocumentLinkList ret = new ClientDocumentLinkList();
@@ -210,7 +210,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                    "    AND CDL.FKParentDocumentUID = {0} " +
                    "    AND CDL.FKClientDocumentSetUID = {1}  " +
                    "    AND CDL.FKClientUID = {2}  " +
-                   linktype 
+                   linktype
                    , documentUID
                    , clientDocumentSetUID
                    , clientUID
@@ -229,7 +229,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                             clientDocumentLink.FKParentDocumentUID = Convert.ToInt32(reader["CDLFKParentDocumentUID"].ToString());
                             clientDocumentLink.FKChildDocumentUID = Convert.ToInt32(reader["CDLFKChildDocumentUID"].ToString());
                             clientDocumentLink.LinkType = reader["CDLLinkType"].ToString();
-                            clientDocumentLink.FKClientDocumentSetUID = 
+                            clientDocumentLink.FKClientDocumentSetUID =
                                                Convert.ToChar(reader["CDLFKClientDocumentSetUID"].ToString());
                             clientDocumentLink.FKClientUID = Convert.ToInt32(reader["CDLFKClientUID"].ToString());
 
@@ -239,7 +239,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                             // 04.02.2013
                             // clientDocumentLink.childClientDocument.Read();
-                            clientDocumentLink.childClientDocument = RepClientDocument.Read( clientDocumentLink.FKChildDocumentUID );
+                            clientDocumentLink.childClientDocument = RepClientDocument.Read(clientDocumentLink.FKChildDocumentUID);
 
                             // Get the document child
                             clientDocumentLink.childDocument = new Model.ModelDocument.Document();
@@ -253,7 +253,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                             clientDocumentLink.parentClientDocument.UID = clientDocumentLink.FKParentDocumentUID;
                             //clientDocumentLink.parentClientDocument.Read();
 
-                            clientDocumentLink.parentClientDocument = RepClientDocument.Read( clientDocumentLink.FKParentDocumentUID );
+                            clientDocumentLink.parentClientDocument = RepClientDocument.Read(clientDocumentLink.FKParentDocumentUID);
 
 
                             // Get the document parent
@@ -261,7 +261,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                             clientDocumentLink.parentDocument.UID = clientDocumentLink.FKParentDocumentUID;
                             // clientDocumentLink.parentDocument.Read();
 
-                            clientDocumentLink.parentDocument = 
+                            clientDocumentLink.parentDocument =
                                 RepDocument.Read(false, clientDocumentLink.FKParentDocumentUID);
 
                             // Get the client document set
@@ -282,7 +282,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         //
         // Delete links to specific document
         //
-        public static void VoidLinks( int clientUID, int clientDocumentSetUID, int documentUID )
+        public static void VoidLinks(int clientUID, int clientDocumentSetUID, int documentUID)
         {
             //  11/09/2010 19:03
             //  Continuar daqui. Preciso criar um metodo para apagar todos os links relacionados a um documento
@@ -295,7 +295,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             string ret = "Item updated successfully";
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionString ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString =
@@ -307,17 +307,17 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                    "        FKClientDocumentSetUID = @FKClientDocumentSetUID    " +
                    "    AND FKClientUID = @FKClientUID  " +
                    "    AND     FKParentDocumentUID = @FKDocumentUID " +
-                   "          OR FKChildDocumentUID  = @FKDocumentUID " ); 
+                   "          OR FKChildDocumentUID  = @FKDocumentUID ");
 
                 using (var command = new MySqlCommand(
-                                            commandString, connection ))
+                                            commandString, connection))
                 {
 
-                    command.Parameters.Add( "@FKClientDocumentSetUID", MySqlDbType.Int32 ).Value = clientDocumentSetUID;
-                    command.Parameters.Add( "@FKClientUID", MySqlDbType.Int32 ).Value = clientUID;
-                    command.Parameters.Add( "@FKDocumentUID", MySqlDbType.Int32 ).Value = documentUID;
+                    command.Parameters.Add("@FKClientDocumentSetUID", MySqlDbType.Int32).Value = clientDocumentSetUID;
+                    command.Parameters.Add("@FKClientUID", MySqlDbType.Int32).Value = clientUID;
+                    command.Parameters.Add("@FKDocumentUID", MySqlDbType.Int32).Value = documentUID;
 
-                    command.Parameters.Add( "@IsVoid", MySqlDbType.VarChar ).Value = 'Y';
+                    command.Parameters.Add("@IsVoid", MySqlDbType.VarChar).Value = 'Y';
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -329,18 +329,18 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         //
         // Physically Delete links to specific document
         //
-        public static void DeleteLinks( int clientUID, int clientDocumentSetUID, int documentUID )
+        public static void DeleteLinks(int clientUID, int clientDocumentSetUID, int documentUID)
         {
 
             string ret = "Item updated successfully";
 
-            using (var connection = new MySqlConnection( ConnString.ConnectionString ))
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString =
                 (
                    "DELETE ClientDocumentLink " +
-                   "FROM ClientDocumentLink " + 
+                   "FROM ClientDocumentLink " +
                    "  WHERE  " +
                    "        FKClientDocumentSetUID = @FKClientDocumentSetUID    " +
                    "    AND FKClientUID = @FKClientUID  " +
@@ -348,14 +348,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                    "          OR FKChildDocumentUID  = @FKDocumentUID )");
 
                 using (var command = new MySqlCommand(
-                                            commandString, connection ))
+                                            commandString, connection))
                 {
 
-                    command.Parameters.Add( "@FKClientDocumentSetUID", MySqlDbType.Int32 ).Value = clientDocumentSetUID;
-                    command.Parameters.Add( "@FKClientUID", MySqlDbType.Int32 ).Value = clientUID;
-                    command.Parameters.Add( "@FKDocumentUID", MySqlDbType.Int32 ).Value = documentUID;
+                    command.Parameters.Add("@FKClientDocumentSetUID", MySqlDbType.Int32).Value = clientDocumentSetUID;
+                    command.Parameters.Add("@FKClientUID", MySqlDbType.Int32).Value = clientUID;
+                    command.Parameters.Add("@FKDocumentUID", MySqlDbType.Int32).Value = documentUID;
 
-                    command.Parameters.Add( "@IsVoid", MySqlDbType.VarChar ).Value = 'Y';
+                    command.Parameters.Add("@IsVoid", MySqlDbType.VarChar).Value = 'Y';
 
                     connection.Open();
                     command.ExecuteNonQuery();

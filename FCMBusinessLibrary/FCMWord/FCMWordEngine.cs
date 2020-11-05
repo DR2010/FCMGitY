@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Microsoft.Office.Interop.Word;
+﻿using Microsoft.Office.Interop.Word;
+using System.IO;
 
 namespace FCMMySQLBusinessLibrary.FCMWord
 {
@@ -53,7 +53,7 @@ namespace FCMMySQLBusinessLibrary.FCMWord
             {
                 oDoc.Close(ref oFalse, ref missing, ref missing);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(oDoc);
-            
+
             }
 
             if (oWord != null)
@@ -64,7 +64,7 @@ namespace FCMMySQLBusinessLibrary.FCMWord
 
             oDoc = null;
             oWord = null;
-            
+
         }
 
         private void addText(string toPrint, int fontSize, int bold)
@@ -87,7 +87,7 @@ namespace FCMMySQLBusinessLibrary.FCMWord
             oPara = oDoc.Content.Paragraphs.Add(ref oRng);
             oPara.Range.Paste();
             oPara.Range.InsertParagraphAfter();
- 
+
         }
 
         internal void SaveAsRtf(object fileName)

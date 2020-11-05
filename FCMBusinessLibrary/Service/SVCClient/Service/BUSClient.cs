@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
+using FCMMySQLBusinessLibrary.Model.ModelClient;
 using FCMMySQLBusinessLibrary.Model.ModelClientDocument;
+using FCMMySQLBusinessLibrary.Repository.RepositoryClient;
 using FCMMySQLBusinessLibrary.Service.SVCClient.Contract;
 using FCMMySQLBusinessLibrary.Service.SVCClient.Interface;
 using FCMMySQLBusinessLibrary.Service.SVCClient.ServiceContract;
@@ -7,11 +9,9 @@ using FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Security;
 using MackkadoITFramework.Utils;
-using FCMMySQLBusinessLibrary.Model.ModelClient;
 using MySql.Data.MySqlClient;
+using System;
 using System.Transactions;
-using FCMMySQLBusinessLibrary.FCMUtils;
-using FCMMySQLBusinessLibrary.Repository.RepositoryClient;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 {
@@ -27,13 +27,13 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <param name="eventClient"></param>
         /// <param name="linkInitialSet"> </param>
         /// <returns></returns>
-        public ClientAddResponse ClientAdd( ClientAddRequest clientAddRequest )
+        public ClientAddResponse ClientAdd(ClientAddRequest clientAddRequest)
         {
             var response = new ClientAddResponse();
 
             // This is a new client.
             //
-            if ( string.IsNullOrEmpty( clientAddRequest.eventClient.Name ) )
+            if (string.IsNullOrEmpty(clientAddRequest.eventClient.Name))
             {
                 response.responseStatus = new ResponseStatus()
                 {
@@ -47,21 +47,21 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             // Check if user ID is already connected to a client
             // --------------------------------------------------------------
             #region Check if user is already connected to a client
-            if ( !string.IsNullOrEmpty( clientAddRequest.eventClient.FKUserID ) )
+            if (!string.IsNullOrEmpty(clientAddRequest.eventClient.FKUserID))
             {
-                var checkLinkedUser = new Client( clientAddRequest.headerInfo ) { FKUserID = clientAddRequest.eventClient.FKUserID };
+                var checkLinkedUser = new Client(clientAddRequest.headerInfo) { FKUserID = clientAddRequest.eventClient.FKUserID };
                 //var responseLinked = checkLinkedUser.ReadLinkedUser();
 
-                var responseLinked = RepClient.ReadLinkedUser( checkLinkedUser );
+                var responseLinked = RepClient.ReadLinkedUser(checkLinkedUser);
 
-                if ( !responseLinked.Successful )
+                if (!responseLinked.Successful)
                 {
                     response.responseStatus = new ResponseStatus();
                     response.responseStatus = responseLinked;
                     return response;
                 }
 
-                if ( responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0001 )
+                if (responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0001)
                 {
                     response.responseStatus = new ResponseStatus()
                     {
@@ -76,10 +76,10 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 
             var newClientUid = 0;
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
-                using ( var tr = new TransactionScope( TransactionScopeOption.Required ) )
+                using (var tr = new TransactionScope(TransactionScopeOption.Required))
                 {
                     connection.Open();
 
@@ -88,11 +88,11 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     // -------------------------------
                     //var newClient = clientAddRequest.eventClient.Insert(clientAddRequest.headerInfo, connection);
 
-                    var newClient = RepClient.Insert( clientAddRequest.headerInfo, clientAddRequest.eventClient, connection );
+                    var newClient = RepClient.Insert(clientAddRequest.headerInfo, clientAddRequest.eventClient, connection);
 
                     //   var newClientX = eventClient.MySQLInsert(headerInfo);
 
-                    newClientUid = Convert.ToInt32( newClient.Contents );
+                    newClientUid = Convert.ToInt32(newClient.Contents);
 
                     // -------------------------------------------
                     // Call method to add client extra information
@@ -101,9 +101,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     var cei = RepClientExtraInformation.Insert(
                                     HeaderInfo.Instance,
                                     clientAddRequest.eventClient.clientExtraInformation,
-                                    connection );
+                                    connection);
 
-                    if ( cei.ReturnCode != 1 )
+                    if (cei.ReturnCode != 1)
                     {
                         // Rollback transaction
                         //
@@ -122,27 +122,27 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     cds.FKClientUID = newClientUid;
 
                     // cds.FolderOnly = "CLIENT" + newClientUID.ToString().Trim().PadLeft(4, '0');
-                    cds.FolderOnly = "CLIENT" + newClientUid.ToString().Trim().PadLeft( 4, '0' );
+                    cds.FolderOnly = "CLIENT" + newClientUid.ToString().Trim().PadLeft(4, '0');
 
                     // cds.Folder = FCMConstant.SYSFOLDER.CLIENTFOLDER + "\\CLIENT" + newClientUID.ToString().Trim().PadLeft(4, '0');
                     cds.Folder = FCMConstant.SYSFOLDER.CLIENTFOLDER + @"\" + cds.FolderOnly;
 
                     cds.SourceFolder = FCMConstant.SYSFOLDER.TEMPLATEFOLDER;
-                    cds.Add( clientAddRequest.headerInfo, connection );
+                    cds.Add(clientAddRequest.headerInfo, connection);
 
                     // --------------------------------------------
                     // Apply initial document set
                     // --------------------------------------------
-                    if ( clientAddRequest.linkInitialSet == "Y" )
+                    if (clientAddRequest.linkInitialSet == "Y")
                     {
                         BUSClientDocument.AssociateDocumentsToClient(
                                 clientDocumentSet: cds,
                                 documentSetUID: clientAddRequest.eventClient.FKDocumentSetUID,
-                                headerInfo: clientAddRequest.headerInfo );
+                                headerInfo: clientAddRequest.headerInfo);
 
                         // Fix Destination Folder Location 
                         //
-                        BUSClientDocumentGeneration.UpdateLocation( cds.FKClientUID, cds.ClientSetID );
+                        BUSClientDocumentGeneration.UpdateLocation(cds.FKClientUID, cds.ClientSetID);
                     }
 
                     // Commit transaction
@@ -151,7 +151,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                 }
             }
 
-            ClientList( clientAddRequest.headerInfo );
+            ClientList(clientAddRequest.headerInfo);
 
             // List();
 
@@ -168,10 +168,10 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <param name="clientAddRequest"></param>
         /// <param name="employeeName"> </param>
         /// <param name="roleType"></param>
-        private static void AddEmployee( string employeeName, string roleType, string userID, int clientUID )
+        private static void AddEmployee(string employeeName, string roleType, string userID, int clientUID)
         {
 
-            if ( string.IsNullOrEmpty( employeeName ) )
+            if (string.IsNullOrEmpty(employeeName))
                 return;
 
             Employee employee = new Employee();
@@ -181,7 +181,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             employee.Name = employeeName;
             employee.RoleType = roleType;
             employee.RoleDescription =
-                MackkadoITFramework.ReferenceData.CodeValue.GetCodeValueDescription( "ROLETYPE", employee.RoleType );
+                MackkadoITFramework.ReferenceData.CodeValue.GetCodeValueDescription("ROLETYPE", employee.RoleType);
             employee.Insert();
         }
 
@@ -191,10 +191,10 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <param name="clientAddRequest"></param>
         /// <param name="employeeName"> </param>
         /// <param name="roleType"></param>
-        private static void UpdateEmployee( string employeeName, string roleType, string userID, int clientUID )
+        private static void UpdateEmployee(string employeeName, string roleType, string userID, int clientUID)
         {
 
-            if ( string.IsNullOrEmpty( employeeName ) )
+            if (string.IsNullOrEmpty(employeeName))
                 return;
 
             Employee employee = new Employee();
@@ -204,7 +204,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             employee.Name = employeeName;
             employee.RoleType = roleType;
             employee.RoleDescription =
-                MackkadoITFramework.ReferenceData.CodeValue.GetCodeValueDescription( "ROLETYPE", employee.RoleType );
+                MackkadoITFramework.ReferenceData.CodeValue.GetCodeValueDescription("ROLETYPE", employee.RoleType);
             employee.Update();
         }
         /// <summary>
@@ -213,83 +213,83 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <param name="clientAddRequest"></param>
         /// <param name="employeeName"> </param>
         /// <param name="roleType"></param>
-        private static void SaveEmployees( int clientUID, ClientEmployee inClientEmployee, string userID )
+        private static void SaveEmployees(int clientUID, ClientEmployee inClientEmployee, string userID)
         {
 
             ClientEmployee clientEmployee = new ClientEmployee();
-            clientEmployee = RepEmployee.ReadEmployees( clientUID );
+            clientEmployee = RepEmployee.ReadEmployees(clientUID);
 
             // ManagingDirector
-            if ( string.IsNullOrEmpty( clientEmployee.ManagingDirector ) )
-                AddEmployee( inClientEmployee.ManagingDirector, FCMConstant.RoleTypeCode.ManagingDirector, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.ManagingDirector))
+                AddEmployee(inClientEmployee.ManagingDirector, FCMConstant.RoleTypeCode.ManagingDirector, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.ManagingDirector, FCMConstant.RoleTypeCode.ManagingDirector, userID, clientUID );
+                UpdateEmployee(inClientEmployee.ManagingDirector, FCMConstant.RoleTypeCode.ManagingDirector, userID, clientUID);
 
             // ProjectManager
-            if ( string.IsNullOrEmpty( clientEmployee.ProjectManager ) )
-                AddEmployee( inClientEmployee.ProjectManager, FCMConstant.RoleTypeCode.ProjectManager, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.ProjectManager))
+                AddEmployee(inClientEmployee.ProjectManager, FCMConstant.RoleTypeCode.ProjectManager, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.ProjectManager, FCMConstant.RoleTypeCode.ProjectManager, userID, clientUID );
+                UpdateEmployee(inClientEmployee.ProjectManager, FCMConstant.RoleTypeCode.ProjectManager, userID, clientUID);
 
             // ProjectOHSRepresentative
-            if ( string.IsNullOrEmpty( clientEmployee.ProjectOHSRepresentative ) )
-                AddEmployee( inClientEmployee.ProjectOHSRepresentative, FCMConstant.RoleTypeCode.ProjectOHSRepresentative, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.ProjectOHSRepresentative))
+                AddEmployee(inClientEmployee.ProjectOHSRepresentative, FCMConstant.RoleTypeCode.ProjectOHSRepresentative, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.ProjectOHSRepresentative, FCMConstant.RoleTypeCode.ProjectOHSRepresentative, userID, clientUID );
+                UpdateEmployee(inClientEmployee.ProjectOHSRepresentative, FCMConstant.RoleTypeCode.ProjectOHSRepresentative, userID, clientUID);
 
             // OHSEAuditor  
-            if ( string.IsNullOrEmpty( clientEmployee.OHSEAuditor ) )
-                AddEmployee( inClientEmployee.ProjectOHSRepresentative, FCMConstant.RoleTypeCode.OHSEAuditor, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.OHSEAuditor))
+                AddEmployee(inClientEmployee.ProjectOHSRepresentative, FCMConstant.RoleTypeCode.OHSEAuditor, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.ProjectOHSRepresentative, FCMConstant.RoleTypeCode.OHSEAuditor, userID, clientUID );
-            
+                UpdateEmployee(inClientEmployee.ProjectOHSRepresentative, FCMConstant.RoleTypeCode.OHSEAuditor, userID, clientUID);
+
             // SystemsManager
-            if ( string.IsNullOrEmpty( clientEmployee.SystemsManager ) )
-                AddEmployee( inClientEmployee.SystemsManager, FCMConstant.RoleTypeCode.SystemsManager, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.SystemsManager))
+                AddEmployee(inClientEmployee.SystemsManager, FCMConstant.RoleTypeCode.SystemsManager, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.SystemsManager, FCMConstant.RoleTypeCode.SystemsManager, userID, clientUID );
+                UpdateEmployee(inClientEmployee.SystemsManager, FCMConstant.RoleTypeCode.SystemsManager, userID, clientUID);
 
             // SiteManager
-            if ( string.IsNullOrEmpty( clientEmployee.SiteManager ) )
-                AddEmployee( inClientEmployee.SiteManager, FCMConstant.RoleTypeCode.SiteManager, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.SiteManager))
+                AddEmployee(inClientEmployee.SiteManager, FCMConstant.RoleTypeCode.SiteManager, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.SiteManager, FCMConstant.RoleTypeCode.SiteManager, userID, clientUID );
+                UpdateEmployee(inClientEmployee.SiteManager, FCMConstant.RoleTypeCode.SiteManager, userID, clientUID);
 
             // Supervisor
-            if ( string.IsNullOrEmpty( clientEmployee.Supervisor ) )
-                AddEmployee( inClientEmployee.Supervisor, FCMConstant.RoleTypeCode.Supervisor, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.Supervisor))
+                AddEmployee(inClientEmployee.Supervisor, FCMConstant.RoleTypeCode.Supervisor, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.Supervisor, FCMConstant.RoleTypeCode.Supervisor, userID, clientUID );
+                UpdateEmployee(inClientEmployee.Supervisor, FCMConstant.RoleTypeCode.Supervisor, userID, clientUID);
 
             // LeadingHand1
-            if ( string.IsNullOrEmpty( clientEmployee.LeadingHand1 ) )
-                AddEmployee( inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.LeadingHand1, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.LeadingHand1))
+                AddEmployee(inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.LeadingHand1, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.LeadingHand1, userID, clientUID );
+                UpdateEmployee(inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.LeadingHand1, userID, clientUID);
 
             // LeadingHand2
-            if ( string.IsNullOrEmpty( clientEmployee.LeadingHand2 ) )
-                AddEmployee( inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.LeadingHand2, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.LeadingHand2))
+                AddEmployee(inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.LeadingHand2, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.LeadingHand2, userID, clientUID );
+                UpdateEmployee(inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.LeadingHand2, userID, clientUID);
 
             // LeadingHand2
-            if ( string.IsNullOrEmpty( clientEmployee.HealthAndSafetyRep ) )
-                AddEmployee( inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.HealthAndSafetyRep, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.HealthAndSafetyRep))
+                AddEmployee(inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.HealthAndSafetyRep, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.HealthAndSafetyRep, userID, clientUID );
+                UpdateEmployee(inClientEmployee.LeadingHand1, FCMConstant.RoleTypeCode.HealthAndSafetyRep, userID, clientUID);
 
             // AdministrationPerson
-            if ( string.IsNullOrEmpty( clientEmployee.HealthAndSafetyRep ) )
-                AddEmployee( inClientEmployee.AdministrationPerson, FCMConstant.RoleTypeCode.AdministrationPerson, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.HealthAndSafetyRep))
+                AddEmployee(inClientEmployee.AdministrationPerson, FCMConstant.RoleTypeCode.AdministrationPerson, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.AdministrationPerson, FCMConstant.RoleTypeCode.AdministrationPerson, userID, clientUID );
+                UpdateEmployee(inClientEmployee.AdministrationPerson, FCMConstant.RoleTypeCode.AdministrationPerson, userID, clientUID);
 
             // WorkersCompensationCoordinator
-            if ( string.IsNullOrEmpty( clientEmployee.HealthAndSafetyRep ) )
-                AddEmployee( inClientEmployee.WorkersCompensationCoordinator, FCMConstant.RoleTypeCode.WorkersCompensationCoordinator, userID, clientUID );
+            if (string.IsNullOrEmpty(clientEmployee.HealthAndSafetyRep))
+                AddEmployee(inClientEmployee.WorkersCompensationCoordinator, FCMConstant.RoleTypeCode.WorkersCompensationCoordinator, userID, clientUID);
             else
-                UpdateEmployee( inClientEmployee.WorkersCompensationCoordinator, FCMConstant.RoleTypeCode.WorkersCompensationCoordinator, userID, clientUID );
+                UpdateEmployee(inClientEmployee.WorkersCompensationCoordinator, FCMConstant.RoleTypeCode.WorkersCompensationCoordinator, userID, clientUID);
 
         }
 
@@ -297,7 +297,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <summary>
         /// List of clients
         /// </summary>
-        public ClientListResponse ClientList( HeaderInfo headerInfo )
+        public ClientListResponse ClientList(HeaderInfo headerInfo)
         {
             var clientListResponse = new ClientListResponse();
             clientListResponse.response = new ResponseStatus();
@@ -319,7 +319,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// </summary>
         /// <param name="headerInfo"> </param>
         /// <param name="eventClient"> </param>
-        public ClientUpdateResponse ClientUpdate( ClientUpdateRequest clientUpdateRequest )
+        public ClientUpdateResponse ClientUpdate(ClientUpdateRequest clientUpdateRequest)
         {
             var clientUpdateResponse = new ClientUpdateResponse();
 
@@ -332,25 +332,25 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             //var checkLinkedUser = new Client(clientUpdateRequest.headerInfo) 
             //{ FKUserID = clientUpdateRequest.eventClient.FKUserID };
 
-            var checkLinkedUser = new Model.ModelClient.Client( clientUpdateRequest.headerInfo )
+            var checkLinkedUser = new Model.ModelClient.Client(clientUpdateRequest.headerInfo)
             {
                 FKUserID = clientUpdateRequest.eventClient.FKUserID,
                 UID = clientUpdateRequest.eventClient.UID
             };
 
-            if ( !string.IsNullOrEmpty( checkLinkedUser.FKUserID ) )
+            if (!string.IsNullOrEmpty(checkLinkedUser.FKUserID))
             {
-                var responseLinked = RepClient.ReadLinkedUser( checkLinkedUser );
+                var responseLinked = RepClient.ReadLinkedUser(checkLinkedUser);
                 // var responseLinked = checkLinkedUser.ReadLinkedUser();
 
-                if ( responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0001 )
+                if (responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0001)
                 {
                     clientUpdateResponse.response =
                         new ResponseStatus() { ReturnCode = -0010, ReasonCode = 0001, Message = "User ID is already linked to another client." };
                     return clientUpdateResponse;
                 }
 
-                if ( responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0003 )
+                if (responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0003)
                 {
                     // All good. User ID is connected to Client Supplied.
                     //
@@ -358,23 +358,23 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             }
 
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
-                using ( var tr = new TransactionScope( TransactionScopeOption.Required ) )
+                using (var tr = new TransactionScope(TransactionScopeOption.Required))
                 {
 
                     connection.Open();
-                    var newClient = RepClient.Update( clientUpdateRequest.headerInfo, clientUpdateRequest.eventClient, connection );
+                    var newClient = RepClient.Update(clientUpdateRequest.headerInfo, clientUpdateRequest.eventClient, connection);
 
                     //var responseClientUpdate = clientUpdateRequest.eventClient.Update();
                     var responseClientUpdate = newClient;
 
-                    if ( !responseClientUpdate.Successful )
+                    if (!responseClientUpdate.Successful)
                     {
                         // Rollback
                         tr.Dispose();
 
-                        clientUpdateResponse.response = new ResponseStatus( MessageType.Error );
+                        clientUpdateResponse.response = new ResponseStatus(MessageType.Error);
 
                         clientUpdateResponse.response.Message = responseClientUpdate.Message;
                         clientUpdateResponse.response.ReturnCode = responseClientUpdate.ReturnCode;
@@ -386,37 +386,37 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     // Call method to add client extra information
                     // -------------------------------------------
 
-                    var ceiRead = new RepClientExtraInformation( clientUpdateRequest.headerInfo );
+                    var ceiRead = new RepClientExtraInformation(clientUpdateRequest.headerInfo);
                     ceiRead.FKClientUID = clientUpdateRequest.eventClient.UID;
 
                     // var ceiResponse = ceiRead.Read();
 
-                    var ceiResponse = RepClientExtraInformation.Read( ceiRead );
+                    var ceiResponse = RepClientExtraInformation.Read(ceiRead);
 
-                    if ( ceiResponse.ReturnCode != 1 )
+                    if (ceiResponse.ReturnCode != 1)
                     {
                         // Rollback
                         tr.Dispose();
 
-                        clientUpdateResponse.response = new ResponseStatus( MessageType.Error );
+                        clientUpdateResponse.response = new ResponseStatus(MessageType.Error);
                         return clientUpdateResponse;
                     }
 
                     // Return Code = 1, Reason Code = 2 means "Record not found"
                     //
-                    if ( ceiResponse.ReturnCode == 1 && ceiResponse.ReasonCode == 1 )
+                    if (ceiResponse.ReturnCode == 1 && ceiResponse.ReasonCode == 1)
                     {
 
                         clientUpdateRequest.eventClient.clientExtraInformation.RecordVersion = ceiRead.RecordVersion;
 
-                        var cei = RepClientExtraInformation.Update( clientUpdateRequest.headerInfo,
+                        var cei = RepClientExtraInformation.Update(clientUpdateRequest.headerInfo,
                                                                    clientUpdateRequest.eventClient.
                                                                        clientExtraInformation,
-                                                                   connection );
+                                                                   connection);
 
                         // var cei = clientUpdateRequest.eventClient.clientExtraInformation.Update();
 
-                        if ( !cei.Successful )
+                        if (!cei.Successful)
                         {
                             clientUpdateResponse.response = new ResponseStatus();
                             clientUpdateResponse.response = cei;
@@ -426,7 +426,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 
                     // Return Code = 1, Reason Code = 2 means "Record not found"
                     //
-                    if ( ceiResponse.ReturnCode == 1 && ceiResponse.ReasonCode == 2 )
+                    if (ceiResponse.ReturnCode == 1 && ceiResponse.ReasonCode == 2)
                     {
                         // Create new record
 
@@ -437,9 +437,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                         var cei = RepClientExtraInformation.Insert(
                                         HeaderInfo.Instance,
                                         clientUpdateRequest.eventClient.clientExtraInformation,
-                                        connection );
+                                        connection);
 
-                        if ( cei.ReturnCode != 1 )
+                        if (cei.ReturnCode != 1)
                         {
                             // Rollback transaction
                             //
@@ -466,15 +466,15 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <param name="eventClient"> </param>
-        public ClientDeleteResponse ClientDelete( ClientDeleteRequest clientDeleteRequest )
+        public ClientDeleteResponse ClientDelete(ClientDeleteRequest clientDeleteRequest)
         {
             // Using model
-            Model.ModelClient.Client clientToBeDeleted = new Model.ModelClient.Client( clientDeleteRequest.headerInfo );
+            Model.ModelClient.Client clientToBeDeleted = new Model.ModelClient.Client(clientDeleteRequest.headerInfo);
             clientToBeDeleted.UID = clientDeleteRequest.clientUID;
 
             // Using Repository
             ClientDeleteResponse response = new ClientDeleteResponse();
-            response.responseStatus = RepClient.Delete( clientToBeDeleted );
+            response.responseStatus = RepClient.Delete(clientToBeDeleted);
 
             return response;
         }
@@ -484,9 +484,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// </summary>
         /// <param name="readFieldRequest"></param>
         /// <returns></returns>
-        public ReadFieldResponse ReadFieldClient( ReadFieldRequest readFieldRequest )
+        public ReadFieldResponse ReadFieldClient(ReadFieldRequest readFieldRequest)
         {
-            var response = RepClient.ReadFieldClient( readFieldRequest );
+            var response = RepClient.ReadFieldClient(readFieldRequest);
 
             return response;
         }
@@ -497,17 +497,17 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <param name="eventClient"> </param>
-        public static ClientReadResponse ClientRead( ClientReadRequest clientReadRequest )
+        public static ClientReadResponse ClientRead(ClientReadRequest clientReadRequest)
         {
 
-            var clientReadResponse = RepClient.Read( clientReadRequest.clientUID );
+            var clientReadResponse = RepClient.Read(clientReadRequest.clientUID);
 
             clientReadResponse.client.clientExtraInformation = new ClientExtraInformation();
             clientReadResponse.client.clientExtraInformation.FKClientUID = clientReadResponse.client.UID;
 
             // clientReadResponse.client.clientExtraInformation.Read();
 
-            RepClientExtraInformation.Read( clientReadResponse.client.clientExtraInformation );
+            RepClientExtraInformation.Read(clientReadResponse.client.clientExtraInformation);
 
 
             return clientReadResponse;
@@ -518,9 +518,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// </summary>
         /// <param name="readFieldRequest"></param>
         /// <returns></returns>
-        public static string GetClientName( int clientUID )
+        public static string GetClientName(int clientUID)
         {
-            var response = RepClient.GetClientName( clientUID );
+            var response = RepClient.GetClientName(clientUID);
 
             return response;
         }
@@ -530,9 +530,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// </summary>
         /// <param name="readFieldRequest"></param>
         /// <returns></returns>
-        public static int GetLinkedClient( string userID )
+        public static int GetLinkedClient(string userID)
         {
-            var clientUID = RepClient.ReadLinkedClient( userID );
+            var clientUID = RepClient.ReadLinkedClient(userID);
 
             return clientUID;
         }
@@ -546,13 +546,13 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <param name="eventClient"></param>
         /// <param name="linkInitialSet"> </param>
         /// <returns></returns>
-        public ClientAddResponse ClientAddFull( ClientAddRequest clientAddRequest )
+        public ClientAddResponse ClientAddFull(ClientAddRequest clientAddRequest)
         {
             var response = new ClientAddResponse();
 
             // This is a new client.
             //
-            if ( string.IsNullOrEmpty( clientAddRequest.eventClient.Name ) )
+            if (string.IsNullOrEmpty(clientAddRequest.eventClient.Name))
             {
                 response.responseStatus = new ResponseStatus()
                 {
@@ -566,21 +566,21 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             // Check if user ID is already connected to a client
             // --------------------------------------------------------------
             #region Check if user is already connected to a client
-            if ( !string.IsNullOrEmpty( clientAddRequest.eventClient.FKUserID ) )
+            if (!string.IsNullOrEmpty(clientAddRequest.eventClient.FKUserID))
             {
-                var checkLinkedUser = new Client( clientAddRequest.headerInfo ) { FKUserID = clientAddRequest.eventClient.FKUserID };
+                var checkLinkedUser = new Client(clientAddRequest.headerInfo) { FKUserID = clientAddRequest.eventClient.FKUserID };
                 //var responseLinked = checkLinkedUser.ReadLinkedUser();
 
-                var responseLinked = RepClient.ReadLinkedUser( checkLinkedUser );
+                var responseLinked = RepClient.ReadLinkedUser(checkLinkedUser);
 
-                if ( !responseLinked.Successful )
+                if (!responseLinked.Successful)
                 {
                     response.responseStatus = new ResponseStatus();
                     response.responseStatus = responseLinked;
                     return response;
                 }
 
-                if ( responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0001 )
+                if (responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0001)
                 {
                     response.responseStatus = new ResponseStatus()
                     {
@@ -595,10 +595,10 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 
             var newClientUid = 0;
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
-                using ( var tr = new TransactionScope( TransactionScopeOption.Required ) )
+                using (var tr = new TransactionScope(TransactionScopeOption.Required))
                 {
                     connection.Open();
 
@@ -607,11 +607,11 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     // -------------------------------
                     //var newClient = clientAddRequest.eventClient.Insert(clientAddRequest.headerInfo, connection);
 
-                    var newClient = RepClient.Insert( clientAddRequest.headerInfo, clientAddRequest.eventClient, connection );
+                    var newClient = RepClient.Insert(clientAddRequest.headerInfo, clientAddRequest.eventClient, connection);
 
                     //   var newClientX = eventClient.MySQLInsert(headerInfo);
 
-                    newClientUid = Convert.ToInt32( newClient.Contents );
+                    newClientUid = Convert.ToInt32(newClient.Contents);
 
                     // -------------------------------------------
                     // Call method to add client extra information
@@ -620,9 +620,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     var cei = RepClientExtraInformation.Insert(
                                     HeaderInfo.Instance,
                                     clientAddRequest.eventClient.clientExtraInformation,
-                                    connection );
+                                    connection);
 
-                    if ( cei.ReturnCode != 1 )
+                    if (cei.ReturnCode != 1)
                     {
                         // Rollback transaction
                         //
@@ -648,7 +648,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     // --------------------------------------------
                     // Add List of Employees
                     // --------------------------------------------
-                    SaveEmployees( clientAddRequest.eventClient.UID, clientAddRequest.eventClient.clientEmployee, clientAddRequest.headerInfo.UserID );
+                    SaveEmployees(clientAddRequest.eventClient.UID, clientAddRequest.eventClient.clientEmployee, clientAddRequest.headerInfo.UserID);
 
                     // 14/04/2013
                     // Not adding sets when client is created because the client is created just after the user ID is registered!
@@ -657,7 +657,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     // 17/04/2013
                     // If the ADMINistrator creates the client the document set has to be created and documents added.
                     //
-                    if ( clientAddRequest.linkInitialSet == "Y" )
+                    if (clientAddRequest.linkInitialSet == "Y")
                     {
                         // --------------------------------------------
                         // Add first document set
@@ -680,20 +680,20 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                         BUSClientDocument.AssociateDocumentsToClient(
                                 clientDocumentSet: cds,
                                 documentSetUID: clientAddRequest.eventClient.FKDocumentSetUID,
-                                headerInfo: clientAddRequest.headerInfo );
+                                headerInfo: clientAddRequest.headerInfo);
 
                         // Fix Destination Folder Location 
                         //
-                        BUSClientDocumentGeneration.UpdateLocation( cds.FKClientUID, cds.ClientSetID );
+                        BUSClientDocumentGeneration.UpdateLocation(cds.FKClientUID, cds.ClientSetID);
                     }
 
-                     // Commit transaction
-                    
+                    // Commit transaction
+
                     tr.Complete();
                 }
             }
 
-            ClientList( clientAddRequest.headerInfo );
+            ClientList(clientAddRequest.headerInfo);
 
             // List();
 
@@ -710,7 +710,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <param name="eventClient"> </param>
-        public static ClientReadResponse ClientReadFull( ClientReadRequest clientReadRequest )
+        public static ClientReadResponse ClientReadFull(ClientReadRequest clientReadRequest)
         {
             // Check if the user can access the client record
             //
@@ -719,17 +719,17 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             string userid = clientReadRequest.headerInfo.UserID;
             var sur = new SecurityUserRole();
 
-            var clientReadResponse = RepClient.Read( clientReadRequest.clientUID );
+            var clientReadResponse = RepClient.Read(clientReadRequest.clientUID);
 
-            if ( sur.UserHasAccessToRole( userid, FCMConstant.UserRoleType.ADMIN ) )
+            if (sur.UserHasAccessToRole(userid, FCMConstant.UserRoleType.ADMIN))
             {
                 // ok
             }
             else
             {
-                if ( sur.UserHasAccessToRole( userid, FCMConstant.UserRoleType.CLIENT ) )
+                if (sur.UserHasAccessToRole(userid, FCMConstant.UserRoleType.CLIENT))
                 {
-                    if ( clientReadResponse.client.FKUserID.ToUpper() == clientReadRequest.headerInfo.UserID.ToUpper() )
+                    if (clientReadResponse.client.FKUserID.ToUpper() == clientReadRequest.headerInfo.UserID.ToUpper())
                     {
                         //ok
                     }
@@ -745,9 +745,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             clientReadResponse.client.clientExtraInformation = new ClientExtraInformation();
             clientReadResponse.client.clientExtraInformation.FKClientUID = clientReadResponse.client.UID;
 
-            RepClientExtraInformation.Read( clientReadResponse.client.clientExtraInformation );
+            RepClientExtraInformation.Read(clientReadResponse.client.clientExtraInformation);
 
-            clientReadResponse.client.clientEmployee = RepEmployee.ReadEmployees( clientReadRequest.clientUID );
+            clientReadResponse.client.clientEmployee = RepEmployee.ReadEmployees(clientReadRequest.clientUID);
 
             return clientReadResponse;
         }
@@ -757,7 +757,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
         /// </summary>
         /// <param name="headerInfo"> </param>
         /// <param name="eventClient"> </param>
-        public ClientUpdateResponse ClientUpdateFull( ClientUpdateRequest clientUpdateRequest )
+        public ClientUpdateResponse ClientUpdateFull(ClientUpdateRequest clientUpdateRequest)
         {
             var clientUpdateResponse = new ClientUpdateResponse();
 
@@ -766,7 +766,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             // Check if contractor size has been set before
             //
             var clientRead = RepClient.Read(clientUpdateRequest.eventClient.UID);
-            if ( clientRead.client.FKDocumentSetUID == 0)
+            if (clientRead.client.FKDocumentSetUID == 0)
                 contractorSizeFirstTime = true;
 
             clientUpdateResponse.response = new ResponseStatus();
@@ -778,25 +778,25 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             //var checkLinkedUser = new Client(clientUpdateRequest.headerInfo) 
             //{ FKUserID = clientUpdateRequest.eventClient.FKUserID };
 
-            var checkLinkedUser = new Model.ModelClient.Client( clientUpdateRequest.headerInfo )
+            var checkLinkedUser = new Model.ModelClient.Client(clientUpdateRequest.headerInfo)
             {
                 FKUserID = clientUpdateRequest.eventClient.FKUserID,
                 UID = clientUpdateRequest.eventClient.UID
             };
 
-            if ( !string.IsNullOrEmpty( checkLinkedUser.FKUserID ) )
+            if (!string.IsNullOrEmpty(checkLinkedUser.FKUserID))
             {
-                var responseLinked = RepClient.ReadLinkedUser( checkLinkedUser );
+                var responseLinked = RepClient.ReadLinkedUser(checkLinkedUser);
                 // var responseLinked = checkLinkedUser.ReadLinkedUser();
 
-                if ( responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0001 )
+                if (responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0001)
                 {
                     clientUpdateResponse.response =
                         new ResponseStatus() { ReturnCode = -0010, ReasonCode = 0001, Message = "User ID is already linked to another client." };
                     return clientUpdateResponse;
                 }
 
-                if ( responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0003 )
+                if (responseLinked.ReturnCode == 0001 && responseLinked.ReasonCode == 0003)
                 {
                     // All good. User ID is connected to Client Supplied.
                     //
@@ -804,23 +804,23 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
             }
 
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
-                using ( var tr = new TransactionScope( TransactionScopeOption.Required ) )
+                using (var tr = new TransactionScope(TransactionScopeOption.Required))
                 {
 
                     connection.Open();
-                    var newClient = RepClient.Update( clientUpdateRequest.headerInfo, clientUpdateRequest.eventClient, connection );
+                    var newClient = RepClient.Update(clientUpdateRequest.headerInfo, clientUpdateRequest.eventClient, connection);
 
                     //var responseClientUpdate = clientUpdateRequest.eventClient.Update();
                     var responseClientUpdate = newClient;
 
-                    if ( !responseClientUpdate.Successful )
+                    if (!responseClientUpdate.Successful)
                     {
                         // Rollback
                         tr.Dispose();
 
-                        clientUpdateResponse.response = new ResponseStatus( MessageType.Error );
+                        clientUpdateResponse.response = new ResponseStatus(MessageType.Error);
 
                         clientUpdateResponse.response.Message = responseClientUpdate.Message;
                         clientUpdateResponse.response.ReturnCode = responseClientUpdate.ReturnCode;
@@ -832,37 +832,37 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                     // Call method to add client extra information
                     // -------------------------------------------
 
-                    var ceiRead = new RepClientExtraInformation( clientUpdateRequest.headerInfo );
+                    var ceiRead = new RepClientExtraInformation(clientUpdateRequest.headerInfo);
                     ceiRead.FKClientUID = clientUpdateRequest.eventClient.UID;
 
                     // var ceiResponse = ceiRead.Read();
 
-                    var ceiResponse = RepClientExtraInformation.Read( ceiRead );
+                    var ceiResponse = RepClientExtraInformation.Read(ceiRead);
 
-                    if ( ceiResponse.ReturnCode != 1 )
+                    if (ceiResponse.ReturnCode != 1)
                     {
                         // Rollback
                         tr.Dispose();
 
-                        clientUpdateResponse.response = new ResponseStatus( MessageType.Error );
+                        clientUpdateResponse.response = new ResponseStatus(MessageType.Error);
                         return clientUpdateResponse;
                     }
 
                     // Return Code = 1, Reason Code = 2 means "Record not found"
                     //
-                    if ( ceiResponse.ReturnCode == 1 && ceiResponse.ReasonCode == 1 )
+                    if (ceiResponse.ReturnCode == 1 && ceiResponse.ReasonCode == 1)
                     {
 
                         clientUpdateRequest.eventClient.clientExtraInformation.RecordVersion = ceiRead.RecordVersion;
 
-                        var cei = RepClientExtraInformation.Update( clientUpdateRequest.headerInfo,
+                        var cei = RepClientExtraInformation.Update(clientUpdateRequest.headerInfo,
                                                                    clientUpdateRequest.eventClient.
                                                                        clientExtraInformation,
-                                                                   connection );
+                                                                   connection);
 
                         // var cei = clientUpdateRequest.eventClient.clientExtraInformation.Update();
 
-                        if ( !cei.Successful )
+                        if (!cei.Successful)
                         {
                             clientUpdateResponse.response = new ResponseStatus();
                             clientUpdateResponse.response = cei;
@@ -872,7 +872,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 
                     // Return Code = 1, Reason Code = 2 means "Record not found"
                     //
-                    if ( ceiResponse.ReturnCode == 1 && ceiResponse.ReasonCode == 2 )
+                    if (ceiResponse.ReturnCode == 1 && ceiResponse.ReasonCode == 2)
                     {
                         // Create new record
 
@@ -883,9 +883,9 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                         var cei = RepClientExtraInformation.Insert(
                                         HeaderInfo.Instance,
                                         clientUpdateRequest.eventClient.clientExtraInformation,
-                                        connection );
+                                        connection);
 
-                        if ( cei.ReturnCode != 1 )
+                        if (cei.ReturnCode != 1)
                         {
                             // Rollback transaction
                             //
@@ -903,7 +903,7 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 
                     // If this is the first time the users sets the contractor size, add documents.
                     //
-                    if ( contractorSizeFirstTime )
+                    if (contractorSizeFirstTime)
                     {
                         // --------------------------------------------
                         // Add first document set
@@ -912,14 +912,14 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                         cds.FKClientUID = clientUpdateRequest.eventClient.UID;
 
                         // cds.FolderOnly = "CLIENT" + newClientUID.ToString().Trim().PadLeft(4, '0');
-                        cds.FolderOnly = "CLIENT" + clientUpdateRequest.eventClient.UID.ToString().Trim().PadLeft( 4, '0' );
+                        cds.FolderOnly = "CLIENT" + clientUpdateRequest.eventClient.UID.ToString().Trim().PadLeft(4, '0');
 
                         // cds.Folder = FCMConstant.SYSFOLDER.CLIENTFOLDER + "\\CLIENT" + newClientUID.ToString().Trim().PadLeft(4, '0');
                         cds.Folder = FCMConstant.SYSFOLDER.CLIENTFOLDER + @"\" + cds.FolderOnly;
 
                         cds.SourceFolder = FCMConstant.SYSFOLDER.TEMPLATEFOLDER;
                         // cds.Add( clientUpdateRequest.headerInfo, connection );
-                        cds.Add( clientUpdateRequest.headerInfo );
+                        cds.Add(clientUpdateRequest.headerInfo);
 
                         // --------------------------------------------
                         // Apply initial document set
@@ -927,15 +927,15 @@ namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
                         BUSClientDocument.AssociateDocumentsToClient(
                                 clientDocumentSet: cds,
                                 documentSetUID: clientUpdateRequest.eventClient.FKDocumentSetUID,
-                                headerInfo: clientUpdateRequest.headerInfo );
+                                headerInfo: clientUpdateRequest.headerInfo);
 
                         // Fix Destination Folder Location 
                         //
-                        BUSClientDocumentGeneration.UpdateLocation( cds.FKClientUID, cds.ClientSetID );
+                        BUSClientDocumentGeneration.UpdateLocation(cds.FKClientUID, cds.ClientSetID);
 
                     }
 
-                    SaveEmployees( clientUpdateRequest.eventClient.UID, clientUpdateRequest.eventClient.clientEmployee, clientUpdateRequest.headerInfo.UserID );
+                    SaveEmployees(clientUpdateRequest.eventClient.UID, clientUpdateRequest.eventClient.clientEmployee, clientUpdateRequest.headerInfo.UserID);
 
                 }
             }

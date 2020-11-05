@@ -1,20 +1,20 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using FCMMySQLBusinessLibrary.FCMUtils;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
 using FCMMySQLBusinessLibrary.Model.ModelMetadata;
 using FCMMySQLBusinessLibrary.Repository.RepositoryClientDocument;
 using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using FCMMySQLBusinessLibrary.Service.SVCClient.Service;
 using FCMMySQLBusinessLibrary.Service.SVCClientDocument.Service;
 using FCMMySQLBusinessLibrary.Service.SVCFCMBackendStatus.Service;
+using MackkadoITFramework.APIDocument;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Interfaces;
-using MackkadoITFramework.APIDocument;
 using MackkadoITFramework.Utils;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
@@ -47,13 +47,13 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// <param name="ClientID"></param>
         /// <param name="ClientDocSetID"></param>
         /// <param name="UIoutput"> </param>
-        public DocumentGeneration( int ClientID, int ClientDocSetID, IOutputMessage UIoutput,
+        public DocumentGeneration(int ClientID, int ClientDocSetID, IOutputMessage UIoutput,
                                    string OverrideDocuments, string inprocessName, string inuserID)
         {
             processName = inprocessName;
             userID = inuserID;
 
-            if ( OverrideDocuments == null )
+            if (OverrideDocuments == null)
                 OverrideDocuments = "N";
 
             // Assign to internal variables
@@ -97,14 +97,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             // Load variables/ metadata into memory
             //
             #region ClientMetadata
-            foreach ( ReportMetadata metadata in clientMetadata.reportMetadataList )
+            foreach (ReportMetadata metadata in clientMetadata.reportMetadataList)
             {
                 // Add client ID
                 metadata.ClientUID = this.clientID;
 
                 // Retrieve value for the field selected
                 //
-                string value =  metadata.GetValue();
+                string value = metadata.GetValue();
 
                 // If the field is not enabled, the program has to replace the value with spaces.
                 // 01-Jan-2012 - No longer necessary.
@@ -113,7 +113,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 // var valueOfTag = metadata.Enabled == 'Y' ? value : string.Empty;
 
                 // Set to the value. If value is null, set to spaces.
-                var valueOfTag = string.IsNullOrEmpty( value ) ? string.Empty : value;
+                var valueOfTag = string.IsNullOrEmpty(value) ? string.Empty : value;
 
                 // When the field is an image and it is not enable, do not include the "No image" icon in the list
                 //
@@ -124,23 +124,23 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 // Regular fields must be included because they need to be replaced.
                 // Images uses bookmarks, no need to be replace. It is not displayed in the document.
                 //
-                if ( metadata.InformationType == MackkadoITFramework.Helper.Utils.InformationType.IMAGE )
+                if (metadata.InformationType == MackkadoITFramework.Helper.Utils.InformationType.IMAGE)
                 {
-                    if ( string.IsNullOrEmpty( value ) )
+                    if (string.IsNullOrEmpty(value))
                         continue;
                 }
 
                 // Add label before value to print.
                 //
-                if ( metadata.UseAsLabel == 'Y' )
+                if (metadata.UseAsLabel == 'Y')
                     valueOfTag = metadata.Description + " " + valueOfTag;
 
-                listOfWordsToReplace.Add( new WordDocumentTasks.TagStructure()
+                listOfWordsToReplace.Add(new WordDocumentTasks.TagStructure()
                 {
                     TagType = metadata.InformationType,
                     Tag = metadata.FieldCode,
                     TagValue = valueOfTag
-                } );
+                });
 
             }
             #endregion ClientMetadata
@@ -148,7 +148,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             // Get Client Document Set Details 
             // To get the source and destination folders
             cds = new ClientDocumentSet();
-            cds.Get( clientID, clientDocSetID );
+            cds.Get(clientID, clientDocSetID);
 
             fileprocessedcount = 0;
             valueForProgressBar = 0;
@@ -163,18 +163,18 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         {
 
             // close word application
-            if ( vkWordApp != null )
+            if (vkWordApp != null)
             {
                 try
                 {
-                    vkWordApp.Quit( ref vkFalse, ref vkFalse, ref vkFalse );
+                    vkWordApp.Quit(ref vkFalse, ref vkFalse, ref vkFalse);
                 }
                 catch
                 {
                 }
                 finally
                 {
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject( vkWordApp );
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(vkWordApp);
                 }
             }
             //if ( vkExcelApp != null )
@@ -202,11 +202,11 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// <param name="overrideDocuments"></param>
         private void TBD_GenerateDocumentsForClient(
             int clientID, int clientDocSetID,
-            string overrideDocuments )
+            string overrideDocuments)
         {
 
 
-            uioutput.AddOutputMessage( "Start time: " + System.DateTime.Now.ToString(), processName, userID );
+            uioutput.AddOutputMessage("Start time: " + System.DateTime.Now.ToString(), processName, userID);
 
             // Instantiate Word
             //
@@ -227,17 +227,17 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             // Get Metadata for client
 
             ReportMetadataList clientMetadata = new ReportMetadataList();
-            clientMetadata.ListMetadataForClient( clientID );
+            clientMetadata.ListMetadataForClient(clientID);
 
             var ts = new List<WordDocumentTasks.TagStructure>();
 
             // Load variables/ metadata into memory
             //
-            foreach ( ReportMetadata metadata in clientMetadata.reportMetadataList )
+            foreach (ReportMetadata metadata in clientMetadata.reportMetadataList)
             {
                 // Retrieve value for the field selected
                 //
-                string value =  metadata.GetValue();
+                string value = metadata.GetValue();
 
                 // If the field is not enabled, the program has to replace the value with spaces.
                 //
@@ -245,29 +245,29 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                 // When the field is an image and it is not enable, do not include the "No image" icon in the list
                 //
-                if ( metadata.InformationType == MackkadoITFramework.Helper.Utils.InformationType.IMAGE && metadata.Enabled == 'N' )
+                if (metadata.InformationType == MackkadoITFramework.Helper.Utils.InformationType.IMAGE && metadata.Enabled == 'N')
                     continue;
 
-                ts.Add( new WordDocumentTasks.TagStructure()
+                ts.Add(new WordDocumentTasks.TagStructure()
                 {
                     TagType = metadata.InformationType,
                     Tag = metadata.FieldCode,
                     TagValue = valueOfTag
-                } );
+                });
 
             }
 
             // Get Client Document Set Details 
             // To get the source and destination folders
             ClientDocumentSet cds = new ClientDocumentSet();
-            cds.Get( clientID, clientDocSetID );
+            cds.Get(clientID, clientDocSetID);
 
             // Get List of documents for a client
             //
             var cdl = new ClientDocument();
             //cdl.List( Utils.ClientID, Utils.ClientSetID );
 
-            RepClientDocument.List( cdl, Utils.ClientID, Utils.ClientSetID );
+            RepClientDocument.List(cdl, Utils.ClientID, Utils.ClientSetID);
 
 
             bool fileNotFound = false;
@@ -275,18 +275,18 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             //    Check if source files exist before generation starts
             // ---------------------------------------------------------------------------
             int filecount = 0;
-            foreach ( scClientDocSetDocLink doco in cdl.clientDocSetDocLink )
+            foreach (scClientDocSetDocLink doco in cdl.clientDocSetDocLink)
             {
                 #region File Inspection
                 filecount++;
 
                 // Ignore for now
                 //
-                if ( doco.clientDocument.RecordType.Trim() == FCMConstant.RecordType.FOLDER )
+                if (doco.clientDocument.RecordType.Trim() == FCMConstant.RecordType.FOLDER)
                 {
                     string er = "Folder " + doco.document.Name;
 
-                    uioutput.AddOutputMessage( er, processName, userID );
+                    uioutput.AddOutputMessage(er, processName, userID);
                     continue;
                 }
 
@@ -296,9 +296,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 document.UID = doco.clientDocument.FKDocumentUID;
                 // document.Read();
 
-                document = RepDocument.Read( false, doco.clientDocument.FKDocumentUID );
+                document = RepDocument.Read(false, doco.clientDocument.FKDocumentUID);
 
-                uioutput.AddOutputMessage( "Inspecting file: " + document.UID + " === " + document.Name, processName, userID );
+                uioutput.AddOutputMessage("Inspecting file: " + document.UID + " === " + document.Name, processName, userID);
 
                 // Client Document.SourceFileName is the name for the FCM File
                 // Client Document.FileName is the client file name
@@ -311,7 +311,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 // cd.FileName = document.FileName;
                 cd.SourceFileName = document.FileName;
 
-                RepClientDocument.UpdateSourceFileName( cd );
+                RepClientDocument.UpdateSourceFileName(cd);
 
                 // Update memory with latest file name
                 // doco.clientDocument.SourceFileName = cd.FileName;
@@ -319,28 +319,28 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                 string sourceFileLocationName = Utils.getFilePathName(
                        doco.clientDocument.SourceLocation,
-                       doco.clientDocument.SourceFileName );
+                       doco.clientDocument.SourceFileName);
 
                 // check if source folder/ file exists
-                if ( string.IsNullOrEmpty( doco.clientDocument.Location ) )
+                if (string.IsNullOrEmpty(doco.clientDocument.Location))
                 {
-                    MessageBox.Show( "Document Location is empty." );
+                    MessageBox.Show("Document Location is empty.");
                     return;
                 }
 
-                if ( string.IsNullOrEmpty( doco.clientDocument.FileName ) )
+                if (string.IsNullOrEmpty(doco.clientDocument.FileName))
                 {
-                    MessageBox.Show( "File Name is empty." );
+                    MessageBox.Show("File Name is empty.");
                     return;
                 }
 
-                if ( !File.Exists( sourceFileLocationName ) )
+                if (!File.Exists(sourceFileLocationName))
                 {
                     string er = "File does not exist " +
                         sourceFileLocationName + " - File Name: " + doco.clientDocument.SourceFileName;
 
-                    uioutput.AddOutputMessage( er, processName: processName, userID: userID );
-                    uioutput.AddErrorMessage( er, processName:processName, userID:userID );
+                    uioutput.AddOutputMessage(er, processName: processName, userID: userID);
+                    uioutput.AddErrorMessage(er, processName: processName, userID: userID);
                     fileNotFound = true;
                     continue;
 
@@ -350,19 +350,19 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
 
             // Can't proceed if file not found
-            if ( fileNotFound )
+            if (fileNotFound)
                 return;
 
             // Check if destination folder exists
             //
-            if ( string.IsNullOrEmpty( cds.Folder ) )
+            if (string.IsNullOrEmpty(cds.Folder))
             {
-                MessageBox.Show( "Destination folder not set. Generation stopped." );
+                MessageBox.Show("Destination folder not set. Generation stopped.");
                 return;
             }
-            string PhysicalCDSFolder = Utils.GetPathName( cds.Folder );
-            if ( !Directory.Exists( PhysicalCDSFolder ) )
-                Directory.CreateDirectory( PhysicalCDSFolder );
+            string PhysicalCDSFolder = Utils.GetPathName(cds.Folder);
+            if (!Directory.Exists(PhysicalCDSFolder))
+                Directory.CreateDirectory(PhysicalCDSFolder);
 
 
             // -----------------------------------------------------------------------
@@ -372,26 +372,26 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             fileprocessedcount = 0;
             valueForProgressBar = 0;
             startTime = System.DateTime.Now.ToString();
-            estimated = System.DateTime.Now.AddSeconds( 5 * filecount );
+            estimated = System.DateTime.Now.AddSeconds(5 * filecount);
 
             var previousTime = System.DateTime.Now;
             var agora = System.DateTime.Now;
 
-            foreach ( scClientDocSetDocLink doco in cdl.clientDocSetDocLink )
+            foreach (scClientDocSetDocLink doco in cdl.clientDocSetDocLink)
             {
                 fileprocessedcount++;
-                valueForProgressBar = ( fileprocessedcount / filecount ) * 100;
+                valueForProgressBar = (fileprocessedcount / filecount) * 100;
 
                 // Get current time
                 agora = System.DateTime.Now;
 
                 // Get the time it took to process one file
-                TimeSpan span = agora.Subtract( previousTime );
+                TimeSpan span = agora.Subtract(previousTime);
 
                 // Calculate the estimated time to complete
-                estimated = System.DateTime.Now.AddSeconds( span.TotalSeconds * filecount );
+                estimated = System.DateTime.Now.AddSeconds(span.TotalSeconds * filecount);
 
-                uioutput.UpdateProgressBar( valueForProgressBar, estimated );
+                uioutput.UpdateProgressBar(valueForProgressBar, estimated);
 
                 previousTime = System.DateTime.Now;
 
@@ -401,13 +401,13 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 document.UID = doco.clientDocument.FKDocumentUID;
                 // document.Read();
 
-                document = RepDocument.Read( false, doco.clientDocument.FKDocumentUID );
+                document = RepDocument.Read(false, doco.clientDocument.FKDocumentUID);
 
-                uioutput.AddOutputMessage( ">>> Generating file: " + document.UID + " === " + document.SimpleFileName, processName, userID );
+                uioutput.AddOutputMessage(">>> Generating file: " + document.UID + " === " + document.SimpleFileName, processName, userID);
 
                 string sourceFileLocationName = Utils.getFilePathName(
                        doco.clientDocument.SourceLocation,
-                       doco.clientDocument.SourceFileName );
+                       doco.clientDocument.SourceFileName);
 
                 // This is the client file name
                 //
@@ -416,53 +416,53 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                 string clientFileLocationName = Utils.getFilePathName(
                     clientFileLocation,
-                    doco.clientDocument.FileName.Trim() );
+                    doco.clientDocument.FileName.Trim());
 
 
 
                 // Check if file destination directory exists
                 //
-                string PhysicalLocation = Utils.GetPathName( clientFileLocation );
+                string PhysicalLocation = Utils.GetPathName(clientFileLocation);
 
-                if ( string.IsNullOrEmpty( PhysicalLocation ) )
+                if (string.IsNullOrEmpty(PhysicalLocation))
                 {
                     string er = "Location is empty " + doco.clientDocument.Location + "\n" +
                                 "File Name: " + doco.document.Name;
 
-                    uioutput.AddOutputMessage( er, processName, userID );
+                    uioutput.AddOutputMessage(er, processName, userID);
                     continue;
                 }
 
-                if ( !Directory.Exists( PhysicalLocation ) )
-                    Directory.CreateDirectory( PhysicalLocation );
+                if (!Directory.Exists(PhysicalLocation))
+                    Directory.CreateDirectory(PhysicalLocation);
 
-                if ( File.Exists( clientFileLocationName ) )
+                if (File.Exists(clientFileLocationName))
                 {
                     // Proceed but report in list
                     //
-                    if ( overrideDocuments == "Yes" )
+                    if (overrideDocuments == "Yes")
                     {
                         // Delete file
                         try
                         {
-                            File.Delete( clientFileLocationName );
-                            uioutput.AddOutputMessage( "File replaced " +
-                                              document.SimpleFileName, processName, userID );
+                            File.Delete(clientFileLocationName);
+                            uioutput.AddOutputMessage("File replaced " +
+                                              document.SimpleFileName, processName, userID);
                         }
-                        catch ( Exception )
+                        catch (Exception)
                         {
-                            uioutput.AddOutputMessage( "Error deleting file " +
-                                              document.SimpleFileName, processName, userID );
-                            uioutput.AddErrorMessage( "Error deleting file " +
-                                              document.SimpleFileName, processName, userID );
+                            uioutput.AddOutputMessage("Error deleting file " +
+                                              document.SimpleFileName, processName, userID);
+                            uioutput.AddErrorMessage("Error deleting file " +
+                                              document.SimpleFileName, processName, userID);
 
                             continue;
                         }
                     }
                     else
                     {
-                        uioutput.AddOutputMessage( "File already exists " +
-                                          document.SimpleFileName, processName, userID ); 
+                        uioutput.AddOutputMessage("File already exists " +
+                                          document.SimpleFileName, processName, userID);
                         continue;
                     }
                 }
@@ -472,12 +472,12 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                 // Word Documents
                 //
-                if ( doco.clientDocument.RecordType.Trim() == FCMConstant.RecordType.FOLDER )
+                if (doco.clientDocument.RecordType.Trim() == FCMConstant.RecordType.FOLDER)
                 {
                     // Update file - set as GENERATED.
                     //
 
-                    uioutput.AddOutputMessage( "FOLDER: " + doco.clientDocument.SourceFileName, processName, userID );
+                    uioutput.AddOutputMessage("FOLDER: " + doco.clientDocument.SourceFileName, processName, userID);
                 }
                 else
                 {
@@ -486,9 +486,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                     // Trying to copy it as well...
                     //
 
-                    var currentDocumentPath = Path.GetExtension( doco.clientDocument.FileName );
+                    var currentDocumentPath = Path.GetExtension(doco.clientDocument.FileName);
 
-                    if ( doco.clientDocument.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.WORD )
+                    if (doco.clientDocument.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.WORD)
                     {
                         #region Word
                         // ------------------------------------------------------------------------
@@ -496,14 +496,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                         // Generate Document and replace tag values in new document generated
                         // ------------------------------------------------------------------------
                         // ------------------------------------------------------------------------
-                        var results = WordDocumentTasks.CopyDocument( sourceFileLocationName, clientFileLocationName, ts, vkWordApp, uioutput, processName, userID );
-                        if ( results.ReturnCode < 0 )
+                        var results = WordDocumentTasks.CopyDocument(sourceFileLocationName, clientFileLocationName, ts, vkWordApp, uioutput, processName, userID);
+                        if (results.ReturnCode < 0)
                         {
                             // Error has occurred
                             //
-                            var er = (System.Exception) results.Contents;
-                            uioutput.AddOutputMessage( "ERROR: " + er.ToString(), processName, userID );
-                            uioutput.AddErrorMessage( "ERROR: " + er.ToString(), processName, userID );
+                            var er = (System.Exception)results.Contents;
+                            uioutput.AddOutputMessage("ERROR: " + er.ToString(), processName, userID);
+                            uioutput.AddErrorMessage("ERROR: " + er.ToString(), processName, userID);
 
                             continue;
                         }
@@ -520,14 +520,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                         // cd.SetGeneratedFlagVersion( 'Y', document.IssueNumber );
 
-                        RepClientDocument.SetGeneratedFlagVersion( cd, 'Y', document.IssueNumber, DateTime.Today.ToString( "yyyyMMdd" ) + " - Generated successfully" );
+                        RepClientDocument.SetGeneratedFlagVersion(cd, 'Y', document.IssueNumber, DateTime.Today.ToString("yyyyMMdd") + " - Generated successfully");
 
-                        uioutput.AddOutputMessage( "Document generated: " +
-                                          clientFileLocationName, processName, userID );
+                        uioutput.AddOutputMessage("Document generated: " +
+                                          clientFileLocationName, processName, userID);
 
                         #endregion Word
                     }
-                    else if ( doco.clientDocument.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.EXCEL )
+                    else if (doco.clientDocument.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.EXCEL)
                     {
                         // ------------------------------------------------------------------------
                         // ------------------------------------------------------------------------
@@ -535,7 +535,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                         // ------------------------------------------------------------------------
                         // ------------------------------------------------------------------------
 
-                        ExcelSpreadsheetTasks.CopyDocument( sourceFileLocationName, clientFileLocationName, ts, uioutput, processName, userID );
+                        ExcelSpreadsheetTasks.CopyDocument(sourceFileLocationName, clientFileLocationName, ts, uioutput, processName, userID);
 
                         //
                         // Instantiate client document
@@ -546,26 +546,26 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                         //
 
                         //cd.SetGeneratedFlagVersion( 'Y', document.IssueNumber );
-                        RepClientDocument.SetGeneratedFlagVersion( cd, 'Y', document.IssueNumber, DateTime.Today.ToString( "yyyyMMdd" ) + " - Generated successfully - " + clientFileLocationName );
-                        uioutput.AddOutputMessage( "Document generated: " + clientFileLocationName, processName, userID );
+                        RepClientDocument.SetGeneratedFlagVersion(cd, 'Y', document.IssueNumber, DateTime.Today.ToString("yyyyMMdd") + " - Generated successfully - " + clientFileLocationName);
+                        uioutput.AddOutputMessage("Document generated: " + clientFileLocationName, processName, userID);
 
                     }
                     else
                     {
-                        File.Copy( sourceFileLocationName, clientFileLocationName );
+                        File.Copy(sourceFileLocationName, clientFileLocationName);
 
-                        uioutput.AddOutputMessage( "File copied but not modified: " +
-                                 Path.GetExtension( doco.clientDocument.FileName ) + " == File: " + clientFileLocationName, processName, userID );
+                        uioutput.AddOutputMessage("File copied but not modified: " +
+                                 Path.GetExtension(doco.clientDocument.FileName) + " == File: " + clientFileLocationName, processName, userID);
                     }
 
                 }
             }
 
             // close word application
-            vkWordApp.Quit( SaveChanges: ref vkTrue, OriginalFormat: ref vkTrue, RouteDocument: ref vkFalse );
+            vkWordApp.Quit(SaveChanges: ref vkTrue, OriginalFormat: ref vkTrue, RouteDocument: ref vkFalse);
             vkExcelApp.Quit();
 
-            uioutput.AddOutputMessage( "End time: " + System.DateTime.Now.ToString(), processName, userID );
+            uioutput.AddOutputMessage("End time: " + System.DateTime.Now.ToString(), processName, userID);
 
         }
 
@@ -583,16 +583,16 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             //
             var documentSetList = new ClientDocument();
             //documentSetList.List(this.clientID, this.clientDocSetID);
-            RepClientDocument.List( documentSetList, this.clientID, this.clientDocSetID );
+            RepClientDocument.List(documentSetList, this.clientID, this.clientDocSetID);
 
             tvFileList.Nodes.Clear();
             // documentSetList.ListInTree(tvFileList, "CLIENT");
 
-            RepClientDocument.ListInTree( documentSetList, tvFileList, "CLIENT" );
+            RepClientDocument.ListInTree(documentSetList, tvFileList, "CLIENT");
 
             // Generate document
             //
-            this.GenerateDocumentsForClient( tvFileList.Nodes [0] );
+            this.GenerateDocumentsForClient(tvFileList.Nodes[0]);
         }
 
         /// <summary>
@@ -603,23 +603,23 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// <param name="uioutput"></param>
         /// <param name="overrideDocuments"></param>
         /// <param name="documentsTreeNode"></param>
-        public void GenerateDocumentsForClient( TreeNode documentsTreeNode )
+        public void GenerateDocumentsForClient(TreeNode documentsTreeNode)
         {
 
-            if ( uioutput != null ) uioutput.AddOutputMessage( "Start time: " + System.DateTime.Now.ToString(), processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage("Start time: " + System.DateTime.Now.ToString(), processName, userID);
 
-            filecount = documentsTreeNode.GetNodeCount( includeSubTrees: true );
+            filecount = documentsTreeNode.GetNodeCount(includeSubTrees: true);
 
-            estimated = System.DateTime.Now.AddSeconds( 5 * filecount );
+            estimated = System.DateTime.Now.AddSeconds(5 * filecount);
 
-            if ( uioutput != null ) uioutput.UpdateProgressBar( valueForProgressBar, estimated );
+            if (uioutput != null) uioutput.UpdateProgressBar(valueForProgressBar, estimated);
 
-            GenerateDocumentsController( documentsTreeNode );
+            GenerateDocumentsController(documentsTreeNode);
 
-            if ( uioutput != null ) uioutput.AddOutputMessage( "End time: " + System.DateTime.Now.ToString(), processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage("End time: " + System.DateTime.Now.ToString(), processName, userID);
 
             // Set end bar
-            if ( uioutput != null ) uioutput.UpdateProgressBar( 100, estimated );
+            if (uioutput != null) uioutput.UpdateProgressBar(100, estimated);
 
 
         }
@@ -630,7 +630,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// hierarchy of the tree instead of the initial location.
         /// </summary>
         /// <param name="documentsTreeNode"></param>
-        public static ResponseStatus UpdateDestinationFolder( int clientID, int clientDocumentSetUID )
+        public static ResponseStatus UpdateDestinationFolder(int clientID, int clientDocumentSetUID)
         {
             ResponseStatus response = new ResponseStatus();
             response.Contents = "Destination folder updated successfully.";
@@ -638,28 +638,28 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             // Fix root folder first
             //
             ClientDocument clientDocument = new ClientDocument();
-            
+
             RepClientDocument.FixRootFolder(clientID, clientDocumentSetUID);
 
-            var listOfDocuments = RepClientDocument.ListS( clientID, clientDocumentSetUID );
+            var listOfDocuments = RepClientDocument.ListS(clientID, clientDocumentSetUID);
 
-            foreach ( var doco in listOfDocuments )
+            foreach (var doco in listOfDocuments)
             {
                 // Update location
                 //
-                ResponseStatus destLocationDerivedClient = RepClientDocument.GetDocumentPath( doco.clientDocument );
+                ResponseStatus destLocationDerivedClient = RepClientDocument.GetDocumentPath(doco.clientDocument);
                 string destLocationDerived = destLocationDerivedClient.Contents.ToString();
 
-                RepClientDocument.UpdateFieldString( doco.clientDocument.UID, "Location", destLocationDerived );
+                RepClientDocument.UpdateFieldString(doco.clientDocument.UID, "Location", destLocationDerived);
 
                 // Update file name
                 //
-                if ( doco.clientDocument.IsFolder == 'Y' )
+                if (doco.clientDocument.IsFolder == 'Y')
                 {
-                    if ( doco.clientDocument.IsRoot == 'Y')
-                        RepClientDocument.UpdateFieldString( doco.clientDocument.UID, "FileName", doco.clientDocument.FileName );
+                    if (doco.clientDocument.IsRoot == 'Y')
+                        RepClientDocument.UpdateFieldString(doco.clientDocument.UID, "FileName", doco.clientDocument.FileName);
                     else
-                        RepClientDocument.UpdateFieldString( doco.clientDocument.UID, "FileName", doco.document.FileName );
+                        RepClientDocument.UpdateFieldString(doco.clientDocument.UID, "FileName", doco.document.FileName);
                 }
 
                 response.Contents = destLocationDerived;
@@ -671,34 +671,34 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// <summary>
         /// Generate Documents Controller (Word must be previously initialised
         /// </summary>
-        private void GenerateDocumentsController( TreeNode documentsTreeNode )
+        private void GenerateDocumentsController(TreeNode documentsTreeNode)
         {
             scClientDocSetDocLink documentTN = new scClientDocSetDocLink();
 
             // Get List of documents for a client
             //
-            if ( documentsTreeNode.Tag.GetType().Name == "scClientDocSetDocLink" )
+            if (documentsTreeNode.Tag.GetType().Name == "scClientDocSetDocLink")
             {
-                documentTN = (scClientDocSetDocLink) documentsTreeNode.Tag;
+                documentTN = (scClientDocSetDocLink)documentsTreeNode.Tag;
             }
             else
             {
-                if ( documentsTreeNode.Tag.GetType().Name == "Document" )
+                if (documentsTreeNode.Tag.GetType().Name == "Document")
                 {
-                    if ( documentTN.clientDocument == null )
+                    if (documentTN.clientDocument == null)
                     {
-                        if ( uioutput != null ) uioutput.AddOutputMessage( "Error CDISNULL019202 - client document is null.", processName, userID );
-                        if ( uioutput != null ) uioutput.AddErrorMessage( "Error CDISNULL019202 - client document is null. Generation stopped.", processName, userID );
+                        if (uioutput != null) uioutput.AddOutputMessage("Error CDISNULL019202 - client document is null.", processName, userID);
+                        if (uioutput != null) uioutput.AddErrorMessage("Error CDISNULL019202 - client document is null. Generation stopped.", processName, userID);
                         return;
                     }
 
                     documentTN.clientDocument.RecordType = FCMConstant.RecordType.DOCUMENT;
-                    documentTN.document = (Model.ModelDocument.Document) documentsTreeNode.Tag;
+                    documentTN.document = (Model.ModelDocument.Document)documentsTreeNode.Tag;
                 }
             }
 
             // If it is a document, generate
-            if ( documentTN.clientDocument.RecordType.Trim() != FCMConstant.RecordType.FOLDER )
+            if (documentTN.clientDocument.RecordType.Trim() != FCMConstant.RecordType.FOLDER)
             {
                 #region Generate Document
                 // Generate
@@ -708,9 +708,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 document.UID = documentTN.clientDocument.FKDocumentUID;
                 // document.Read();
 
-                document = RepDocument.Read( false, documentTN.clientDocument.FKDocumentUID );
+                document = RepDocument.Read(false, documentTN.clientDocument.FKDocumentUID);
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Inspecting file: " + document.UID + " === " + document.Name, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("Inspecting file: " + document.UID + " === " + document.Name, processName, userID);
                 // if (iconMessage != null) iconMessage.Text = "Start time: " + System.DateTime.Now.ToString();
 
                 // Update client records with new file name
@@ -728,7 +728,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                             clientUID: documentTN.clientDocument.FKClientUID,
                             documentCUID: document.CUID,
                             sourceVersionNumber: document.IssueNumber,
-                            simpleFileName: document.SimpleFileName );
+                            simpleFileName: document.SimpleFileName);
 
                 //cd.UpdateSourceFileName();
                 // RepClientDocument.UpdateSourceFileName( cd );
@@ -738,28 +738,28 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                 string sourceFileLocationName = Utils.getFilePathName(
                        documentTN.clientDocument.SourceLocation,
-                       documentTN.clientDocument.SourceFileName );
+                       documentTN.clientDocument.SourceFileName);
 
                 // check if source folder/ file exists
-                if ( string.IsNullOrEmpty( documentTN.clientDocument.Location ) )
+                if (string.IsNullOrEmpty(documentTN.clientDocument.Location))
                 {
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "Document Location is empty.", processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("Document Location is empty.", processName, userID);
                     return;
                 }
 
-                if ( string.IsNullOrEmpty( documentTN.clientDocument.FileName ) )
+                if (string.IsNullOrEmpty(documentTN.clientDocument.FileName))
                 {
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "File Name is empty.", processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("File Name is empty.", processName, userID);
                     return;
                 }
 
-                if ( !File.Exists( sourceFileLocationName ) )
+                if (!File.Exists(sourceFileLocationName))
                 {
                     string er = "File does not exist " +
                         sourceFileLocationName + " - File Name: " + documentTN.clientDocument.SourceFileName;
 
-                    if ( uioutput != null ) uioutput.AddOutputMessage( er, processName, userID );
-                    if ( uioutput != null ) uioutput.AddErrorMessage( er, processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage(er, processName, userID);
+                    if (uioutput != null) uioutput.AddErrorMessage(er, processName, userID);
                     return;
 
                 }
@@ -767,15 +767,15 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                 // Check if destination folder exists
                 //
-                if ( string.IsNullOrEmpty( cds.Folder ) )
+                if (string.IsNullOrEmpty(cds.Folder))
                 {
                     string er = "Destination folder not set. Generation stopped.";
-                    if ( uioutput != null ) uioutput.AddOutputMessage( er, processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage(er, processName, userID);
                     return;
                 }
-                string PhysicalCDSFolder = Utils.GetPathName( cds.Folder );
-                if ( !Directory.Exists( PhysicalCDSFolder ) )
-                    Directory.CreateDirectory( PhysicalCDSFolder );
+                string PhysicalCDSFolder = Utils.GetPathName(cds.Folder);
+                if (!Directory.Exists(PhysicalCDSFolder))
+                    Directory.CreateDirectory(PhysicalCDSFolder);
 
                 // Generate one document (Folder will also be created in this call)
                 //
@@ -789,11 +789,11 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 try
                 {
                     // GenerateDocument( documentTN );
-                    GenerateSingleDocument( documentTN.clientDocument.UID, isRestart: false, fixDestinationFolder: true );
+                    GenerateSingleDocument(documentTN.clientDocument.UID, isRestart: false, fixDestinationFolder: true);
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "Error generating document. " + documentTN.document.FileName + " " + ex, processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("Error generating document. " + documentTN.document.FileName + " " + ex, processName, userID);
                 }
                 //
                 //
@@ -802,20 +802,20 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 var agora = System.DateTime.Now;
 
                 fileprocessedcount++;
-                valueForProgressBar = ( fileprocessedcount / filecount ) * 100;
-                int leftToProcess = filecount - Convert.ToInt32( fileprocessedcount );
+                valueForProgressBar = (fileprocessedcount / filecount) * 100;
+                int leftToProcess = filecount - Convert.ToInt32(fileprocessedcount);
 
                 // Get the time it took to process one file
-                TimeSpan span = agora.Subtract( previousTime );
+                TimeSpan span = agora.Subtract(previousTime);
 
                 // Average span in seconds
                 acumulatedSpanInSec += span.Seconds;
                 averageSpanInSec = acumulatedSpanInSec / fileprocessedcount;
 
                 // Calculate the estimated time to complete
-                estimated = System.DateTime.Now.AddSeconds( averageSpanInSec * leftToProcess );
+                estimated = System.DateTime.Now.AddSeconds(averageSpanInSec * leftToProcess);
 
-                if ( uioutput != null ) uioutput.UpdateProgressBar( valueForProgressBar, estimated, leftToProcess );
+                if (uioutput != null) uioutput.UpdateProgressBar(valueForProgressBar, estimated, leftToProcess);
 
                 return;
                 #endregion Generate Document
@@ -830,43 +830,43 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 //
                 string clientDestinationFileLocation = documentTN.clientDocument.Location.Trim();
 
-                if ( !string.IsNullOrEmpty( clientDestinationFileLocation ) )
+                if (!string.IsNullOrEmpty(clientDestinationFileLocation))
                 {
 
                     string clientDestinationFileLocationName = Utils.getFilePathName(
-                    clientDestinationFileLocation, documentTN.clientDocument.FileName.Trim() );
+                    clientDestinationFileLocation, documentTN.clientDocument.FileName.Trim());
 
                     // string PhysicalLocation = Utils.GetPathName(clientDestinationFileLocation);
                     string PhysicalLocation = clientDestinationFileLocationName;
 
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "Processing Folder: " + PhysicalLocation, processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("Processing Folder: " + PhysicalLocation, processName, userID);
 
-                    if ( !string.IsNullOrEmpty( PhysicalLocation ) )
+                    if (!string.IsNullOrEmpty(PhysicalLocation))
                     {
-                        if ( !Directory.Exists( PhysicalLocation ) )
+                        if (!Directory.Exists(PhysicalLocation))
                         {
-                            if ( uioutput != null ) uioutput.AddOutputMessage( "Folder Created: " + clientDestinationFileLocationName, processName, userID );
+                            if (uioutput != null) uioutput.AddOutputMessage("Folder Created: " + clientDestinationFileLocationName, processName, userID);
 
-                            Directory.CreateDirectory( PhysicalLocation );
+                            Directory.CreateDirectory(PhysicalLocation);
                         }
                         else
                         {
-                            if ( uioutput != null ) uioutput.AddOutputMessage( "Folder Already Exists: " + clientDestinationFileLocationName, processName, userID );
+                            if (uioutput != null) uioutput.AddOutputMessage("Folder Already Exists: " + clientDestinationFileLocationName, processName, userID);
                         }
                     }
                 }
                 else
                 {
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "Folder Ignored: " + documentTN.document.Name, processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("Folder Ignored: " + documentTN.document.Name, processName, userID);
                 }
 
                 // Process each document in folder
                 //
-                foreach ( TreeNode tn in documentsTreeNode.Nodes )
+                foreach (TreeNode tn in documentsTreeNode.Nodes)
                 {
-                    scClientDocSetDocLink doco = (scClientDocSetDocLink) tn.Tag;
+                    scClientDocSetDocLink doco = (scClientDocSetDocLink)tn.Tag;
 
-                    GenerateDocumentsController( tn );
+                    GenerateDocumentsController(tn);
                 }
             }
         }
@@ -876,7 +876,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// Generate one document - Stop using this one ASAP, replace by GenerateSingleDocument
         /// </summary>
         /// <param name="doco"></param>
-        public void GenerateDocumentTBD( scClientDocSetDocLink doco, string processName, string userID )
+        public void GenerateDocumentTBD(scClientDocSetDocLink doco, string processName, string userID)
         {
 
             // Deprecated - use GenerateSingleDocument if possible
@@ -890,10 +890,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             document.UID = doco.clientDocument.FKDocumentUID;
             // document.Read();
 
-            RepDocument.Read( false, doco.clientDocument.FKDocumentUID );
+            RepDocument.Read(false, doco.clientDocument.FKDocumentUID);
 
             string msg = ">>> Generating file: " + document.UID + " === " + document.SimpleFileName;
-            if ( uioutput != null ) uioutput.AddOutputMessage( msg, processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage(msg, processName, userID);
             // if (iconMessage != null) iconMessage.Text = ">>> Generating file: " + document.UID;
 
 
@@ -901,7 +901,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             //
             string sourceFileLocationName = Utils.getFilePathName(
                    doco.clientDocument.SourceLocation,
-                   doco.clientDocument.SourceFileName );
+                   doco.clientDocument.SourceFileName);
 
             // Find the parent folder location
             //
@@ -910,7 +910,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             cdParent.UID = parentUID;
             // cdParent.Read();
 
-            cdParent = RepClientDocument.Read( parentUID );
+            cdParent = RepClientDocument.Read(parentUID);
 
             // This is the client destination folder (and name)
             //
@@ -920,7 +920,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             string clientDestinationFileLocation = doco.clientDocument.Location.Trim();
 
             string clientDestinationFileLocationName = Utils.getFilePathName(
-                clientDestinationFileLocation, doco.clientDocument.FileName.Trim() );
+                clientDestinationFileLocation, doco.clientDocument.FileName.Trim());
 
             // This is the source client file name
             //
@@ -928,7 +928,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             string clientSourceFileLocationName = Utils.getFilePathName(
                 clientSourceFileLocation,
-                doco.clientDocument.FileName.Trim() );
+                doco.clientDocument.FileName.Trim());
 
             // Source location and destination may be different.
             // The destination of the file must be the one where it lives on the actual tree
@@ -943,14 +943,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             // Check if destination folder directory exists
             //
-            string PhysicalLocation = Utils.GetPathName( clientDestinationFileLocation );
+            string PhysicalLocation = Utils.GetPathName(clientDestinationFileLocation);
 
-            if ( string.IsNullOrEmpty( PhysicalLocation ) )
+            if (string.IsNullOrEmpty(PhysicalLocation))
             {
                 string er = "Location is empty " + clientDestinationFileLocation + "\n" +
                             "File Name: " + doco.document.Name;
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( er, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage(er, processName, userID);
                 return;
             }
 
@@ -966,45 +966,45 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             // However the folder existence must be checked
             //
-            if ( !Directory.Exists( PhysicalLocation ) )
+            if (!Directory.Exists(PhysicalLocation))
             {
-                Directory.CreateDirectory( PhysicalLocation );
+                Directory.CreateDirectory(PhysicalLocation);
 
                 string er = "Destination folder has been created with File! " + PhysicalLocation + "\n" +
                 "File Name: " + doco.document.Name;
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( er, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage(er, processName, userID);
                 //return;
             }
 
-            if ( File.Exists( clientDestinationFileLocationName ) )
+            if (File.Exists(clientDestinationFileLocationName))
             {
                 // Proceed but report in list
                 //
-                if ( overrideDocuments == "Yes" )
+                if (overrideDocuments == "Yes")
                 {
                     // Delete file
                     try
                     {
-                        File.Delete( clientDestinationFileLocationName );
-                        if ( uioutput != null ) uioutput.AddOutputMessage( "File deleted... " +
-                                            document.SimpleFileName, processName, userID );
+                        File.Delete(clientDestinationFileLocationName);
+                        if (uioutput != null) uioutput.AddOutputMessage("File deleted... " +
+                                          document.SimpleFileName, processName, userID);
 
 
                     }
-                    catch ( Exception )
+                    catch (Exception)
                     {
-                        if ( uioutput != null ) uioutput.AddOutputMessage( "Error deleting file " +
-                                            document.SimpleFileName, processName, userID );
-                        if ( uioutput != null ) uioutput.AddErrorMessage( "Error deleting file " +
-                                            document.SimpleFileName, processName, userID ); 
+                        if (uioutput != null) uioutput.AddOutputMessage("Error deleting file " +
+                                          document.SimpleFileName, processName, userID);
+                        if (uioutput != null) uioutput.AddErrorMessage("Error deleting file " +
+                                          document.SimpleFileName, processName, userID);
                         return;
                     }
                 }
                 else
                 {
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "File already exists " +
-                                        document.SimpleFileName, processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("File already exists " +
+                                      document.SimpleFileName, processName, userID);
                     return;
                 }
             }
@@ -1012,12 +1012,12 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             // Copy and fix file
             //
 
-            if ( uioutput != null ) uioutput.AddOutputMessage( "Replacing variables... ", processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage("Replacing variables... ", processName, userID);
 
 
             // Word Documents
             //
-            if ( doco.clientDocument.RecordType.Trim() == FCMConstant.RecordType.FOLDER )
+            if (doco.clientDocument.RecordType.Trim() == FCMConstant.RecordType.FOLDER)
             {
                 // Update file - set as GENERATED.
                 //
@@ -1026,10 +1026,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 // and the folder db record has to be updated with the location
                 //
 
-                if ( !Directory.Exists( PhysicalLocation ) )
-                    Directory.CreateDirectory( PhysicalLocation );
+                if (!Directory.Exists(PhysicalLocation))
+                    Directory.CreateDirectory(PhysicalLocation);
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( "FOLDER: " + doco.clientDocument.SourceFileName, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("FOLDER: " + doco.clientDocument.SourceFileName, processName, userID);
             }
             else
             {
@@ -1038,9 +1038,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 // Trying to copy it as well...
                 //
 
-                var currentDocumentPath = Path.GetExtension( doco.clientDocument.FileName );
+                var currentDocumentPath = Path.GetExtension(doco.clientDocument.FileName);
 
-                if ( doco.clientDocument.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.WORD )
+                if (doco.clientDocument.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.WORD)
                 {
                     #region Word
                     // ------------------------------------------------------------------------
@@ -1048,36 +1048,36 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                     // Generate Document and replace tag values in new document generated
                     // ------------------------------------------------------------------------
                     // ------------------------------------------------------------------------
-                    var results = WordDocumentTasks.CopyDocument( sourceFileLocationName, clientSourceFileLocationName, listOfWordsToReplace, vkWordApp, uioutput, processName, userID );
-                    if ( results.ReturnCode < 0 )
+                    var results = WordDocumentTasks.CopyDocument(sourceFileLocationName, clientSourceFileLocationName, listOfWordsToReplace, vkWordApp, uioutput, processName, userID);
+                    if (results.ReturnCode < 0)
                     {
                         // Error has occurred
                         //
-                        var er = (System.Exception) results.Contents;
-                        if ( uioutput != null ) uioutput.AddOutputMessage( "ERROR: " + er.ToString(), processName, userID );
-                        if ( uioutput != null ) uioutput.AddErrorMessage( "ERROR: " + er.ToString(), processName, userID );
+                        var er = (System.Exception)results.Contents;
+                        if (uioutput != null) uioutput.AddOutputMessage("ERROR: " + er.ToString(), processName, userID);
+                        if (uioutput != null) uioutput.AddErrorMessage("ERROR: " + er.ToString(), processName, userID);
 
                         return;
                     }
 
                     #endregion Word
                 }
-                else if ( doco.clientDocument.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.EXCEL )
+                else if (doco.clientDocument.DocumentType == MackkadoITFramework.Helper.Utils.DocumentType.EXCEL)
                 {
                     // ------------------------------------------------------------------------
                     // ------------------------------------------------------------------------
                     // Generate Document and replace tag values in new document generated
                     // ------------------------------------------------------------------------
                     // ------------------------------------------------------------------------
-                    ExcelSpreadsheetTasks.CopyDocument( sourceFileLocationName, clientSourceFileLocationName, listOfWordsToReplace, uioutput, processName, userID );
+                    ExcelSpreadsheetTasks.CopyDocument(sourceFileLocationName, clientSourceFileLocationName, listOfWordsToReplace, uioutput, processName, userID);
 
                 }
                 else
                 {
-                    File.Copy( sourceFileLocationName, clientSourceFileLocationName );
+                    File.Copy(sourceFileLocationName, clientSourceFileLocationName);
 
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "File copied but not modified: " +
-                               Path.GetExtension( doco.clientDocument.FileName ) + " == File: " + clientSourceFileLocationName, processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("File copied but not modified: " +
+                             Path.GetExtension(doco.clientDocument.FileName) + " == File: " + clientSourceFileLocationName, processName, userID);
 
                 }
 
@@ -1089,86 +1089,20 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 // Update file - set as GENERATED.
                 //
 
-                RepClientDocument.SetGeneratedFlagVersion( cd, 'Y', document.IssueNumber, DateTime.Today.ToString( "yyyyMMdd" ) + " - Generated successfully - " );
+                RepClientDocument.SetGeneratedFlagVersion(cd, 'Y', document.IssueNumber, DateTime.Today.ToString("yyyyMMdd") + " - Generated successfully - ");
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Document generated: " +
-                                    clientDestinationFileLocationName, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("Document generated: " +
+                                  clientDestinationFileLocationName, processName, userID);
             }
             return;
         }
 
-        /// <summary>
-        /// Generate selected documents
-        /// </summary>
-        /// <param name="clientDocumentUIDList"></param>
-        public void GenerateGroupOfDocuments( List<int> clientDocumentUIDList, bool isRestart )
-        {
-            // Read Local config to check if it has to stop
-            //
-            string stopGeneration = XmlConfig.ReadLocal( MakConstant.ConfigXml.StopGeneration );
-            if ( stopGeneration == "Y" )
-            {
-                if ( uioutput != null ) uioutput.AddOutputMessage( "!!! Generation has stopped before first document using config.", processName, userID );
-                return;
-            }
-
-
-            int i = 0;
-            bool fixfolders = false;
-
-            foreach (var docuid in clientDocumentUIDList)
-            {
-                i++;
-                if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
-                if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
-                if (uioutput != null) uioutput.AddOutputMessage("Generating document # " + docuid.ToString(), processName, userID);
-                if (uioutput != null) uioutput.AddOutputMessage(">>", processName, userID);
-
-                fixfolders = false;
-
-                if (i == 1)
-                    fixfolders = true;
-
-                var response = GenerateSingleDocument(docuid, isRestart, fixfolders);
-
-                // Read Local config to check if it has to stop
-                //
-                stopGeneration = XmlConfig.ReadLocal(MakConstant.ConfigXml.StopGeneration);
-                if (stopGeneration == "Y")
-                {
-                    if (uioutput != null) uioutput.AddOutputMessage("!!! Generation has stopped using config.", processName, userID);
-                    break;
-                }
-            }
-
-            // Try to make parallel
-
-            //Parallel.ForEach(clientDocumentUIDList, new ParallelOptions { MaxDegreeOfParallelism = 2 }, (docuid) =>
-            //{
-
-            //    processName = "Thread::" + Thread.CurrentThread.ManagedThreadId.ToString();
-
-            //    i++;
-            //    if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
-            //    if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
-            //    if (uioutput != null) uioutput.AddOutputMessage("Generating document # " + docuid.ToString(), processName, userID);
-            //    if (uioutput != null) uioutput.AddOutputMessage(">>", processName, userID);
-
-            //    fixfolders = false;
-
-            //    if (i == 1)
-            //        fixfolders = true;
-
-            //    var response = GenerateSingleDocument(docuid, isRestart, fixfolders);
-            //});
-
-        }
 
         /// <summary>
         /// Generate single document
         /// </summary>
         /// <param name="clientDocumentUID"></param>
-        public ResponseStatus GenerateSingleDocument( int clientDocumentUID, bool isRestart, bool fixDestinationFolder )
+        public ResponseStatus GenerateSingleDocument(int clientDocumentUID, bool isRestart, bool fixDestinationFolder)
         {
 
 
@@ -1176,32 +1110,32 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             // Reporting activity to master
             //
-            BUSFCMBackendStatus.ReportStatus( HeaderInfo.Instance, processName, "Generating document # " + clientDocumentUID.ToString() );
+            BUSFCMBackendStatus.ReportStatus(HeaderInfo.Instance, processName, "Generating document # " + clientDocumentUID.ToString());
 
             // Read client document
             //
-            var clientDocument = RepClientDocument.Read( clientDocumentUID );
-            if ( clientDocument.UID == 0 )
+            var clientDocument = RepClientDocument.Read(clientDocumentUID);
+            if (clientDocument.UID == 0)
             {
-                LogFile.WriteToTodaysLogFile( "Client Document not found ID = 0", "DocumentGeneration.cs", processName );
-                return new ResponseStatus( MessageType.Error )
-                           {Message = "Client Document not found ID = 0", ReturnCode = -0040, ReasonCode = 0002};
+                LogFile.WriteToTodaysLogFile("Client Document not found ID = 0", "DocumentGeneration.cs", processName);
+                return new ResponseStatus(MessageType.Error)
+                { Message = "Client Document not found ID = 0", ReturnCode = -0040, ReasonCode = 0002 };
             }
 
-            if ( clientDocument.IsLocked == 'Y' )
+            if (clientDocument.IsLocked == 'Y')
             {
-                LogFile.WriteToTodaysLogFile( "Document is locked. Client updates have been made.", processName );
+                LogFile.WriteToTodaysLogFile("Document is locked. Client updates have been made.", processName);
 
                 // Update file - set as GENERATED.
                 //
-                RepClientDocument.SetGeneratedFlagVersion( clientDocument, 'E', clientDocument.SourceIssueNumber, DateTime.Today.ToString( "yyyyMMdd" ) + " Document is locked." );
+                RepClientDocument.SetGeneratedFlagVersion(clientDocument, 'E', clientDocument.SourceIssueNumber, DateTime.Today.ToString("yyyyMMdd") + " Document is locked.");
 
                 return new ResponseStatus(MessageType.Warning)
-                           {
-                               Message = "Document is locked. Client updates have been made.",
-                               ReturnCode = 0001,
-                               ReasonCode = 0004
-                           };
+                {
+                    Message = "Document is locked. Client updates have been made.",
+                    ReturnCode = 0001,
+                    ReasonCode = 0004
+                };
             }
 
 
@@ -1219,31 +1153,31 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             // Update flag to FAILED... in case something happen before the end of the process
             //
 
-            RepClientDocument.SetGeneratedFlagVersion( clientDocument, 'E', clientDocument.SourceIssueNumber, DateTime.Today.ToString( "yyyyMMdd" ) + " - Start:  " + " Generation has started." );
+            RepClientDocument.SetGeneratedFlagVersion(clientDocument, 'E', clientDocument.SourceIssueNumber, DateTime.Today.ToString("yyyyMMdd") + " - Start:  " + " Generation has started.");
 
             // Retrieve latest version
             //
             var document = new Model.ModelDocument.Document();
             document.UID = clientDocument.FKDocumentUID;
 
-            document = RepDocument.Read( false, clientDocument.FKDocumentUID );
+            document = RepDocument.Read(false, clientDocument.FKDocumentUID);
 
-            if ( document.UID <= 0 )
+            if (document.UID <= 0)
             {
-                var responseerror = new ResponseStatus( MessageType.Error );
+                var responseerror = new ResponseStatus(MessageType.Error);
                 responseerror.Message = "Document not found.";
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( responseerror.Message, processName: processName, userID: userID );
+                if (uioutput != null) uioutput.AddOutputMessage(responseerror.Message, processName: processName, userID: userID);
 
                 return responseerror;
             }
 
-            if ( document.Skip == "Y" )
+            if (document.Skip == "Y")
             {
-                var responseerror = new ResponseStatus( MessageType.Warning );
-                responseerror.Message = "Skipping document "+ document.CUID + " - because of skip indicator. Contact support.";
+                var responseerror = new ResponseStatus(MessageType.Warning);
+                responseerror.Message = "Skipping document " + document.CUID + " - because of skip indicator. Contact support.";
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( responseerror.Message, processName: processName, userID: userID );
+                if (uioutput != null) uioutput.AddOutputMessage(responseerror.Message, processName: processName, userID: userID);
                 return responseerror;
             }
 
@@ -1259,38 +1193,38 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             //    return responseerror;
             //}
 
-            
-            
-            
+
+
+
             string msg = ">>> Generating file: " + document.UID + " === " + document.FileName;
-            if ( uioutput != null ) uioutput.AddOutputMessage( msg, processName: processName, userID: userID );
+            if (uioutput != null) uioutput.AddOutputMessage(msg, processName: processName, userID: userID);
 
             // Check if source version has changed
             //   If the source version has changed we need to physically delete the current file
-            if ( document.IssueNumber != clientDocument.SourceIssueNumber )
+            if (document.IssueNumber != clientDocument.SourceIssueNumber)
             {
                 // Delete client copy of document
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Version has changed " + document.SimpleFileName, processName: processName, userID: userID );
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Trying to delete current file. " + document.SimpleFileName, processName: processName, userID: userID );
+                if (uioutput != null) uioutput.AddOutputMessage("Version has changed " + document.SimpleFileName, processName: processName, userID: userID);
+                if (uioutput != null) uioutput.AddOutputMessage("Trying to delete current file. " + document.SimpleFileName, processName: processName, userID: userID);
 
                 string currentClientFile = Utils.getFilePathName(
                            clientDocument.Location,
-                           clientDocument.FileName );
+                           clientDocument.FileName);
 
                 // Delete file
                 try
                 {
-                    File.Delete( currentClientFile );
+                    File.Delete(currentClientFile);
 
                 }
-                catch ( Exception )
+                catch (Exception)
                 {
                     string errormessage = "Error deleting old version file or file not found." + currentClientFile;
-                    if ( uioutput != null ) uioutput.AddOutputMessage( errormessage, processName: processName, userID: userID );
-                    if ( uioutput != null ) uioutput.AddErrorMessage( errormessage, processName: processName, userID: userID );
+                    if (uioutput != null) uioutput.AddOutputMessage(errormessage, processName: processName, userID: userID);
+                    if (uioutput != null) uioutput.AddErrorMessage(errormessage, processName: processName, userID: userID);
 
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "Proceeding with generation...", processName: processName, userID: userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("Proceeding with generation...", processName: processName, userID: userID);
 
                     // Ok to proceed
                 }
@@ -1298,7 +1232,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             // ###############################################################
 
-            if ( clientDocument.IsFolder == 'Y' || clientDocument.IsFolder == 'Y')
+            if (clientDocument.IsFolder == 'Y' || clientDocument.IsFolder == 'Y')
             {
                 // Do not touch the name since it has been updated already.
                 // Folders and Root shouldn't be touched
@@ -1316,10 +1250,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                             clientUID: clientDocument.FKClientUID,
                             documentCUID: document.CUID,
                             sourceVersionNumber: document.IssueNumber,
-                            simpleFileName: document.SimpleFileName );
+                            simpleFileName: document.SimpleFileName);
 
                 //cd.UpdateSourceFileName();
-                RepClientDocument.UpdateSourceFileName( clientDocument );
+                RepClientDocument.UpdateSourceFileName(clientDocument);
             }
 
             // ###############################################################
@@ -1328,7 +1262,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             //
             string sourceFileLocationName = Utils.getFilePathName(
                    clientDocument.SourceLocation,
-                   clientDocument.SourceFileName );
+                   clientDocument.SourceFileName);
 
             // Find the parent folder location
             //
@@ -1337,7 +1271,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             cdParent.UID = parentUID;
             // cdParent.Read();
 
-            cdParent = RepClientDocument.Read( parentUID );
+            cdParent = RepClientDocument.Read(parentUID);
 
             // This is the client destination folder (and name)
             //
@@ -1347,7 +1281,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             string clientDestinationFileLocation = clientDocument.Location.Trim();
 
             string clientDestinationFileLocationName = Utils.getFilePathName(
-                clientDestinationFileLocation, clientDocument.FileName.Trim() );
+                clientDestinationFileLocation, clientDocument.FileName.Trim());
 
 
             // This is the source client file name
@@ -1356,7 +1290,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             string clientSourceFileLocationName = Utils.getFilePathName(
                 clientSourceFileLocation,
-                clientDocument.FileName.Trim() );
+                clientDocument.FileName.Trim());
 
             // Source location and destination may be different.
             // The destination of the file must be the one where it lives on the actual tree
@@ -1371,18 +1305,18 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             // Check if destination folder directory exists
             //
-            string PhysicalLocation = Utils.GetPathName( clientDestinationFileLocation );
+            string PhysicalLocation = Utils.GetPathName(clientDestinationFileLocation);
 
-            if ( string.IsNullOrEmpty( PhysicalLocation ) )
+            if (string.IsNullOrEmpty(PhysicalLocation))
             {
                 string er = "Location is empty " + clientDestinationFileLocation + "\n" +
                             "File Name: " + document.Name;
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( er, processName: processName, userID: userID );
+                if (uioutput != null) uioutput.AddOutputMessage(er, processName: processName, userID: userID);
 
-                RepClientDocument.SetGeneratedFlagVersion( clientDocument, 'E', 0, DateTime.Today.ToString( "yyyyMMdd" ) + " - Error:  " + er );
+                RepClientDocument.SetGeneratedFlagVersion(clientDocument, 'E', 0, DateTime.Today.ToString("yyyyMMdd") + " - Error:  " + er);
 
-                var responseerror = new ResponseStatus( MessageType.Error );
+                var responseerror = new ResponseStatus(MessageType.Error);
                 responseerror.Message = er;
                 return responseerror;
             }
@@ -1399,65 +1333,65 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             // However the folder existence must be checked
             //
-            if ( !Directory.Exists( PhysicalLocation ) )
+            if (!Directory.Exists(PhysicalLocation))
             {
-                Directory.CreateDirectory( PhysicalLocation );
+                Directory.CreateDirectory(PhysicalLocation);
 
                 string er = "Destination folder has been created with File! " + PhysicalLocation + "\n" +
                 "File Name: " + document.Name;
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( er, processName: processName, userID: userID );
+                if (uioutput != null) uioutput.AddOutputMessage(er, processName: processName, userID: userID);
                 //return;
             }
 
             // In case of restart, do not override what has been generated.
             //
 
-            if ( isRestart )
+            if (isRestart)
                 overrideDocuments = "No";
 
-            if ( File.Exists( clientDestinationFileLocationName ) )
+            if (File.Exists(clientDestinationFileLocationName))
             {
                 // Proceed but report in list
                 //
-                if ( overrideDocuments == "Yes" )
+                if (overrideDocuments == "Yes")
                 {
                     // Delete file
                     try
                     {
-                        File.Delete( clientDestinationFileLocationName );
+                        File.Delete(clientDestinationFileLocationName);
 
                     }
-                    catch ( Exception )
+                    catch (Exception)
                     {
-                        if ( uioutput != null ) uioutput.AddOutputMessage( "Error deleting file " +
-                                            document.SimpleFileName, processName: processName, userID: userID );
-                        if ( uioutput != null ) uioutput.AddErrorMessage( "Error deleting file " +
-                                            document.SimpleFileName, processName: processName, userID: userID );
+                        if (uioutput != null) uioutput.AddOutputMessage("Error deleting file " +
+                                          document.SimpleFileName, processName: processName, userID: userID);
+                        if (uioutput != null) uioutput.AddErrorMessage("Error deleting file " +
+                                          document.SimpleFileName, processName: processName, userID: userID);
 
-                        var responseerror = new ResponseStatus( MessageType.Error );
+                        var responseerror = new ResponseStatus(MessageType.Error);
                         responseerror.Message = "Error deleting file " + document.SimpleFileName;
 
-                        RepClientDocument.SetGeneratedFlagVersion( clientDocument, 'E', 0, DateTime.Today.ToString( "yyyyMMdd" ) + " - Error:  " + responseerror.Message );
+                        RepClientDocument.SetGeneratedFlagVersion(clientDocument, 'E', 0, DateTime.Today.ToString("yyyyMMdd") + " - Error:  " + responseerror.Message);
 
                         return responseerror;
                     }
 
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "File deleted... " +
-                        document.SimpleFileName, processName: processName, userID: userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("File deleted... " +
+                      document.SimpleFileName, processName: processName, userID: userID);
 
-                
+
                 }
                 else
                 {
 
-                    var responseerror = new ResponseStatus( MessageType.Error ) { Message = "File already exists and it won't be replaced. " + document.SimpleFileName };
+                    var responseerror = new ResponseStatus(MessageType.Error) { Message = "File already exists and it won't be replaced. " + document.SimpleFileName };
 
-                    if ( uioutput != null ) uioutput.AddOutputMessage( responseerror.Message, processName: processName, userID: userID );
+                    if (uioutput != null) uioutput.AddOutputMessage(responseerror.Message, processName: processName, userID: userID);
 
                     // Do not update the source issue number in this case
                     //
-                    RepClientDocument.SetGeneratedFlagVersion( clientDocument, 'Y', clientDocument.SourceIssueNumber, DateTime.Today.ToString( "yyyyMMdd" ) + " - Warning:  " + responseerror.Message );
+                    RepClientDocument.SetGeneratedFlagVersion(clientDocument, 'Y', clientDocument.SourceIssueNumber, DateTime.Today.ToString("yyyyMMdd") + " - Warning:  " + responseerror.Message);
 
                     return responseerror;
                 }
@@ -1466,12 +1400,12 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
             // Copy and fix file
             //
 
-            if ( uioutput != null ) uioutput.AddOutputMessage( "Replacing variables... ", processName: processName, userID: userID );
+            if (uioutput != null) uioutput.AddOutputMessage("Replacing variables... ", processName: processName, userID: userID);
 
 
             // Word Documents
             //
-            if ( clientDocument.RecordType.Trim() == FCMConstant.RecordType.FOLDER )
+            if (clientDocument.RecordType.Trim() == FCMConstant.RecordType.FOLDER)
             {
                 // Update file - set as GENERATED.
                 //
@@ -1480,10 +1414,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 // and the folder db record has to be updated with the location
                 //
 
-                if ( !Directory.Exists( PhysicalLocation ) )
-                    Directory.CreateDirectory( PhysicalLocation );
+                if (!Directory.Exists(PhysicalLocation))
+                    Directory.CreateDirectory(PhysicalLocation);
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( "FOLDER: " + clientDocument.SourceFileName, processName: processName, userID: userID );
+                if (uioutput != null) uioutput.AddOutputMessage("FOLDER: " + clientDocument.SourceFileName, processName: processName, userID: userID);
             }
             else
             {
@@ -1492,19 +1426,19 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                 // Trying to copy it as well...
                 //
 
-                var currentDocumentPath = Path.GetExtension( clientDocument.FileName );
+                var currentDocumentPath = Path.GetExtension(clientDocument.FileName);
 
 
-                if ( document.SourceCode == "CLIENT" )
+                if (document.SourceCode == "CLIENT")
                 {
                     // Copy only
                     //
-                    File.Copy( sourceFileLocationName, clientSourceFileLocationName );
+                    File.Copy(sourceFileLocationName, clientSourceFileLocationName);
 
-                    if ( uioutput != null )
-                        uioutput.AddOutputMessage( "Client Specific - File copied but not modified: " +
-                                                  Path.GetExtension( clientDocument.FileName ) + " == File: " +
-                                                  clientSourceFileLocationName, processName, userID );
+                    if (uioutput != null)
+                        uioutput.AddOutputMessage("Client Specific - File copied but not modified: " +
+                                                  Path.GetExtension(clientDocument.FileName) + " == File: " +
+                                                  clientSourceFileLocationName, processName, userID);
 
                 }
                 else
@@ -1525,14 +1459,14 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
                         {
                             // Error has occurred
                             //
-                            var er = (System.Exception) results.Contents;
+                            var er = (System.Exception)results.Contents;
                             if (uioutput != null)
                                 uioutput.AddOutputMessage("ERROR: " + er.ToString(), processName, userID);
                             if (uioutput != null)
                                 uioutput.AddErrorMessage("ERROR: " + er.ToString(), processName, userID);
 
                             var responseerror = new ResponseStatus(MessageType.Error)
-                                                    {Message = "ERROR: " + er.ToString()};
+                            { Message = "ERROR: " + er.ToString() };
 
                             RepClientDocument.SetGeneratedFlagVersion(clientDocument, 'E', 0,
                                                                       DateTime.Today.ToString("yyyyMMdd") +
@@ -1608,9 +1542,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
                 // Update file - set as GENERATED.
                 //
-                RepClientDocument.SetGeneratedFlagVersion( clientDocument, 'Y', document.IssueNumber, DateTime.Today.ToString( "yyyyMMdd" ) + " All good." );
+                RepClientDocument.SetGeneratedFlagVersion(clientDocument, 'Y', document.IssueNumber, DateTime.Today.ToString("yyyyMMdd") + " All good.");
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Document generated: " + clientDestinationFileLocationName, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("Document generated: " + clientDestinationFileLocationName, processName, userID);
             }
 
             ResponseStatus responseSuccessfull = new ResponseStatus();
@@ -1625,10 +1559,10 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
         /// Generate selected documents
         /// </summary>
         /// <param name="clientDocumentUIDList"></param>
-        public void GenerateFullSetForClient( int clientID, int clientDocumentSetUID, bool isRestart )
+        public void GenerateFullSetForClient(int clientID, int clientDocumentSetUID, bool isRestart)
         {
 
-            var listOfClientDocs =  RepClientDocument.ListS(clientID, clientDocumentSetUID);
+            var listOfClientDocs = RepClientDocument.ListS(clientID, clientDocumentSetUID);
 
             List<int> listint = new List<int>();
 
@@ -1639,11 +1573,155 @@ namespace FCMMySQLBusinessLibrary.Model.ModelClientDocument
 
             // Fix path
             //
-            var response = UpdateDestinationFolder( clientID, clientDocumentSetUID );
+            var response = UpdateDestinationFolder(clientID, clientDocumentSetUID);
 
             GenerateGroupOfDocuments(listint, isRestart);
+            // Today 24/03/2018
+            // Testando parallel
+            // --------------------------------------------------
+            // --------------------------------------------------
+            // COM Word is giving me headache...
+            // --------------------------------------------------
+            // GenerateGroupOfDocumentsParallel(listint, isRestart);
 
         }
+
+        /// <summary>
+        /// Generate selected documents
+        /// </summary>
+        /// <param name="clientDocumentUIDList"></param>
+        public void GenerateGroupOfDocuments(List<int> clientDocumentUIDList, bool isRestart)
+        {
+            // Read Local config to check if it has to stop
+            //
+            string stopGeneration = XmlConfig.ReadLocal(MakConstant.ConfigXml.StopGeneration);
+            if (stopGeneration == "Y")
+            {
+                if (uioutput != null) uioutput.AddOutputMessage("!!! Generation has stopped before first document using config.", processName, userID);
+                return;
+            }
+
+
+            int i = 0;
+            bool fixfolders = false;
+
+            foreach (var docuid in clientDocumentUIDList)
+            {
+                i++;
+                if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
+                if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
+                if (uioutput != null) uioutput.AddOutputMessage("Generating document # " + docuid.ToString(), processName, userID);
+                if (uioutput != null) uioutput.AddOutputMessage(">>", processName, userID);
+
+                fixfolders = false;
+
+                if (i == 1)
+                    fixfolders = true;
+
+                var response = GenerateSingleDocument(docuid, isRestart, fixfolders);
+
+                // Read Local config to check if it has to stop
+                //
+                stopGeneration = XmlConfig.ReadLocal(MakConstant.ConfigXml.StopGeneration);
+                if (stopGeneration == "Y")
+                {
+                    if (uioutput != null) uioutput.AddOutputMessage("!!! Generation has stopped using config.", processName, userID);
+                    break;
+                }
+            }
+
+            // Try to make parallel
+
+            //Parallel.ForEach(clientDocumentUIDList, new ParallelOptions { MaxDegreeOfParallelism = 2 }, (docuid) =>
+            //{
+
+            //    processName = "Thread::" + Thread.CurrentThread.ManagedThreadId.ToString();
+
+            //    i++;
+            //    if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
+            //    if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
+            //    if (uioutput != null) uioutput.AddOutputMessage("Generating document # " + docuid.ToString(), processName, userID);
+            //    if (uioutput != null) uioutput.AddOutputMessage(">>", processName, userID);
+
+            //    fixfolders = false;
+
+            //    if (i == 1)
+            //        fixfolders = true;
+
+            //    var response = GenerateSingleDocument(docuid, isRestart, fixfolders);
+            //});
+
+        }
+
+        /// <summary>
+        /// Generate selected documents
+        /// </summary>
+        /// <param name="clientDocumentUIDList"></param>
+        public void GenerateGroupOfDocumentsParallel(List<int> clientDocumentUIDList, bool isRestart)
+        {
+            // Read Local config to check if it has to stop
+            //
+            string stopGeneration = XmlConfig.ReadLocal(MakConstant.ConfigXml.StopGeneration);
+            if (stopGeneration == "Y")
+            {
+                if (uioutput != null) uioutput.AddOutputMessage("!!! Generation has stopped before first document using config.", processName, userID);
+                return;
+            }
+
+
+            int i = 0;
+            bool fixfolders = false;
+
+            //foreach (var docuid in clientDocumentUIDList)
+            //{
+            //    i++;
+            //    if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
+            //    if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
+            //    if (uioutput != null) uioutput.AddOutputMessage("Generating document # " + docuid.ToString(), processName, userID);
+            //    if (uioutput != null) uioutput.AddOutputMessage(">>", processName, userID);
+
+            //    fixfolders = false;
+
+            //    if (i == 1)
+            //        fixfolders = true;
+
+            //    var response = GenerateSingleDocument(docuid, isRestart, fixfolders);
+
+            //    // Read Local config to check if it has to stop
+            //    //
+            //    stopGeneration = XmlConfig.ReadLocal(MakConstant.ConfigXml.StopGeneration);
+            //    if (stopGeneration == "Y")
+            //    {
+            //        if (uioutput != null) uioutput.AddOutputMessage("!!! Generation has stopped using config.", processName, userID);
+            //        break;
+            //    }
+            //}
+
+            // Try to make parallel
+            if (uioutput != null) uioutput.AddOutputMessage("USING PARALLEL LOGIC", processName, userID);
+
+            Parallel.ForEach(clientDocumentUIDList, new ParallelOptions { MaxDegreeOfParallelism = 2 }, (docuid) =>
+            {
+
+                processName = "Thread::" + Thread.CurrentThread.ManagedThreadId.ToString();
+
+                i++;
+                if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
+                if (uioutput != null) uioutput.AddOutputMessage(".....", processName, userID);
+                if (uioutput != null) uioutput.AddOutputMessage("PARALLEL > Generating document # " + docuid.ToString(), processName, userID);
+                if (uioutput != null) uioutput.AddOutputMessage(">>", processName, userID);
+
+                fixfolders = false;
+
+                if (i == 1)
+                    fixfolders = true;
+
+                var response = GenerateSingleDocument(docuid, isRestart, fixfolders);
+            });
+
+        }
+
+
 
     }
 }

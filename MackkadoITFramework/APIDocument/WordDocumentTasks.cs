@@ -1,13 +1,13 @@
-﻿using System;
+﻿using MackkadoITFramework.ErrorHandling;
+using MackkadoITFramework.Interfaces;
+using MackkadoITFramework.Utils;
+using System;
 using System.Collections;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using MackkadoITFramework.ErrorHandling;
-using MackkadoITFramework.Interfaces;
-using MackkadoITFramework.Utils;
 //using Microsoft.Office.Core;
 
 namespace MackkadoITFramework.APIDocument
@@ -19,15 +19,15 @@ namespace MackkadoITFramework.APIDocument
         // ---------------------------------------------
         //             Open Document
         // ---------------------------------------------
-        public static ResponseStatus OpenDocument(object fromFileName, object vkReadOnly, bool isFromWeb=false)
+        public static ResponseStatus OpenDocument(object fromFileName, object vkReadOnly, bool isFromWeb = false)
         {
 
-            if ( !isFromWeb )
-                if ( !File.Exists( (string) fromFileName ) )
+            if (!isFromWeb)
+                if (!File.Exists((string)fromFileName))
                 {
-                    ResponseStatus rserror = new ResponseStatus( MessageType.Error );
+                    ResponseStatus rserror = new ResponseStatus(MessageType.Error);
                     rserror.Message = "File not found. " + fromFileName;
-                    MessageBox.Show( rserror.Message );
+                    MessageBox.Show(rserror.Message);
                     return rserror;
                 }
 
@@ -67,7 +67,7 @@ namespace MackkadoITFramework.APIDocument
                                   )
         {
 
-            Word.Application vkWordApp = 
+            Word.Application vkWordApp =
                                  new Word.Application();
 
             object saveFile = destinationFileName;
@@ -104,7 +104,7 @@ namespace MackkadoITFramework.APIDocument
             // Paste into new document as unformatted text
             vkNewDoc.Select();
             vkWordApp.Selection.PasteSpecial(ref vkMissing, ref vkFalse,
-                                               ref vkMissing, ref vkFalse, ref vkDynamic, 
+                                               ref vkMissing, ref vkFalse, ref vkDynamic,
                                                ref vkMissing, ref vkMissing);
 
             // Save the new document
@@ -140,7 +140,7 @@ namespace MackkadoITFramework.APIDocument
             return saveFile;
         }
 
-        
+
         // ---------------------------------------------
         //    
         // ---------------------------------------------
@@ -180,7 +180,7 @@ namespace MackkadoITFramework.APIDocument
 
             // Let's copy the document
 
-            if ( uioutput != null ) uioutput.AddOutputMessage( "Copying file from: " + fromFileName + " to: " + destinationFileName, processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage("Copying file from: " + fromFileName + " to: " + destinationFileName, processName, userID);
 
             File.Copy(fromFileName.ToString(), destinationFileName.ToString(), true);
 
@@ -202,7 +202,7 @@ namespace MackkadoITFramework.APIDocument
                 //    ref vkMissing, ref vkMissing, ref vkMissing,
                 //    ref vkMissing, ref vkMissing, ref vkVisible );
 
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Opening file: " + destinationFileName, processName, userID );
+                if (uioutput != null) uioutput.AddOutputMessage("Opening file: " + destinationFileName, processName, userID);
 
                 vkMyDoc = vkWordApp.Documents.Open(
                     FileName: destinationFileName,
@@ -213,10 +213,10 @@ namespace MackkadoITFramework.APIDocument
                     PasswordTemplate: vkMissing,
                     Revert: vkMissing,
                     WritePasswordDocument: vkMissing,
-                    WritePasswordTemplate: vkMissing, 
-                    Format: vkMissing, 
+                    WritePasswordTemplate: vkMissing,
+                    Format: vkMissing,
                     Encoding: vkMissing,
-                    Visible: vkFalse );
+                    Visible: vkFalse);
 
             }
             catch (Exception ex)
@@ -232,18 +232,18 @@ namespace MackkadoITFramework.APIDocument
             //
             // In case the file is still read-only...
             //
-            if ( uioutput != null ) uioutput.AddOutputMessage( "Checking if file is read-only: " + destinationFileName, processName, userID );
-            if ( vkMyDoc.ReadOnly )
+            if (uioutput != null) uioutput.AddOutputMessage("Checking if file is read-only: " + destinationFileName, processName, userID);
+            if (vkMyDoc.ReadOnly)
             {
-                uioutput.AddOutputMessage( "(Word) File is Read-only contact support:  " + fromFileName, processName, userID );
+                uioutput.AddOutputMessage("(Word) File is Read-only contact support:  " + fromFileName, processName, userID);
                 vkMyDoc.Close();
-                System.Runtime.InteropServices.Marshal.ReleaseComObject( vkMyDoc );
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(vkMyDoc);
                 return ret;
             }
 
-            if ( uioutput != null ) uioutput.AddOutputMessage( "File is NOT read-only!!  " + destinationFileName, processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage("File is NOT read-only!!  " + destinationFileName, processName, userID);
 
-            if ( uioutput != null ) uioutput.AddOutputMessage( "Starting find and replace loop", processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage("Starting find and replace loop", processName, userID);
 
 
             // 18/04/2013
@@ -252,20 +252,20 @@ namespace MackkadoITFramework.APIDocument
 
             foreach (var t in tag)
             {
-                if ( t.TagType == Helper.Utils.InformationType.FIELD || t.TagType == Helper.Utils.InformationType.VARIABLE )
+                if (t.TagType == Helper.Utils.InformationType.FIELD || t.TagType == Helper.Utils.InformationType.VARIABLE)
                 {
                     FindAndReplace(t.Tag, t.TagValue, 1, vkWordApp, vkMyDoc);
                     // ReplaceProperty(t.Tag, t.TagValue, 1, vkWordApp, vkMyDoc);
                 }
                 else
                 {
-                    insertPicture( vkMyDoc, t.TagValue, t.Tag );
+                    insertPicture(vkMyDoc, t.TagValue, t.Tag);
                 }
             }
 
             // 15/03/2013
             // Force field update
-            if ( uioutput != null ) uioutput.AddOutputMessage( "Force field updates.", processName, userID );
+            if (uioutput != null) uioutput.AddOutputMessage("Force field updates.", processName, userID);
             foreach (Word.Range myStoryRange in vkMyDoc.StoryRanges)
             {
                 myStoryRange.Fields.Update();
@@ -278,14 +278,14 @@ namespace MackkadoITFramework.APIDocument
 
             try
             {
-                if ( vkMyDoc.ReadOnly )
+                if (vkMyDoc.ReadOnly)
                 {
                     if (uioutput != null)
-                        uioutput.AddOutputMessage( "(Word) File is Read-only contact support:  " + fromFileName, processName, userID );
+                        uioutput.AddOutputMessage("(Word) File is Read-only contact support:  " + fromFileName, processName, userID);
                 }
                 else
                 {
-                    if ( uioutput != null ) uioutput.AddOutputMessage( "Saving file, it is no read-only.", processName, userID );
+                    if (uioutput != null) uioutput.AddOutputMessage("Saving file, it is no read-only.", processName, userID);
 
                     vkMyDoc.Save();
                 }
@@ -293,27 +293,27 @@ namespace MackkadoITFramework.APIDocument
             catch (Exception ex)
             {
                 if (uioutput != null)
-                    uioutput.AddOutputMessage( "(Word) ERROR Saving in file:  " + fromFileName + " --- Message: " + ex.ToString(), processName, userID );
+                    uioutput.AddOutputMessage("(Word) ERROR Saving in file:  " + fromFileName + " --- Message: " + ex.ToString(), processName, userID);
             }
 
             // close the new document
             try
             {
-                if ( uioutput != null ) uioutput.AddOutputMessage( "Closing file", processName, userID );
-                vkMyDoc.Close(SaveChanges:vkTrue);
+                if (uioutput != null) uioutput.AddOutputMessage("Closing file", processName, userID);
+                vkMyDoc.Close(SaveChanges: vkTrue);
 
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 if (uioutput != null)
-                    uioutput.AddOutputMessage( "(Word) ERROR Closing file:  " + fromFileName + " --- Message: " + ex.ToString(), processName, userID );
+                    uioutput.AddOutputMessage("(Word) ERROR Closing file:  " + fromFileName + " --- Message: " + ex.ToString(), processName, userID);
             }
 
 
-            
+
             // Trying to release COM object
-            if ( uioutput != null ) uioutput.AddOutputMessage( "Releasing COM object", processName, userID );
-            System.Runtime.InteropServices.Marshal.ReleaseComObject( vkMyDoc );
+            if (uioutput != null) uioutput.AddOutputMessage("Releasing COM object", processName, userID);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(vkMyDoc);
 
             return ret;
         }
@@ -413,7 +413,7 @@ namespace MackkadoITFramework.APIDocument
 
         //    // Replace Word Document body
         //    //
-            
+
         //    // 05/09/2010 - Testando a passagem de paramentros com nome do parametro... nao remover codigo abaixo.
 
         //    // Working... Forward = false;
@@ -509,7 +509,7 @@ namespace MackkadoITFramework.APIDocument
         //        MatchDiacritics: vkFalse,
         //        MatchAlefHamza: vkFalse,
         //        MatchControl: vkFalse );
-    
+
 
         //    // Replace in the first page footer
         //    //
@@ -605,7 +605,7 @@ namespace MackkadoITFramework.APIDocument
 
             range.Find.ClearFormatting();
             range.Find.Replacement.ClearFormatting();
-            
+
             object vkTrue = true;
             object vkFalse = false;
 
@@ -699,7 +699,7 @@ namespace MackkadoITFramework.APIDocument
             // End of changes on 07/01/2013
             // I have enabled the code above to see if it work for the IMS document
             //
-            
+
             foreach (Word.Shape shp in vkMyDoc.Shapes)
             {
                 if (shp.TextFrame.HasText < 0)
@@ -721,15 +721,15 @@ namespace MackkadoITFramework.APIDocument
                 // This is to try to address header in different sections
                 // It works!
                 // 
-                foreach ( Word.HeaderFooter header in myStoryRange.Sections.Last.Headers )
+                foreach (Word.HeaderFooter header in myStoryRange.Sections.Last.Headers)
                 {
-                    ReplaceRange( header.Range, vkMyDoc, vkWordApp, findText, replaceText );
+                    ReplaceRange(header.Range, vkMyDoc, vkWordApp, findText, replaceText);
                 }
-                foreach ( Word.HeaderFooter footer in myStoryRange.Sections.Last.Footers )
+                foreach (Word.HeaderFooter footer in myStoryRange.Sections.Last.Footers)
                 {
-                    ReplaceRange( footer.Range, vkMyDoc, vkWordApp, findText, replaceText );
+                    ReplaceRange(footer.Range, vkMyDoc, vkWordApp, findText, replaceText);
                 }
-            
+
             }
 
         }
@@ -752,16 +752,16 @@ namespace MackkadoITFramework.APIDocument
             )
         {
 
-            if ( vkMyDoc == null )
+            if (vkMyDoc == null)
             {
                 return;
             }
-            if ( vkWordApp == null )
+            if (vkWordApp == null)
             {
                 return;
             }
- 
-            if ( vkFind.ToString().Trim().Length == 0 )
+
+            if (vkFind.ToString().Trim().Length == 0)
             {
                 return;
             }
@@ -776,7 +776,7 @@ namespace MackkadoITFramework.APIDocument
 
             var properties = vkMyDoc.CustomDocumentProperties;
 
-            properties [propertyName].Value = propertyValue;
+            properties[propertyName].Value = propertyValue;
 
         }
 
@@ -861,7 +861,7 @@ namespace MackkadoITFramework.APIDocument
         // ----------------------------------------------------
         //         Insert picture 
         // ----------------------------------------------------
-        public static void insertPicture(Word.Document oDoc, 
+        public static void insertPicture(Word.Document oDoc,
                                          string pictureFile,
                                          object bookMarkName
                                          )
@@ -872,14 +872,14 @@ namespace MackkadoITFramework.APIDocument
             // PICTUREHOLD
 
             LogFile.WriteToTodaysLogFile(
-                "Error: Pictures and logos are not being replace at this time. Issues are being investigated.","","","WordDocumentTasks.cs");
+                "Error: Pictures and logos are not being replace at this time. Issues are being investigated.", "", "", "WordDocumentTasks.cs");
             return;
 
 
 
             object oMissing = System.Reflection.Missing.Value;
 
-            if ( pictureFile == "\\" || pictureFile == "\\\\" || string.IsNullOrEmpty( pictureFile ) )
+            if (pictureFile == "\\" || pictureFile == "\\\\" || string.IsNullOrEmpty(pictureFile))
                 return;
 
             // oDoc.ActiveWindow.Selection.Range.InlineShapes.AddPicture(
@@ -900,17 +900,17 @@ namespace MackkadoITFramework.APIDocument
                     //    SaveWithDocument: oMissing,
                     //    Range: oMissing);
 
-                    oDoc.Bookmarks.Item( ref bookMarkName ).Range.InlineShapes.AddPicture(
+                    oDoc.Bookmarks.Item(ref bookMarkName).Range.InlineShapes.AddPicture(
                         FileName: pictureFile,
                         LinkToFile: oMissing,
                         SaveWithDocument: oMissing,
-                        Range: oMissing );
+                        Range: oMissing);
 
 
                 }
-                catch( Exception ex)
+                catch (Exception ex)
                 {
-                    LogFile.WriteToTodaysLogFile( "insertPicture " + ex, "", "", "WordDocumentTasks.cs" );
+                    LogFile.WriteToTodaysLogFile("insertPicture " + ex, "", "", "WordDocumentTasks.cs");
                 }
             }
             // Object oMissed = doc.Paragraphs[2].Range; //the position you want to insert
@@ -922,31 +922,31 @@ namespace MackkadoITFramework.APIDocument
         // ----------------------------------------------------
         //            Copy folder structure including files
         // ----------------------------------------------------
-        static public void CopyFolder( string sourceFolder, string destFolder )
+        static public void CopyFolder(string sourceFolder, string destFolder)
         {
-            if (!Directory.Exists( destFolder ))
-                Directory.CreateDirectory( destFolder );
+            if (!Directory.Exists(destFolder))
+                Directory.CreateDirectory(destFolder);
 
-            string[] files = Directory.GetFiles( sourceFolder );
+            string[] files = Directory.GetFiles(sourceFolder);
             foreach (string file in files)
             {
-                string name = Path.GetFileName( file );
+                string name = Path.GetFileName(file);
 
                 string fileName = Path.GetFileNameWithoutExtension(file);
                 string fileExtension = Path.GetExtension(file);
 
-                string dest = Path.Combine( destFolder, 
-                               fileName + "v01" + fileExtension );
+                string dest = Path.Combine(destFolder,
+                               fileName + "v01" + fileExtension);
 
-                File.Copy( file, dest );
+                File.Copy(file, dest);
             }
 
-            string[] folders = Directory.GetDirectories( sourceFolder );
+            string[] folders = Directory.GetDirectories(sourceFolder);
             foreach (string folder in folders)
             {
-                string name = Path.GetFileName( folder );
-                string dest = Path.Combine( destFolder, name );
-                CopyFolder( folder, dest );
+                string name = Path.GetFileName(folder);
+                string dest = Path.Combine(destFolder, name);
+                CopyFolder(folder, dest);
             }
         }
 
@@ -972,7 +972,7 @@ namespace MackkadoITFramework.APIDocument
         //         Replace strings in structure
         // ----------------------------------------------------
         static public void ReplaceStringInAllFiles(
-                   string originalFolder, 
+                   string originalFolder,
                    List<TagStructure> tagList,
                    Word.Application vkWordApp)
         {
@@ -1011,7 +1011,7 @@ namespace MackkadoITFramework.APIDocument
                         }
                     }
 
-                    WordDocumentTasks.insertPicture( vkMyDoc, "C:\\Research\\fcm\\Resources\\FCMLogo.jpg","");
+                    WordDocumentTasks.insertPicture(vkMyDoc, "C:\\Research\\fcm\\Resources\\FCMLogo.jpg", "");
                     vkMyDoc.Save();
                     vkMyDoc.Close(ref vkFalse, ref vkMissing, ref vkMissing);
 
@@ -1023,7 +1023,7 @@ namespace MackkadoITFramework.APIDocument
                 string[] folders = Directory.GetDirectories(originalFolder);
                 foreach (string folder in folders)
                 {
-                    ReplaceStringInAllFiles(folder, 
+                    ReplaceStringInAllFiles(folder,
                                             tagList,
                                             vkWordApp);
                 }
@@ -1044,12 +1044,12 @@ namespace MackkadoITFramework.APIDocument
         // ---------------------------------------------
         //             Print Document
         // ---------------------------------------------
-        public static void PrintDocument( object fromFileName )
+        public static void PrintDocument(object fromFileName)
         {
 
-            if (!File.Exists( (string)fromFileName ))
+            if (!File.Exists((string)fromFileName))
             {
-                MessageBox.Show( "File not found. " + fromFileName );
+                MessageBox.Show("File not found. " + fromFileName);
                 return;
             }
 
@@ -1075,15 +1075,15 @@ namespace MackkadoITFramework.APIDocument
                 ref fromFileName, ref vkMissing, ref vkReadOnly,
                 ref vkMissing, ref vkMissing, ref vkMissing,
                 ref vkMissing, ref vkMissing, ref vkMissing,
-                ref vkMissing, ref vkMissing, ref vkVisible );
+                ref vkMissing, ref vkMissing, ref vkVisible);
 
             vkMyDoc.PrintOut();
 
             vkMyDoc.Close();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject( vkMyDoc );
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(vkMyDoc);
 
             vkWordApp.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject( vkWordApp );
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(vkWordApp);
 
             return;
         }

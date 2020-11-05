@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.FCMUtils;
+﻿using FCMMySQLBusinessLibrary.FCMUtils;
 using FCMMySQLBusinessLibrary.Model.ModelClientDocument;
 using MackkadoITFramework.ErrorHandling;
 using MackkadoITFramework.Utils;
+using System.Collections.Generic;
 
 namespace FCMMySQLBusinessLibrary.Service.SVCClient.Service
 {
     public class BUSClientDocumentSet
     {
 
-        public int DocumentCount { get { return _DocumentCount; } } 
+        public int DocumentCount { get { return _DocumentCount; } }
         private int _DocumentCount;
 
         public BUSClientDocumentSet(int iClientUID, int iClientDocumentSetUID)

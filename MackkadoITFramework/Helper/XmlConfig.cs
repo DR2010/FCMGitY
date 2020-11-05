@@ -6,30 +6,30 @@ namespace MackkadoITFramework.Utils
 {
     public class XmlConfig
     {
-        public static string Read( string attribute )
+        public static string Read(string attribute)
         {
 
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load( "C:\\Program Files\\FCM\\FCMConfig.xml" );
+            xmlDoc.Load("C:\\Program Files\\FCM\\FCMConfig.xml");
 
-            XmlTextReader textReader = new XmlTextReader( "C:\\Program Files\\FCM\\FCMConfig.xml" );
+            XmlTextReader textReader = new XmlTextReader("C:\\Program Files\\FCM\\FCMConfig.xml");
             string constring = "";
             string pickNext = "N";
 
-            while ( textReader.Read() )
+            while (textReader.Read())
             {
                 // Move to first element
                 textReader.MoveToNextAttribute();
-                if ( pickNext == "Y" )
+                if (pickNext == "Y")
                 {
                     constring = textReader.Value;
-                    constring = constring.Replace( System.Environment.NewLine, string.Empty );
+                    constring = constring.Replace(System.Environment.NewLine, string.Empty);
                     constring = constring.TrimStart();
                     constring = constring.TrimEnd();
 
                     break;
                 }
-                if ( textReader.Name == attribute )
+                if (textReader.Name == attribute)
                 {
                     pickNext = "Y";
                 }
@@ -39,30 +39,30 @@ namespace MackkadoITFramework.Utils
 
         }
 
-        public static string ReadLocal( string attribute )
+        public static string ReadLocal(string attribute)
         {
 
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load( "FCMLocalConfig.xml" );
+            xmlDoc.Load("FCMLocalConfig.xml");
 
-            XmlTextReader textReader = new XmlTextReader( "FCMLocalConfig.xml" );
+            XmlTextReader textReader = new XmlTextReader("FCMLocalConfig.xml");
             string constring = "";
             string pickNext = "N";
 
-            while ( textReader.Read() )
+            while (textReader.Read())
             {
                 // Move to first element
                 textReader.MoveToNextAttribute();
-                if ( pickNext == "Y" )
+                if (pickNext == "Y")
                 {
                     constring = textReader.Value;
-                    constring = constring.Replace( System.Environment.NewLine, string.Empty );
+                    constring = constring.Replace(System.Environment.NewLine, string.Empty);
                     constring = constring.TrimStart();
                     constring = constring.TrimEnd();
 
                     break;
                 }
-                if ( textReader.Name == attribute )
+                if (textReader.Name == attribute)
                 {
                     pickNext = "Y";
                 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using MackkadoITFramework.Utils;
+﻿using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace MackkadoITFramework.UserSettingsNS
 {
@@ -52,7 +52,7 @@ namespace MackkadoITFramework.UserSettingsNS
         /// List user settings for a given user
         /// </summary>
         /// <returns></returns>
-        public static List<UserSettings> List( string userID )
+        public static List<UserSettings> List(string userID)
         {
             List<UserSettings> userSettingList = new List<UserSettings>();
 
@@ -66,7 +66,7 @@ namespace MackkadoITFramework.UserSettingsNS
                     "       FKUserID = @FKUserID " +
                     "   ORDER BY FKUserID ASC, FKScreenCode ASC ";
 
-                using (var command = new MySqlCommand( commandString, connection ))
+                using (var command = new MySqlCommand(commandString, connection))
                 {
 
                     command.Parameters.Add("@FKUserID", MySqlDbType.VarChar).Value = userID.Trim();
@@ -89,7 +89,7 @@ namespace MackkadoITFramework.UserSettingsNS
             }
 
             return userSettingList;
-            
+
         }
 
         /// <summary>
@@ -101,8 +101,8 @@ namespace MackkadoITFramework.UserSettingsNS
             checkOnly._FKUserID = _FKUserID;
             checkOnly._FKScreenCode = _FKScreenCode;
             checkOnly._FKControlCode = _FKControlCode;
-            checkOnly._FKPropertyCode  = _FKPropertyCode;
-            
+            checkOnly._FKPropertyCode = _FKPropertyCode;
+
             if (checkOnly.Read())
             {
                 Update();
@@ -145,7 +145,7 @@ namespace MackkadoITFramework.UserSettingsNS
                     command.Parameters.Add("@FKControlCode", MySqlDbType.VarChar).Value = FKControlCode;
                     command.Parameters.Add("@FKPropertyCode", MySqlDbType.VarChar).Value = FKPropertyCode;
 
-                    
+
                     connection.Open();
                     MySqlDataReader reader = command.ExecuteReader();
 
@@ -179,7 +179,7 @@ namespace MackkadoITFramework.UserSettingsNS
             client.FKPropertyCode = reader[FieldName.FKPropertyCode].ToString();
             client.Value = reader[FieldName.Value].ToString();
         }
-        
+
         /// <summary>
         /// Update user setting details
         /// </summary>
@@ -200,7 +200,7 @@ namespace MackkadoITFramework.UserSettingsNS
                    FieldName.FKUserID + " = @" + FieldName.FKUserID + " AND " +
                    FieldName.FKScreenCode + " = @" + FieldName.FKScreenCode + " AND " +
                    FieldName.FKControlCode + " = @" + FieldName.FKControlCode + " AND " +
-                   FieldName.FKPropertyCode + " = @" + FieldName.FKPropertyCode  
+                   FieldName.FKPropertyCode + " = @" + FieldName.FKPropertyCode
                 );
 
                 using (var command = new MySqlCommand(
@@ -296,11 +296,11 @@ namespace MackkadoITFramework.UserSettingsNS
         public static string SQLConcat()
         {
             string ret = " " +
-            FieldName.FKScreenCode+ "," +
+            FieldName.FKScreenCode + "," +
             FieldName.FKControlCode + "," +
             FieldName.FKPropertyCode + "," +
             FieldName.FKUserID + "," +
-            FieldName.Value + " " ; 
+            FieldName.Value + " ";
 
             return ret;
         }

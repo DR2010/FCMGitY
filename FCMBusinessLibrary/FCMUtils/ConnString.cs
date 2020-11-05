@@ -7,7 +7,7 @@
         private static string connectionStringLocal;
         private static string connectionStringMySql;
 
-        public  static string ConnectionStringMySql
+        public static string ConnectionStringMySql
         {
             get
             {
@@ -49,7 +49,7 @@
                     // 1) Connection String
                     //
                     connectionString = FCMXmlConfig.Read(FCMConstant.fcmConfigXml.ConnectionStringMySql);
-                    
+
                     //"Persist Security info=false;" +
                     //"integrated security=sspi;";
 
@@ -100,8 +100,8 @@
 
         private static string Toshiba
         {
-            get 
-            { 
+            get
+            {
                 return
                     "Data Source=TOSHIBAPC\\SQLEXPRESS;" +
                     "Initial Catalog=management;" +

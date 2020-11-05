@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
+﻿using FCMMySQLBusinessLibrary.Repository.RepositoryDocument;
 using MackkadoITFramework.Utils;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace FCMMySQLBusinessLibrary.Model.ModelDocument
@@ -28,9 +28,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 
             // Retrieve all documents
             // For each document (order by parent uid)
-                // check if it is already connected to current Document Set
-                // If it is not, connect document
-                // Link with parent document in the set
+            // check if it is already connected to current Document Set
+            // If it is not, connect document
+            // Link with parent document in the set
             // Replicate Document Links
 
 
@@ -55,7 +55,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 
                     // Generate new UID
                     dsl.UID = this.GetLastUID() + 1;
-                  
+
                     // Add document to set
                     //
                     dsl.FKDocumentSetUID = this.UID;
@@ -65,9 +65,9 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     dsl.StartDate = System.DateTime.Today;
                     dsl.EndDate = System.DateTime.MaxValue;
                     dsl.FKParentDocumentUID = document.ParentUID; // Uses the Document UID as the source (Has to be combined with Doc Set)
-                    dsl.FKParentDocumentSetUID = dsl.FKDocumentSetUID; 
+                    dsl.FKParentDocumentSetUID = dsl.FKDocumentSetUID;
                     dsl.SequenceNumber = document.SequenceNumber;
-                    
+
                     dsl.Add();
 
                 }
@@ -144,7 +144,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
 
             return LastUID;
         }
-        
+
         // -----------------------------------------------------
         //    Get Document Details
         // -----------------------------------------------------
@@ -167,7 +167,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 "      ,Document.Name DocumentName " +
                 "      ,Document.SequenceNumber DocumentSequenceNumber " +
                 "      ,Document.IssueNumber DocumentIssueNumber " +
-                "      ,Document.Location DocumentLocation "+
+                "      ,Document.Location DocumentLocation " +
                 "      ,Document.Comments DocumentComments" +
                 "      ,Document.UID DocumentUID" +
                 "      ,Document.FileName DocumentFileName" +
@@ -193,7 +193,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 "       ,DocumentSetDocument DocSetDoc " +
                 "       ,DocumentSet DocSet " +
                 " WHERE " +
-                "        Document.UID = DocSetDoc.FKDocumentUID "+
+                "        Document.UID = DocSetDoc.FKDocumentUID " +
                 "    AND DocSetDoc.FKDocumentSetUID = DocSet.UID " +
                 "    AND Document.UID = {0} " +
                 "    AND DocSetDoc.FKDocumentSetUID = {1}",
@@ -252,7 +252,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                             ret.DocumentSetDocument.FKParentDocumentSetUID = Convert.ToInt32(reader["DocSetDocFKParentDocumentSetUID"].ToString());
 
                         }
-                        catch 
+                        catch
                         {
                         }
                     }
@@ -313,7 +313,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     this.documentList = new DocumentList();
                     this.documentList.ListDocSet(this.UID);
 
-                    this.ListDocumentsInSet( this.UID );
+                    this.ListDocumentsInSet(this.UID);
                 }
             }
             return ret;
@@ -326,7 +326,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             List<Document> fullListOfDocuments = new List<Document>();
 
             fullListOfDocuments = RepDocument.ListDocuments(headerInfo);
-            
+
             ListDocumentsInSet(documentSetUID);
             documentsInSet = this.listOfDocumentsInSet;
 
@@ -339,7 +339,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 foreach (var documentInSet in listOfDocumentsInSet)
                 {
                     // Document already in set
-                    if ( document.CUID == documentInSet.CUID )
+                    if (document.CUID == documentInSet.CUID)
                     {
                         found = true;
                         break;
@@ -350,7 +350,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                     continue;
 
                 // if gets to this point, document is not in set
-            
+
                 documentsNotInSet.Add(document);
             }
 
@@ -487,7 +487,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 " ,IsVoid " +
 
                 "   FROM DocumentSet " +
-                "  WHERE IsVoid = 'N' " 
+                "  WHERE IsVoid = 'N' "
                 );
 
                 using (var command = new MySqlCommand(
@@ -503,7 +503,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                             documentSet.TemplateType = reader["TemplateType"].ToString();
                             documentSet.TemplateFolder = reader["TemplateFolder"].ToString();
                             documentSet.IsVoid = Convert.ToChar(reader["IsVoid"].ToString());
-                            documentSet.UIDNameDisplay = documentSet.UID.ToString() + "; " + documentSet.TemplateType; 
+                            documentSet.UIDNameDisplay = documentSet.UID.ToString() + "; " + documentSet.TemplateType;
 
                             this.documentSetList.Add(documentSet);
                         }
@@ -519,7 +519,7 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
         {
             var documentSetList = new List<DocumentSet>();
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString = string.Format(
@@ -532,22 +532,22 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 "  WHERE IsVoid = 'N' "
                 );
 
-                using ( var command = new MySqlCommand(
-                                      commandString, connection ) )
+                using (var command = new MySqlCommand(
+                                      commandString, connection))
                 {
                     connection.Open();
-                    using ( MySqlDataReader reader = command.ExecuteReader() )
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        while ( reader.Read() )
+                        while (reader.Read())
                         {
                             DocumentSet documentSet = new DocumentSet();
-                            documentSet.UID = Convert.ToInt32( reader ["UID"].ToString() );
-                            documentSet.TemplateType = reader ["TemplateType"].ToString();
-                            documentSet.TemplateFolder = reader ["TemplateFolder"].ToString();
-                            documentSet.IsVoid = Convert.ToChar( reader ["IsVoid"].ToString() );
+                            documentSet.UID = Convert.ToInt32(reader["UID"].ToString());
+                            documentSet.TemplateType = reader["TemplateType"].ToString();
+                            documentSet.TemplateFolder = reader["TemplateFolder"].ToString();
+                            documentSet.IsVoid = Convert.ToChar(reader["IsVoid"].ToString());
                             documentSet.UIDNameDisplay = documentSet.UID.ToString() + "; " + documentSet.TemplateType;
 
-                            documentSetList.Add( documentSet );
+                            documentSetList.Add(documentSet);
                         }
                     }
                 }
@@ -564,22 +564,22 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
             {
                 cbxList.Items.Add(docSet.UID + "; " + docSet.TemplateType);
             }
-            
+
         }
 
         // -----------------------------------------------------
         //        List Documents for a Document Set
         // -----------------------------------------------------
-        public void ListDocumentsInSet( int documentSetUID )
+        public void ListDocumentsInSet(int documentSetUID)
         {
             this.listOfDocumentsInSet = new List<Document>();
 
-            using ( var connection = new MySqlConnection( ConnString.ConnectionString ) )
+            using (var connection = new MySqlConnection(ConnString.ConnectionString))
             {
 
                 var commandString = string.Format(
                 "  SELECT " +
-                RepDocument.SQLDocumentConcat( "DOC" ) +
+                RepDocument.SQLDocumentConcat("DOC") +
                 " ,LNK.FKParentDocumentUID " +
                 " ,LNK.FKParentDocumentSetUID " +
                 " ,LNK.SequenceNumber " +
@@ -595,22 +595,22 @@ namespace FCMMySQLBusinessLibrary.Model.ModelDocument
                 documentSetUID
                 );
 
-                using ( var command = new MySqlCommand(
-                                      commandString, connection ) )
+                using (var command = new MySqlCommand(
+                                      commandString, connection))
                 {
                     connection.Open();
-                    using ( MySqlDataReader reader = command.ExecuteReader() )
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        while ( reader.Read() )
+                        while (reader.Read())
                         {
                             Model.ModelDocument.Document _Document = new Model.ModelDocument.Document();
-                            RepDocument.LoadDocumentFromReader( _Document, "DOC", reader );
+                            RepDocument.LoadDocumentFromReader(_Document, "DOC", reader);
 
                             // This is necessary because when the list comes from DocumentSet, the parent may change
                             //
-                            _Document.ParentUID = Convert.ToInt32( reader ["FKParentDocumentUID"].ToString() );
+                            _Document.ParentUID = Convert.ToInt32(reader["FKParentDocumentUID"].ToString());
 
-                            this.listOfDocumentsInSet.Add( _Document );
+                            this.listOfDocumentsInSet.Add(_Document);
                         }
                     }
                 }
